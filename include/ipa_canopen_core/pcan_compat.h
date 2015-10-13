@@ -13,7 +13,7 @@
 
 typedef int HANDLE;
 
-/* return a handle or 0 or -1 on error. mode is ignored */
+/* return a handle or 0 (NULL) on error. mode is ignored */
 HANDLE LINUX_CAN_Open(const char *devname, int mode);
 
 /* return 0 on success, error code on error. frametype is ignored. */

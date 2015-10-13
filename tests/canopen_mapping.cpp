@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-    canopen::setObjects();
+    canopen::setObjects("test");
 
     TPCANMsg mes;
 
@@ -116,16 +116,16 @@ int main(int argc, char *argv[])
 
     for(int pdo_object=0;pdo_object<=3;pdo_object++)
     {
-        canopen::disableTPDO(pdo_object);
+        canopen::disableTPDO("test", pdo_object);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-        canopen::clearTPDOMapping(pdo_object);
+        canopen::clearTPDOMapping("test", pdo_object);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-        canopen::disableRPDO(pdo_object);
+        canopen::disableRPDO("test", pdo_object);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-        canopen::clearRPDOMapping(pdo_object);
+        canopen::clearRPDOMapping("test", pdo_object);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
@@ -135,14 +135,14 @@ int main(int argc, char *argv[])
         std::vector<std::string> tpdo1_registers {"604100", "60FD00"};
         std::vector<int> tpdo1_sizes {0x10,0x20};
 
-        canopen::makeTPDOMapping(0,tpdo1_registers, tpdo1_sizes, u_int8_t(0x01));
+        canopen::makeTPDOMapping("test", 0,tpdo1_registers, tpdo1_sizes, u_int8_t(0x01));
     }
     else
     {
         std::vector<std::string> tpdo1_registers {"604100", "606100"};
         std::vector<int> tpdo1_sizes {0x10,0x08};
 
-        canopen::makeTPDOMapping(0,tpdo1_registers, tpdo1_sizes, u_int8_t(0x01));
+        canopen::makeTPDOMapping("test", 0,tpdo1_registers, tpdo1_sizes, u_int8_t(0x01));
 
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
     std::vector<std::string> tpdo4_registers {"606400", "606C00"};
     std::vector<int> tpdo4_sizes {0x20,0x20};
 
-    canopen::makeTPDOMapping(3, tpdo4_registers, tpdo4_sizes, u_int8_t(0x01));
+    canopen::makeTPDOMapping("test", 3, tpdo4_registers, tpdo4_sizes, u_int8_t(0x01));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     std::vector<std::string> rpdo1_registers {"604000"};
@@ -159,17 +159,17 @@ int main(int argc, char *argv[])
     std::vector<std::string> rpdo2_registers {"60C101"};
     std::vector<int> rpdo2_sizes {0x20};
 
-    canopen::makeRPDOMapping(0, rpdo1_registers, rpdo1_sizes, u_int8_t(0x01));
+    canopen::makeRPDOMapping("test", 0, rpdo1_registers, rpdo1_sizes, u_int8_t(0x01));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    canopen::makeRPDOMapping(1, rpdo2_registers, rpdo2_sizes, u_int8_t(0x01));
+    canopen::makeRPDOMapping("test", 1, rpdo2_registers, rpdo2_sizes, u_int8_t(0x01));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     for(int pdo_object=0;pdo_object<=3;pdo_object++)
     {
-        canopen::enableTPDO(pdo_object);
+        canopen::enableTPDO("test", pdo_object);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-        canopen::enableRPDO(pdo_object);
+        canopen::enableRPDO("test", pdo_object);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 

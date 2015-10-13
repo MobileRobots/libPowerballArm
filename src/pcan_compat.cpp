@@ -8,7 +8,7 @@
 
 HANDLE LINUX_CAN_Open(const char *devname, int mode)
 {  
-  return -1;
+  return 0;
 }
 
 int CAN_Init(HANDLE h, int baudrate, int type)
