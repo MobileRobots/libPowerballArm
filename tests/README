@@ -1,0 +1,6 @@
+
+To build all tests, run "make".
+
+To build a specific test, run "make test"
+
+To run a test, add ../lib to LD_LIBRARY_PATH then run the test.
