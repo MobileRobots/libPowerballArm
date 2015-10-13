@@ -66,7 +66,7 @@ include Makefile.dep
 
 Makefile.dep:
 	$(info building Makefile.dep)
-	$(CXX) $(CXXFLAGS) -MM $(SRC) >Makefile.dep
+	$(CXX) $(CFLAGS) -MM $(SRC) >Makefile.dep
 	
 
 info:
