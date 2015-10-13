@@ -7,12 +7,12 @@ endif
 
 TESTS:=$(patsubst %.cpp,%,$(shell find . -name \*.cpp))
 
-all: ../lib/libPowerballArm.so $(TESTS)
+all: $(TESTS)
 
 clean: 
 	-rm $(TESTS)
 
-%: %.cpp 
+%: %.cpp ../lib/libPowerballArm.so
 	$(CXX) $(CFLAGS) -o $@ $^ -L../lib -lPowerballArm -lpthread
 
 ../lib/libPowerballArm.so: FORCE
