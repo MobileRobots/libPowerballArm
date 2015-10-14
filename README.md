@@ -18,8 +18,12 @@ for Schunk LWA arms (called FTS-LWA or FTL in some documentation).
 This library relies on Linux kernel CAN support (SocketCAN), i.e. the 
 `can0` socket interface must be available through Linux.  See
 <http://robots.mobilerobots.com/wiki/Linux_SocketCAN> for information on 
-SocketCAN including how to configure the "can0" interface using the Linux
-`ip` command.
+SocketCAN including how to configure the CAN interface(s) using the Linux
+`ip` command. To bring an interface up, use these commands:
+
+   sudo ip link set can0 type can bitrate 125000
+   sudo ip link set up can0
+ 
 
 It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
 and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  

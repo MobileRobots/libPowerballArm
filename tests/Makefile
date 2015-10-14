@@ -13,7 +13,7 @@ clean:
 	-rm $(TESTS)
 
 %: %.cpp ../lib/libPowerballArm.so
-	$(CXX) $(CFLAGS) -o $@ $^ -L../lib -lPowerballArm -lpthread
+	$(CXX) $(CFLAGS) -o $@ $^ -L../lib -lPowerballArm   -lboost_system
 
 ../lib/libPowerballArm.so: FORCE
 	$(MAKE) -C .. lib/libPowerballArm.so

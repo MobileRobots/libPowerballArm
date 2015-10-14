@@ -32,13 +32,15 @@
 
 INCLUDE:=\
   include/Arm.h \
+  include/FTSLWA.h \
   include/ipa_canopen_core/schunkErrors.h \
   include/ipa_canopen_core/canopen.h  \
   include/ipa_canopen_core/pcan_compat.h
 
 SRC:=\
   src/ipa_canopen_core.cpp \
-  src/pcan_compat.cpp
+  src/pcan_compat.cpp \
+  src/FTSLWA.cpp 
 
 OBJ:=$(patsubst src/%.cpp,obj/%.o,$(SRC))
 
@@ -55,7 +57,7 @@ clean:
 	-rm $(OBJ)
 
 lib/libPowerballArm.so: $(OBJ)
-	$(CXX) -shared -o $@ $^
+	$(CXX) -shared -o $@ $^ -lboost_thread -lboost_system -lpthread
 
 
 obj/%.o: src/%.cpp
