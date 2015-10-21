@@ -19,10 +19,36 @@ This library relies on Linux kernel CAN support (SocketCAN), i.e. the
 `can0` socket interface must be available through Linux.  See
 <http://robots.mobilerobots.com/wiki/Linux_SocketCAN> for information on 
 SocketCAN including how to configure the CAN interface(s) using the Linux
-`ip` command. To bring an interface up, use these commands:
+`ip` command. To bring up the first CAN interface up, use these commands:
 
-   sudo ip link set can0 type can bitrate 125000
+   sudo ip link set can0 type can bitrate 500000
    sudo ip link set up can0
+
+The Schunk LWA4P arm and FTS-LWA force-torque sensor both use bitrates
+of 500000 (500K) on the CAN bus.
+
+To bring up a second CAN interface (e.g. force-torque sensor or hand):
+
+   sudo ip link set can1 type can bitrate 500000
+   sudo ip link set up can1
+
+You can put these commands in `/etc/rc.local` to run when the system boots up. 
+
+It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
+and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  
+
+See `include/Arm.h` for easy to use API for the arm.  Only some
+features of the arm are currently available in this API.  You may implement
+additiontal arm features by adding to this class.  If you do make any 
+improvements or fixes, please submit a pull request from your fork, or
+post the patches on github, or send them to support@mobilerobots.com.
+
+Since the Powerball LWA4P arm uses standard CanOPEN 402 protocol, this library
+could be expanded in the future to support other arms or similar devices
+that use CanOPEN.
+
+Some simple example programs are available in the `examples` directory.
+
  
 
 It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)

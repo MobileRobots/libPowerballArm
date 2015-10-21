@@ -71,7 +71,7 @@
 class FTSLWA
 {
 public:
- 	FTSLWA(int canID = 80, int baud = 460800);
+ 	FTSLWA(int canID = 80, unsigned rate = 10);
 
   // call to open connection. return false on error
 	bool Connect(const char* canif = "can1");
@@ -95,8 +95,12 @@ public:
 	double calibMat[36];
 
 	bool active; // remains true while this object is still operating
+  bool system_error, overload_error;
 
   void ReadData();
+
+  unsigned int rate;
+
 
 private:
   	
@@ -106,8 +110,7 @@ private:
 	HANDLE itf;			// CAN interface
 
 	int sensorID;			// CAN ID of the sensor
-	int cnt;
-  int baud;
+	int request_counter;
 
 	double rawBias[6];
 	int startUpCnt;
@@ -116,9 +119,11 @@ private:
 	void WriteMsg(int id, int length, unsigned  char* data);
 	//int EvaluateBuffer(unsigned char* buf);
   int RecvMsg(TPCANMsg *msg);
-	int GetMsg(int id, int *length, unsigned  char* data);
+//	int GetMsg(int id, int *length, unsigned  char* data);
 
-	TPCANMsg msgBuffer[FTSLWA_MSG_BUFFER_SIZE];
+	//TPCANMsg msgBuffer[FTSLWA_MSG_BUFFER_SIZE];
+  TPCANMsg msg51;
+  TPCANMsg msg52;
 	
 
 };

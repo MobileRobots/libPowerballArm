@@ -12,8 +12,6 @@ int main( int argc, char** argv )
 {
 		
 	using namespace boost::posix_time;
-	ptime start, now;
-	time_duration passed;
 	
 	FTSLWA mySensor;	
   	
@@ -27,22 +25,19 @@ int main( int argc, char** argv )
     return -1;
   }
 	
-	while (true)			// this is the main loop
-	{				// but all interesting things are done in DoComm()
-		start = microsec_clock::universal_time();
-		mySensor.DoComm();
+  ptime last = microsec_clock::universal_time();
+  ptime now;
+	time_duration passed;
+	while (true)		
+	{		
+		mySensor.DoComm(); // checks for new messages and stores them, periodically sends request for new messages
 		now = microsec_clock::universal_time();
-		passed = now - start;
-
-		while( passed.total_milliseconds() < 100){	// set the cycle time here
-			now = microsec_clock::universal_time();
-			passed = now - start;
+		passed = now - last;
+		if( passed.total_milliseconds() >= 1000){	// print output only every 1 sec
+      last = microsec_clock::universal_time();
       std::cout << "   x: " << mySensor.xyz[0] << "   y: " << mySensor.xyz[1] << "   z: " << mySensor.xyz[2];
       std::cout << "  rx: " << mySensor.xyz[3] << "  ry: " << mySensor.xyz[4] << "  rz: " << mySensor.xyz[5] << std::endl;
-      usleep(1000*1000);
-
 		}
-
 	}
 
 

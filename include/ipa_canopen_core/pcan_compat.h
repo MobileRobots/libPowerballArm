@@ -39,7 +39,9 @@ typedef struct {
 /* return 0 on success, error code on error */
 int CAN_Write(HANDLE h, TPCANMsg *msg);
 
-/* return 0 on success, error code on error */
+/* return 0 on success, error code on error. 
+   blocks
+*/
 int LINUX_CAN_Read(HANDLE h, TPCANRdMsg *rdmsg);
 
 #define CAN_BAUD_1M     1000  //   1 MBit/s

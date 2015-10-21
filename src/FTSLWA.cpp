@@ -46,6 +46,8 @@
 // interface directly; use BCM (broadcast manager) configuration to 
 // have Linux automatically send requests for data
 
+// XXX TODO function to load calibration data from a .dat file
+
 
 #include <math.h>
 #include <stdio.h>
@@ -67,15 +69,18 @@
 
 #include "FTSLWA.h"
 
+#define DEBUG false
 
 
 //********************************************
 // Initialization
-FTSLWA::FTSLWA(int _canID, int _baud)
+FTSLWA::FTSLWA(int _canID, unsigned _rate)
 {
 	sensorID = _canID;			// 80 (0x50) is standard CAN ID
-  baud = _baud;
-	cnt = 0;
+	request_counter = 0;
+  rate = _rate;
+  system_error = false;
+  overload_error = false;
 
 	for(int i=0; i<6; i++){
 		xyz[i] = 0.0;
@@ -96,12 +101,16 @@ FTSLWA::FTSLWA(int _canID, int _baud)
 	startUpCnt = 15;	// 15 values will be used to gather the bias
 
 	// init the message buffer
+/*
 	for(int i=0; i< FTSLWA_MSG_BUFFER_SIZE; i++){
 		msgBuffer[i].LEN = 0;
 		msgBuffer[i].ID = i;
 		for(int j=0; j<8; j++)
 			msgBuffer[i].DATA[j] = 0x00;
 	}
+*/
+  memset(&msg51, 0, sizeof(TPCANMsg));
+  memset(&msg52, 0, sizeof(TPCANMsg));
 }
 
 
@@ -113,29 +122,63 @@ void FTSLWA::DoComm(){
 
 	// storage necessary for the CAN communication
 	int l = 2;				// length for request: 2 byte. When the length is not correct, the sensor will not answer!
-	unsigned char data[8] = {7, 1, 0, 0, 0, 0, 0, 0};	
+	unsigned char req[8] = {7, 1, 0, 0, 0, 0, 0, 0};	
 	int tmpTC = 0;
 
 	// Request measurements with an incrementing message identifier
-	data[0] = 7;						// Request measurements
-	data[1] = cnt;
-	WriteMsg(sensorID, l, data);			// write the message to the joint controller
-	Wait(10);						// wait a short time to avoid a crowded bus
+	req[0] = 0x07;						// Request measurements
+	req[1] = request_counter;
+  Wait(rate);						// wait a short time to avoid a crowded bus TODO: don't wait a fixed time, check a timer, in case caller of this function (user program) is waiting or delayed
+	WriteMsg(sensorID, l, req);			// write the message to the joint controller
+
+  // Wait for matching replies
+  boost::posix_time::ptime start = boost::posix_time::microsec_clock::universal_time();
+  // todo need a mutex on msgs
+  while(msg51.DATA[0] != request_counter && msg52.DATA[0] != request_counter)
+  {
+    if(msg51.DATA[0] > 127 || msg52.DATA[0] > 127)
+    {
+      overload_error = true;
+      std::cout << "FTSLWA: Warning: Sensor overload error!" << std::endl;
+    }
+    else if(msg51.DATA[0] > 63 || msg52.DATA[0] > 63)
+    {
+      system_error = true;
+      std::cout << "FTSLWA: Warning: System error!" << std::endl;
+    }
+    if(overload_error || system_error) return;
+    boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+    boost::posix_time::time_duration passed = now - start;
+    if(passed.total_milliseconds() > rate)
+    {
+      std::cout << "FTSLWA: Warning: took more than " << passed.total_milliseconds() << " to get matching reply messages!" << std::endl;
+    }
+    if(passed.total_milliseconds() > rate*3)
+    {
+      std::cout << "FTSLWA: Error: took more than " << passed.total_milliseconds() << " to get matching reply messages! Aborting" << std::endl;
+      return;
+    }
+  }
 
 	// read the answers from the sensor, two messages
-	GetMsg(sensorID+1, &l, data);			// get the last message that has been received
+
+	//GetMsg(sensorID+1, &l, data);			// get the last message that has been received
+  char *data = (msg51.DATA);
 	tmpTC = data[0];					// byte 0 contains the timecode from above and error bits	
 	raw[0] = 256 * data[1] + data[2];			// three raw measureemnts in this messages, three in the next
 	raw[1] = 256.0 * data[3] + data[4];
 	raw[2] = 256.0 * data[5] + data[6];
 	temp = 256.0 * data[7];					// and the temp-highbyte
+  if(DEBUG) printf("FTSLWA: Got raw data from sensorID 0x%x message ID 0x%x: TC+flags=%d tx=%f ty=%f tz=%f\n", sensorID, sensorID+1, tmpTC, raw[0], raw[1], raw[2]);
 
-	GetMsg(sensorID+2, &l, data);	
+	//GetMsg(sensorID+2, &l, data);	
+  data = (msg52.DATA);
 	raw[3] = 256.0 * data[1] + data[2];
 	raw[4] = 256.0 * data[3] + data[4];
 	raw[5] = 256.0 * data[5] + data[6];
 	temp += data[7];					// temp low-byte
 	temp = 0.12 * temp - 240.0;				
+  if(DEBUG) printf("FTSLWA: Got raw data from sensorID 0x%x message ID 0x%x: rx=%f ry=%f rz=%f temp=%f\n", sensorID, sensorID+2, raw[3], raw[4], raw[5], temp);
 
 	// Error Check:
 	// tmpTC is the first byte of the answers
@@ -182,9 +225,9 @@ void FTSLWA::DoComm(){
 		//std::cout << "  rx: " << xyz[3] << "  ry: " << xyz[4] << "  rz: " << xyz[5] << std::endl;
 	}
 
-	cnt++;							//increment the message identifier 0-127
-	if(cnt >= 64)
-		cnt = 0;
+	request_counter++;							//increment the counter 0-127
+	if(request_counter >= 64)
+		request_counter = 0;
 
 
 	return;
@@ -209,6 +252,8 @@ void FTSLWA::ApplyCalibMatrix(){
 
 //********************************************
 void FTSLWA::Wait(int ms){
+  usleep(ms * 1000l);
+/*
 	using namespace boost::posix_time;
 	ptime start, now;
 	time_duration passed;
@@ -220,7 +265,7 @@ void FTSLWA::Wait(int ms){
 		now = microsec_clock::universal_time();
 		passed = now - start;
 	}
-
+*/
 }
 
 
@@ -243,8 +288,7 @@ void readLoop(void * context )
 
   while (true)
   {
-
-    ctx->ReadData();
+    ctx->ReadData(); // read should block on data 
   }
 
   std::cout << "FTSLWA: readLoop: finished" << std::endl;
@@ -256,13 +300,16 @@ void FTSLWA::ReadData()
   if(!active) return;
   boost::posix_time::ptime start = boost::posix_time::microsec_clock::universal_time();
   TPCANRdMsg rdmsg;
-  int r = LINUX_CAN_Read(itf, &rdmsg);
+  int r = LINUX_CAN_Read(itf, &rdmsg); // should block
   //boost::asio::read(*(ctx->port), boost::asio::buffer(bu, 1));
   boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
   boost::posix_time::time_duration passed = now - start;
-  if(passed.total_milliseconds() > 2){		//out of sync!!!
-    std::cout << "FTSLWA: too long to read message " << std::endl; 
+  long int ms = passed.total_milliseconds();
+  //printf("LINUX_CAN_READ returned after %ld ms\n", ms);
+  if(ms > rate*2){		
+    std::cout << "FTSLWA: Error: took " << ms << " ms to read message, skipping " << std::endl; 
   } else {
+    // printf("calling RecvMsg...\n");
     RecvMsg(&(rdmsg.Msg));
   }
 
@@ -278,7 +325,7 @@ bool FTSLWA::Connect(const char* canif)
 { 
   itf = LINUX_CAN_Open(canif, 0);
   if(!itf) return false;
-  int e = CAN_Init(itf, baud, CAN_INIT_TYPE_ST);
+  int e = CAN_Init(itf, 0, CAN_INIT_TYPE_ST);
   if(e == -1)
     return false;
   active = true;
@@ -360,10 +407,17 @@ void FTSLWA::Disconnect()
 
 int FTSLWA::RecvMsg(TPCANMsg *msg)
 {
-  int mid = msg->DATA[0];
-  assert(mid < FTSLWA_MSG_BUFFER_SIZE);
-  printf("rcv message id %d\n", mid);
-  memcpy(&(msgBuffer[mid]), msg, sizeof(TPCANMsg));
+  assert(msg->ID == 0x51 || msg->ID == 0x52);
+  int reqctr = msg->DATA[0];
+  if(DEBUG) printf("FTSLWA::RecvMsg called ID=0x%x, len=%d, data[0] (counter)=%d\n", msg->ID, msg->LEN, reqctr);
+  assert(reqctr < FTSLWA_MSG_BUFFER_SIZE);
+  // TODO need amutex on messages
+  if(msg->ID == 0x51)
+    memcpy(&msg51, msg, sizeof(TPCANMsg));
+  else
+    memcpy(&msg52, msg, sizeof(TPCANMsg));
+  // TODO currently assumes messages are received in order and so after reading
+  // 0x52, both will have the same counter from the same request.
   return 0;
 }
 
@@ -405,19 +459,20 @@ void FTSLWA::WriteMsg(int id, int length, unsigned char* data)
 
 //***************************************************************
 // Forwards a received message from the buffer
-int FTSLWA::GetMsg(int id, int *length, unsigned char* data)
+/*
+int FTSLWA::GetMsg(int i, int *length, unsigned char* data)
 {
-	if(id>255)
-		throw std::string("invalid message id!");
-
-
-	length[0] = msgBuffer[id].LEN;
-	for(int i=0; i<8; i++)
-		data[i] = msgBuffer[id].DATA[i];
-	
+  printf("GetMsg(%d)...\n", i);
+	if(i>255)
+		throw std::string("invalid message index!");
+  assert(length);
+  assert(data);
+	*length = msgBuffer[i].LEN;
+  memcpy(data, msgBuffer[i].DATA, 8);
 	return 0;
 	
 }
+*/
 
 
 

@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
+#include <time.h>
 
 HANDLE LINUX_CAN_Open(const char *devname, int mode)
 {  
@@ -64,10 +65,11 @@ int CAN_Write(HANDLE h, TPCANMsg *msg)
   assert(msg);
   assert(msg->LEN <= 8);
   struct can_frame frame;
+  memset(&frame, 0, sizeof(struct can_frame));
   frame.can_id = msg->ID;
   frame.can_dlc = msg->LEN;
   memcpy(frame.data, msg->DATA, 8);
-  printf("write message id %d\n", msg->ID);
+  //printf("write message id %d\n", msg->ID);
   return write(h, &frame, sizeof(struct can_frame));
 }
 
@@ -75,12 +77,14 @@ int LINUX_CAN_Read(HANDLE h, TPCANRdMsg *rdmsg)
 {
   assert(rdmsg);
   struct can_frame frame;
-  puts("reading...\n");
+  //printf("LINUX_CAN_Read: reading... (sizeof can_frame=%lu bytes, .data=8 bytes)\n", sizeof(struct can_frame));
+  time_t beforet = time(NULL);
   int n = read(h, &frame, sizeof(struct can_frame));
-  printf("read can frame %d bytes ID %d\n", n, frame.can_id);
+  time_t aftert = time(NULL);
+  //printf("LINUX_CAN_Read: read can frame %d bytes ID %d took %lu seconds\n", n, frame.can_id, aftert-beforet);
   if(n < 0)
   {
-    perror("can: read");
+    perror("can: read error");
     return -1;
   }
   if(n < sizeof(struct can_frame))
@@ -88,6 +92,7 @@ int LINUX_CAN_Read(HANDLE h, TPCANRdMsg *rdmsg)
     printf("can: error: read incomplete CAN frame\n");
     return -2;
   }
+  //printf("LINUX_CAN_Read:  id=0x%x, len=%d, data[0]=%d\n", frame.can_id, frame.can_dlc, frame.data[0]);
   rdmsg->Msg.ID = frame.can_id;
   /// TODO rdmsg->Msg.MSGTYPE = 
   rdmsg->Msg.LEN = frame.can_dlc;
