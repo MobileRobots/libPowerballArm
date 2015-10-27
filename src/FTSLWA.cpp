@@ -81,6 +81,7 @@ FTSLWA::FTSLWA(int _canID, unsigned _rate)
   rate = _rate;
   system_error = false;
   overload_error = false;
+  calibration_file_serial_number = -1;
 
 	for(int i=0; i<6; i++){
 		xyz[i] = 0.0;
@@ -476,8 +477,175 @@ int FTSLWA::GetMsg(int i, int *length, unsigned char* data)
 
 
 
+bool FTSLWA::loadCalibration(const char *filename)
+{
+  // this uses strtok to to a very hackish parsing of the xml: we lexically check only
+  // element names, attribute names, and values, no xml syntax parsing is done.
+  // First we expect a token with the value FTSTransferMatrix, the root element
+  // name.  Next we expect the attribute SerialNumber, then a token with the
+  // serial number value, which is stored.  Next, for each Row* element, we expect the element
+  // name, in the form Row[T|R][X|Y|Z], then six attributes with attribute name
+  // token in the form ColN where N is a number [1..6].  If we ever reach a
+  // token starting with /, we ignore it.  Each attribute starting with the
+  // chahracters "Col" selects a column of the matrix for which the next token
+  // encountered will be the value.  If a token beginning with "Row" is
+  // reached, we select a new row, and continue finding "Col" attributes.
+  // Whitespace and XML syntax characters (<, >, ", etc.) are token delimiters
+  // and are ignored.  Empty tokens are ignored.
+  FILE *fp = fopen(filename, "r");
+  if(!fp)
+  {
+    printf("FTSLWA: loadCalibration: error opening file \"%s\" for reading.\n", filename);
+    return false;
+  }
+  printf("FTSLWA: loading calibration data from \"%s\"...\n", filename);
+  char line[1024];
+  const char *delim = " \n\t\r<>\"=";
+  enum {ROOT, SERIALNUMBERATTR, SERIALNUMBERVAL, ROW, COLATTR, COLVAL} expect;
+  expect = ROOT;
+  size_t n;
+  int row = -1;
+  int col = -1;
+  clearerr(fp);
+  while((n = fread(&line, 1, 1024, fp)) > 0 && !ferror(fp))
+  {
+    clearerr(fp);
+    char *tok = strtok(line, delim);
+    if(!tok) 
+    {
+      printf("FTSLWA: parse error: no valid tokens\n");
+      return false;
+    }
 
+    do
+    {
+      if(strcmp(tok, "/FTSTransferMatrix") == 0)
+      {
+        // end of XML
+        return true;
+      }
 
+      if(expect == ROOT)
+      {
+        if(strcmp(tok, "FTSTransferMatrix") == 0)
+        {
+          expect = SERIALNUMBERATTR;
+          continue;
+        }
+        else
+        {
+          puts("FTSLWA: loadCalibration: parse error: expected <FTSTransferMatrix...");
+          return false;
+        }
+      } 
 
+      if(expect == SERIALNUMBERATTR)
+      {
+        if(strcmp(tok, "SerialNumber") == 0)
+        {
+          expect = SERIALNUMBERVAL;
+          continue;
+        }
+        else
+        {
+          puts("FTSLWA: loadCalibration: parse error: expected SerialNumber=");
+          return false;
+        }
+      }
 
+      if(expect == SERIALNUMBERVAL)
+      {
+        calibration_file_serial_number = atol(tok);
+        expect = ROW;
+        continue; 
+      }
+
+      if(expect == ROW)
+      {
+
+        if(strncmp(tok, "Row", 3) == 0)
+        {
+          row = -1;
+          if(tok[3] == 'T')
+            row = 0;
+          else if(tok[3] == 'R')
+            row = 3;
+          else
+          {
+            puts("FTSLWA: loadCalibration: parse error: expected <RowT... or <RowR...");
+            return false;
+          }
+          if(tok[4] == 'X')
+            row += 0;
+          else if(tok[4] == 'Y')
+            row += 1;
+          else if(tok[4] == 'Z')
+            row += 2;
+          else
+          {
+            printf("FTSLWA: loadCalibration: parse error: expected <Row%cX..., <Row%cY..., or <Row%cZ...\n", tok[3], tok[3], tok[3]);
+            return false;
+          }
+          //printf("%s means row %d\n", tok, row);
+          expect = COLATTR;
+          continue;
+        }
+        else if (expect == ROW)
+        {
+          puts("FTSLWA: loadCalibration: parse error: expected <Row...");
+          return false;
+        }
+
+      }
+
+      if(expect == COLATTR)
+      {
+        if(strcmp(tok, "/") == 0)
+        {
+          // got end of RowXX element instead of Col, skip to next Row
+          expect = ROW;
+          continue;
+        }
+
+        assert(strlen(tok) == 4);
+        assert(strncmp(tok, "Col", 3) == 0);
+        col = tok[3] - 48 - 1; // assume ascii. '0' == 48, but Col1 should be array index 0
+        expect = COLVAL;
+        continue;
+      }  
+
+      if(expect == COLVAL)
+      {
+        double val = atof(tok);
+        //printf("--- calibration matrix [%d][%d] (%d) is %f ---\n", row, col, 6*row+col, val);
+        calibMat[6*row+col] = val;
+        expect = COLATTR;
+        continue;
+      }
+
+      if(expect == ROW || expect == COLATTR)
+      {
+        if(strncmp(tok, "Row", 3) != 0 && strncmp(tok, "Col", 3) != 0 && strcmp(tok, "FTSTransferMatrix") != 0)
+        {
+          puts("FTSLWA: loadCalibration: parse error: expect Row or Col token, or </FTSTransferMatrix>");
+          return false;
+        }
+      }
+
+    }
+    while(tok = strtok(NULL, delim));
+
+  }
+  // TODO warn if incomplete parse
+  if(ferror(fp))
+  {
+    printf("FTSLWA: loadCalibration: error reading from file\n");
+    return false;
+  }
+  if(n == 0)
+    printf("FTSLWA: loadCalibration: no data\n");
+  if(feof(fp))
+    printf("FTSLWA: loadCalibration: unexpected end of file, missing </FTSTransferMatrix>?");
+  return false;
+}
 

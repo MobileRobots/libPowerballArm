@@ -91,8 +91,9 @@ public:
   // raw uncalibrated data
 	double raw[6];
 
-  // callibration values.  access this to set calibration for an individual sensor
-	double calibMat[36];
+  // callibration values.  access this to set calibration for an individual
+  // sensor, or use loadCalibration() to load data from a file
+	double calibMat[6*6];
 
 	bool active; // remains true while this object is still operating
   bool system_error, overload_error;
@@ -101,6 +102,11 @@ public:
 
   unsigned int rate;
 
+  // load calibration from the given file, which should be in 
+  // XML format as supplied with the sensor by Schunk or CommonplaceRobotics.
+  bool loadCalibration(const char *filename);
+  
+  int calibration_file_serial_number;
 
 private:
   	

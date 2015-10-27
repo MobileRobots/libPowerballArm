@@ -14,6 +14,12 @@ int main( int argc, char** argv )
 	using namespace boost::posix_time;
 	
 	FTSLWA mySensor;	
+
+  if(!mySensor.loadCalibration("force_sensor_calib.dat"))
+  {
+    puts("error loading calibration data");
+    return -2;
+  }
   	
   if(mySensor.Connect("can0"))
   {
@@ -24,7 +30,8 @@ int main( int argc, char** argv )
     puts("error opening connection to senson or CANBUS");
     return -1;
   }
-	
+
+
   ptime last = microsec_clock::universal_time();
   ptime now;
 	time_duration passed;

@@ -34,6 +34,9 @@ To bring up a second CAN interface (e.g. force-torque sensor or hand):
 
 You can put these commands in `/etc/rc.local` to run when the system boots up. 
 
+The library defaults to expecting the arm to be on can0, and the FTS to be
+on a second CAN bus, can1.  Alternate interfaces can be specified in the API.
+
 It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
 and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  
 
