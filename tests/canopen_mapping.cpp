@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 
     std::string canif = std::string(argv[1]);
 
-    if (!canopen::openConnection(canif)){
+    if (!canopen::openConnection(canif, "")){
         std::cout << "Cannot open CAN interface; aborting." << std::endl;
         exit(EXIT_FAILURE);
     }

@@ -46,28 +46,16 @@ additiontal arm features by adding to this class.  If you do make any
 improvements or fixes, please submit a pull request from your fork, or
 post the patches on github, or send them to support@mobilerobots.com.
 
-Since the Powerball LWA4P arm uses standard CanOPEN 402 protocol, this library
-could be expanded in the future to support other arms or similar devices
-that use CanOPEN.
-
 Some simple example programs are available in the `examples` directory.
 
- 
+The Arm class uses the basic canopen implementation contained in the `canopen`
+class defined in `ipa_canopen_core.h`.  Some test programs for this CANopen
+layer can be found in `tests`.  Each joint in the Powerball arm has a CAN
+device ID, starting at 3. The final joint (wrist rotation) is 8. 
+The gripper is device id 12. 
 
 It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
 and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  
-
-See `include/Arm.h` for easy to use API for the arm.  Only some
-features of the arm are currently available in this API.  You may implement
-additiontal arm features by adding to this class.  If you do make any 
-improvements or fixes, please submit a pull request from your fork, or
-post the patches on github, or send them to support@mobilerobots.com.
-
-Since the Powerball LWA4P arm uses standard CanOPEN 402 protocol, this library
-could be expanded in the future to support other arms or similar devices
-that use CanOPEN.
-
-Some simple example programs are available in the `examples` directory.
 
 This code is distributed under the terms of the GNU Lesser General Public
 License (LGPL).  See the LICENSE file for full license details.
