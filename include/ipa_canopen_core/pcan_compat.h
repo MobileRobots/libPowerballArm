@@ -23,18 +23,26 @@ int CAN_Init(HANDLE h, int baudrate, int frametype);
 
 void CAN_Close(HANDLE h);
 
-typedef struct {
+class TPCANMsg
+{
+public:
   uint32_t ID;
   char MSGTYPE;
   char LEN;
   char DATA[8];
-} TPCANMsg;
+  TPCANMsg(uint32_t _id = 0, char _mt = 0, char _len = 0) 
+    : ID(_id), MSGTYPE(_mt), LEN(_len)
+  {}
+};
 
-typedef struct {
+class TPCANRdMsg
+{
+public:
   TPCANMsg Msg;
   uint32_t dwTime;
   uint16_t wUsec;
-} TPCANRdMsg;
+  TPCANRdMsg() : Msg(), dwTime(0), wUsec(0) {}
+}; 
 
 /* return 0 on success, error code on error */
 int CAN_Write(HANDLE h, TPCANMsg *msg);

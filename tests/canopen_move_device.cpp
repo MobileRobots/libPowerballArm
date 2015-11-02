@@ -62,25 +62,23 @@
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 7) {
+    if (argc != 6) {
         std::cout << "Arguments:" << std::endl
-                  << "(1) device file" << std::endl
+                  << "(1) CAN interface name" << std::endl
                   << "(2) CAN deviceID" << std::endl
-                  << "(3) Baud Rate" << std::endl
-                  << "(4) sync rate [msec]" << std::endl
-                  << "(5) target velocity [rad/sec]" << std::endl
-                  << "(6) acceleration [rad/sec^2]" << std::endl
+                  << "(3) sync rate [msec]" << std::endl
+                  << "(4) target velocity [rad/sec]" << std::endl
+                  << "(5) acceleration [rad/sec^2]" << std::endl
                   << "(enter acceleration '0' to omit acceleration phase)" << std::endl
-                  << "Example 1: ./move_device /dev/pcan32 12 10 0.2 0.05" << std::endl
+                  << "Example 1: ./move_device can0 12 10 0.2 0.05" << std::endl
                   << "Example 2 (reverse direction): "
-                  << "./move_device /dev/pcan32 12 500K 10 -0.2 -0.05" << std::endl;
+                  << "./move_device can0 12 10 -0.2 -0.05" << std::endl;
         return -1;
     }
     std::cout << "Interrupt motion with Ctrl-C" << std::endl;
-    std::string deviceFile = std::string(argv[1]);
+    std::string canif = std::string(argv[1]);
     uint16_t CANid = std::stoi(std::string(argv[2]));
     canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[4])));
-    canopen::baudRate = std::string(argv[3]);
     double targetVel = std::stod(std::string(argv[5]));
     double accel = std::stod(std::string(argv[6]));
 
@@ -98,7 +96,7 @@ int main(int argc, char *argv[]) {
     j_names.push_back("joint_1");
     canopen::deviceGroups[ chainName ] = canopen::DeviceGroup(ids, j_names);
 
-    canopen::init(deviceFile, chainName, canopen::syncInterval);
+    canopen::init(canif, chainName, canopen::syncInterval);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     canopen::sendSync();

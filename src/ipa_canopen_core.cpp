@@ -1,4 +1,4 @@
-/*!
+/*
  *****************************************************************
  * \file
  *
@@ -57,13 +57,13 @@
  *
  ****************************************************************/
 
-#include <ipa_canopen_core/canopen.h>
+#include "ipa_canopen_core/canopen.h"
 #include <sstream>
 #include <cstring>
 #include <unordered_map>
-#include<algorithm>
+#include <algorithm>
 
-#include <ipa_canopen_core/pcan_compat.h>
+#include "ipa_canopen_core/pcan_compat.h"
 
 namespace canopen
 {
@@ -1361,7 +1361,7 @@ void readManErrReg(uint16_t CANid)
     canopen::uploadSDO(CANid, canopen::MANUFACTURER);
 }
 
-void readErrorsRegister(uint16_t CANid, std::shared_ptr<TPCANRdMsg> m)
+void readErrorsRegister(uint16_t CANid, std::shared_ptr<TPCANRdMsg>& m)
 {
     canopen::uploadSDO(CANid, canopen::STATUSWORD);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -1401,7 +1401,7 @@ std::vector<uint16_t> obtainVendorID(uint16_t CANid)
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
-std::vector<uint16_t> obtainProdCode(uint16_t CANid, std::shared_ptr<TPCANRdMsg> m)
+std::vector<uint16_t> obtainProdCode(uint16_t CANid, std::shared_ptr<TPCANRdMsg>& m)
 {
     canopen::uploadSDO(CANid, canopen::IDENTITYPRODUCTCODE);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -1497,7 +1497,7 @@ std::vector<char> obtainManHWVersion(uint16_t CANid, std::shared_ptr<TPCANRdMsg>
     return manufacturer_hw_version;
 }
 
-std::vector<char> obtainManSWVersion(uint16_t CANid, std::shared_ptr<TPCANRdMsg> m)
+std::vector<char> obtainManSWVersion(uint16_t CANid, std::shared_ptr<TPCANRdMsg>& m)
 {
     std::vector<char> manufacturer_sw_version;
 
@@ -1663,7 +1663,7 @@ void sdo_incoming(uint8_t CANid, char data[8])
     }
 }
 
-void processSingleSDO(uint8_t CANid, std::shared_ptr<TPCANRdMsg> message)
+void processSingleSDO(uint8_t CANid, std::shared_ptr<TPCANRdMsg>& message)
 {
     message->Msg.ID = 0x00;
 

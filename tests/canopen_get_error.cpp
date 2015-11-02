@@ -62,16 +62,16 @@
 #include <iomanip>
 #include "ipa_canopen_core/canopen.h"
 #include <sstream>
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
 
-    if (argc != 4) {
+    if (argc != 3) {
         std::cout << "Arguments:" << std::endl
-        << "(1) device file" << std::endl
+        << "(1) CAN interface" << std::endl
         << "(2) CAN deviceID" << std::endl
-           << "(3) Baud Rate" << std::endl
-        << "Example: ./get_error /dev/pcan32 12 500K" << std::endl;
+        << "Example: ./get_error can0 12" << std::endl;
         return -1;
     }
 
@@ -84,20 +84,18 @@ int main(int argc, char *argv[])
 
     canopen::syncMsg.LEN = 0x00;
 
-    std::string deviceFile = std::string(argv[1]);
-    canopen::baudRate = std::string(argv[3]);
+    std::string ifname = std::string(argv[1]);
 
-    if (!canopen::openConnection(deviceFile, canopen::baudRate)){
-        std::cout << "Cannot open CAN device; aborting." << std::endl;
+    if (!canopen::openConnection(ifname, "")) {
+        std::cout << "Cannot open CAN interface; aborting." << std::endl;
 
         exit(EXIT_FAILURE);
     }
     else{
         std::cout << "Connection to CAN bus established" << std::endl;
-        std::cout << "Baud Rate:" << canopen::baudRate << std::endl;
     }
 
-    uint16_t CANid = std::stoi(std::string(argv[2]));
+    uint16_t CANid = strtol(argv[2], NULL, 0);
     canopen::syncInterval = std::chrono::milliseconds((100));
 
 
@@ -111,7 +109,7 @@ int main(int argc, char *argv[])
     j_names.push_back("joint_1");
     canopen::deviceGroups[ chainName ] = canopen::DeviceGroup(ids, j_names);
 
-    canopen::init(deviceFile,chainName, canopen::syncInterval);
+    canopen::init(ifname ,chainName, canopen::syncInterval);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

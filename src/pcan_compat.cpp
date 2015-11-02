@@ -4,7 +4,7 @@
 //      TODO: runtime switch to choose SocketCAN or libpcan.
 /***************************************************************/
 
-#include <ipa_canopen_core/pcan_compat.h>
+#include "ipa_canopen_core/pcan_compat.h"
 
 #include <sys/types.h>
 #include <sys/socket.h>

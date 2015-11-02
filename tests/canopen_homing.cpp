@@ -62,19 +62,17 @@
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 4) {
+    if (argc != 3) {
         std::cout << "Arguments:" << std::endl
-                  << "(1) device file" << std::endl
+                  << "(1) can interface" << std::endl
                   << "(2) CAN deviceID" << std::endl
-                  << "(3) Baud Rate" << std::endl
-                  << "Example: ./homing /dev/pcan32 12 500K" << std::endl;
+                  << "Example: ./homing can0 12" << std::endl;
         return -1;
     }
-    std::string deviceFile = std::string(argv[1]);
+    std::string canif = std::string(argv[1]);
     uint16_t CANid = std::stoi(std::string(argv[2]));
-    canopen::baudRate = std::string(argv[3]);
     // configure CANopen device objects and custom incoming and outgoing PDOs:
-    if (!canopen::openConnection(deviceFile,canopen::baudRate)){
+    if (!canopen::openConnection(canif,"")) {
         std::cout << "Cannot open CAN device; aborting." << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -96,7 +94,7 @@ int main(int argc, char *argv[]) {
     j_names.push_back("joint_1");
     canopen::deviceGroups[ chainName ] = canopen::DeviceGroup(ids, j_names);
 
-    canopen::init(deviceFile, chainName, canopen::syncInterval);
+    canopen::init(canif, chainName, canopen::syncInterval);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     canopen::setOperationMode(CANid, canopen::MODES_OF_OPERATION_HOMING_MODE);
