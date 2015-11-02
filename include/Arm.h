@@ -5,6 +5,7 @@
 #include <vector>
 #include <canopen_402/motor.h>
 
+
 class Arm
 {
 public:

@@ -82,6 +82,8 @@ FTSLWA::FTSLWA(int _canID, unsigned _rate)
   system_error = false;
   overload_error = false;
   calibration_file_serial_number = -1;
+  last_request_counter_received = -1;
+  last_request_counter_sent = -1;
 
 	for(int i=0; i<6; i++){
 		xyz[i] = 0.0;
@@ -129,6 +131,7 @@ void FTSLWA::DoComm(){
 	// Request measurements with an incrementing message identifier
 	req[0] = 0x07;						// Request measurements
 	req[1] = request_counter;
+  last_request_counter_sent = request_counter;
   Wait(rate);						// wait a short time to avoid a crowded bus TODO: don't wait a fixed time, check a timer, in case caller of this function (user program) is waiting or delayed
 	WriteMsg(sensorID, l, req);			// write the message to the joint controller
 
@@ -410,6 +413,7 @@ int FTSLWA::RecvMsg(TPCANMsg *msg)
 {
   assert(msg->ID == 0x51 || msg->ID == 0x52);
   int reqctr = msg->DATA[0];
+  last_request_counter_received = reqctr;
   if(DEBUG) printf("FTSLWA::RecvMsg called ID=0x%x, len=%d, data[0] (counter)=%d\n", msg->ID, msg->LEN, reqctr);
   assert(reqctr < FTSLWA_MSG_BUFFER_SIZE);
   // TODO need amutex on messages

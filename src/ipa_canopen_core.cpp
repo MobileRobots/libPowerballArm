@@ -1424,7 +1424,7 @@ std::vector<uint16_t> obtainProdCode(uint16_t CANid, std::shared_ptr<TPCANRdMsg>
 
 }
 
-uint16_t obtainRevNr(uint16_t CANid, std::shared_ptr<TPCANRdMsg> m)
+uint16_t obtainRevNr(uint16_t CANid, std::shared_ptr<TPCANRdMsg>& m)
 {
     canopen::uploadSDO(CANid, canopen::IDENTITYREVNUMBER);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -1458,7 +1458,7 @@ std::vector<char> obtainManDevName(uint16_t CANid, int size_name)
 
 
 
-std::vector<char> obtainManHWVersion(uint16_t CANid, std::shared_ptr<TPCANRdMsg> m)
+std::vector<char> obtainManHWVersion(uint16_t CANid, std::shared_ptr<TPCANRdMsg>& m)
 {
     canopen::uploadSDO(CANid, canopen::MANUFACTURERHWVERSION);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));

@@ -108,6 +108,8 @@ public:
   
   int calibration_file_serial_number;
 
+  int last_request_counter_sent, last_request_counter_received;
+
 private:
   	
 	void ApplyCalibMatrix();
