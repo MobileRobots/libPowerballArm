@@ -55,6 +55,7 @@
 #include <stdexcept>
 #include <boost/system/system_error.hpp>
 #include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <boost/date_time.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -71,7 +72,7 @@
 class FTSLWA
 {
 public:
- 	FTSLWA(int canID = 80, unsigned rate = 10);
+ 	FTSLWA(int canID = 80, unsigned rate = 5, bool apply_bias = true);
 
   // call to open connection. return false on error
 	bool Connect(const char* canif = "can1");
@@ -84,12 +85,16 @@ public:
     Disconnect();
   }
 
+
   // calibrated received sensor data.  first six values are translation, last
   // six are rotations.
 	double xyz[6];
 
   // raw uncalibrated data
 	double raw[6];
+
+  // temperature
+	double temp;  
 
   // callibration values.  access this to set calibration for an individual
   // sensor, or use loadCalibration() to load data from a file
@@ -101,6 +106,8 @@ public:
   void ReadData();
 
   unsigned int rate;
+  unsigned int read_timeout;
+  bool apply_bias;
 
   // load calibration from the given file, which should be in 
   // XML format as supplied with the sensor by Schunk or CommonplaceRobotics.
@@ -122,7 +129,6 @@ private:
 
 	double rawBias[6];
 	int startUpCnt;
-	double temp;  
 
 	void WriteMsg(int id, int length, unsigned  char* data);
 	//int EvaluateBuffer(unsigned char* buf);
@@ -130,6 +136,7 @@ private:
 //	int GetMsg(int id, int *length, unsigned  char* data);
 
 	//TPCANMsg msgBuffer[FTSLWA_MSG_BUFFER_SIZE];
+  boost::mutex msgMutex;
   TPCANMsg msg51;
   TPCANMsg msg52;
 	

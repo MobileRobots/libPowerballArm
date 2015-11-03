@@ -23,6 +23,7 @@ int main( int argc, char** argv )
 	using namespace boost::posix_time;
 	
 	FTSLWA mySensor;	
+  mySensor.apply_bias = false;
 
   if(!mySensor.loadCalibration("force_sensor_calib.dat"))
   {
@@ -32,7 +33,15 @@ int main( int argc, char** argv )
   	
   const char *canif = "can1";
   if(argc > 1)
+  {
+    if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)
+    {
+      puts("Usage: force_sesnsor [can_interface]");
+      return 0;
+    }
     canif = argv[1];
+  }
+
   if(mySensor.Connect(canif))
   {
     puts("connected");
@@ -54,13 +63,14 @@ int main( int argc, char** argv )
 		passed = now - last;
 		if( passed.total_milliseconds() >= 250) {	
       last = microsec_clock::universal_time();
-      printf("x:% 6.2f y:% 6.2f z:% 6.2f rx:% 6.2f ry:% 6.2f rz:% 6.2f sent: %2d recvd: %2d   \r", 
+      printf("x:% 8.2f y:% 8.2f z:% 8.2f rx:% 8.2f ry:% 8.2f rz:% 8.2f temp:% 3.1f sent: %2d recvd: %2d   \r", 
         mySensor.xyz[0],
         mySensor.xyz[1],
         mySensor.xyz[2],
         mySensor.xyz[3],
         mySensor.xyz[4],
         mySensor.xyz[5],
+        mySensor.temp,
         mySensor.last_request_counter_sent, 
         mySensor.last_request_counter_received
       );
