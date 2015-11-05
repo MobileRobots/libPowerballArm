@@ -1,21 +1,13 @@
 /*!
- *****************************************************************
- * \file
- *
- * \note
- *   Copyright (c) 2013 \n
- *   Fraunhofer Institute for Manufacturing Engineering
- *   and Automation (IPA) \n\n
- *
- *****************************************************************
- *
- * \note
- *   Project name: ipa_canopen
- * \note
- *   ROS stack name: ipa_canopen
- * \note
- *   ROS package name: ipa_canopen_core
- *
+  Sends "homing" commands to specified device.  
+
+     !!!
+   WARNING do not use with Schunk Powerball arm as usually mounted (on table or
+mobile robot)!  Some joints can rotate to their limits such that the arm will
+collide with surface!
+     !!!
+
+
  * \author
  *   Author: Eduard Herkel, Thiago de Freitas, Tobias Sing
  * \author

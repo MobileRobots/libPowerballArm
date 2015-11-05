@@ -163,6 +163,7 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
 
         if(!connection_is_available)
         {
+            std::cout << "canopen::init: no available connection, (re)opening " << deviceFile << "..." << std::endl;
 
             CAN_Close(canopen::h);
             connection_success = canopen::openConnection(deviceFile, canopen::baudRate);
@@ -557,7 +558,7 @@ bool setOperationMode(uint16_t CANid, const int8_t targetMode, double timeout)
 
         if(elapsed_seconds.count() > timeout)
         {
-            std::cout << "setting operation mode failed" << std::endl;
+            std::cout << "setting operation mode failed: timeout (" << elapsed_seconds.count() << " sec) waiting for device to reach desired mode" << std::endl;
             return false;
         }
     }
@@ -1258,7 +1259,7 @@ void defaultListener()
             //std::cout << std::hex << "NMT received:  " << (uint16_t)m.Msg.ID << "  " << (uint16_t)m.Msg.DATA[0] << " " << (uint16_t)m.Msg.DATA[1] << std::endl;
             uint16_t CANid = (uint16_t)(m.Msg.ID - 0x700);
             
-            std::cout << "Bootup received. Node-ID =  " << CANid << std::endl;
+            std::cout << "NMT Bootup/init message received. Node-ID =  " << CANid << std::endl;
             std::map<uint8_t,Device>::const_iterator search = devices.find(CANid);
             if(search != devices.end())
             {
@@ -1267,8 +1268,7 @@ void defaultListener()
             }
             else
             {
-                std::cout << "Node:" << CANid << " could not be found on the required devices list." << std::endl;
-                std::cout << "Ignoring" << std::endl;
+                std::cout << "...Node " << CANid << " could not be found in devices list (canopen::devices). Ignoring" << std::endl;
             }
 
         }

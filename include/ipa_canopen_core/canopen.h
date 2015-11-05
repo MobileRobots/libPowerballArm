@@ -963,7 +963,7 @@ namespace canopen{
     const uint8_t SYNC_TIMEOUT_FACTOR_DISABLE_TIMEOUT = 0;
 
     void uploadSDO(uint8_t CANid, SDOkey sdo);
-    void controlPDO(uint8_t CANid, u_int16_t control1, u_int16_t control2);
+    void controlPDO(uint8_t CANid, u_int16_t control1, u_int16_t control2 = 0);
     void processSingleSDO(uint8_t CANid, std::shared_ptr<TPCANRdMsg>& message);
     void requestDataBlock1(uint8_t CANid);
     void requestDataBlock2(uint8_t CANid);

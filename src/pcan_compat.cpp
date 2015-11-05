@@ -43,7 +43,7 @@ HANDLE LINUX_CAN_Open(const char *devname, int mode)
     CAN_Close(s);
     return -1;
   }
-  printf("can: openend, socket %d\n", s);
+  printf("can: open, socket %d\n", s);
   return s;
 }
 
@@ -99,7 +99,7 @@ int LINUX_CAN_Read(HANDLE h, TPCANRdMsg *rdmsg)
   memcpy(rdmsg->Msg.DATA, frame.data, 8);
   // TODO rdmsg->dwTime
   // TODO rdmsg->wUsec
-  return n;
+  return 0; // no error
 }
 
 
