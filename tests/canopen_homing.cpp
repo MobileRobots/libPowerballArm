@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 
     canopen::incomingPDOHandlers[ 0x180 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_status( CANid, m ); };
     canopen::incomingPDOHandlers[ 0x480 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_pos( CANid, m ); };
-    canopen::sendPos = canopen::defaultPDOOutgoing_interpolated;
+    canopen::send = canopen::defaultPDOOutgoing_interpolated;
 
     std::string chainName = "test_chain";
     std::vector <uint8_t> ids;

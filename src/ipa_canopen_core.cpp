@@ -180,6 +180,8 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
         std::cout << "Resetting communication with the devices " << std::endl;
         canopen::sendNMT(0x00, canopen::NMT_RESET_COMMUNICATION);
 
+	send = defaultPDOOutgoing_interpolated;
+
     }
 
 
@@ -333,7 +335,7 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
         canopen::devices[id].setDesiredPos((double)devices[id].getActualPos());
         canopen::devices[id].setDesiredVel(0);
 
-        sendPos((uint16_t)id, (double)devices[id].getDesiredPos());
+        send((uint16_t)id, (double)devices[id].getDesiredPos());
 
         canopen::controlPDO(id, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -861,7 +863,7 @@ void deviceManager(std::string chainName)
                 if (devices[id].getInitialized())
                 {
                     devices[id].updateDesiredPos();
-                    sendPos((uint16_t)id, (double)devices[id].getDesiredPos());
+                    send((uint16_t)id, (double)devices[id].getDesiredPos());
                 }
             }
             canopen::sendSync();
@@ -872,9 +874,9 @@ void deviceManager(std::string chainName)
 }
 
 
-std::function< void (uint16_t CANid, double velocityValue) > sendVel;
-std::function< void (uint16_t CANid, double positionValue) > sendPos;
-std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
+std::function< void (uint16_t CANid, double value) > send;
+//std::function< void (uint16_t CANid, double positionValue) > sendPos;
+//std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
 
 void defaultPDOOutgoing_interpolated(uint16_t CANid, double positionValue)
 {

@@ -783,10 +783,13 @@ namespace canopen{
     void pre_init(std::string chainName);
     bool recover(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
     void halt(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
-
-    extern std::function< void (uint16_t CANid, double positionValue) > sendPos;
-    extern std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
-    extern std::function< void (uint16_t CANid, double velocityValue) > sendVel;
+	
+    /// this function is set to defaultPDOOutgoing_interpolated() in canopen::init, which will send the
+    /// value parameter causing the device to use its previously set mode of operation SDO, e.g. 
+    /// position control if 
+    extern std::function< void (uint16_t CANid, double value) > send;
+//    extern std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
+//    extern std::function< void (uint16_t CANid, double velocityValue) > sendVel;
     extern std::function< void (uint16_t CANid) > geterrors;
 
 
