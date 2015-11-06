@@ -170,7 +170,17 @@ namespace canopen{
 
         public:
 
-            Device() {};
+            Device() :
+                CANid_(-1),
+                desiredVel_(0),
+                actualVel_(0),
+                desiredPos_(0),
+                actualPos_(0),
+                initialized_(false),
+                NMTState_("START_UP"),
+                motorState_("START_UP"),
+                nmt_init_(false) 
+            {};
 
             Device(uint16_t CANid):
                 CANid_(CANid),
@@ -226,6 +236,10 @@ namespace canopen{
                 motorState_("START_UP"),
                 initialized_(false),
                 nmt_init_(false) {};
+
+            void setCANid(uint8_t id) {
+              CANid_ = id;
+            }
 
             bool getNMTInit(){
                 return nmt_init_;

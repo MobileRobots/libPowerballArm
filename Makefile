@@ -38,7 +38,8 @@ INCLUDE:=\
   include/ipa_canopen_core/pcan_compat.h
 
 SRC:=\
- src/ipa_canopen_core.cpp \
+  src/Arm.cpp \
+  src/ipa_canopen_core.cpp \
   src/pcan_compat.cpp \
   src/FTSLWA.cpp 
 
