@@ -45,6 +45,10 @@ Arm::Arm(const char *_canif, size_t numjoints, int firstCANID, unsigned int _syn
   minPos[3] = -170.0; maxPos[3] = 170.0;
   minPos[4] = -140.0; maxPos[4] = 140.0;
   minPos[5] = -170.0; maxPos[5] = 170.0;
+
+  gripMinPos = 0;
+  gripMaxPos = 100;
+  gripMaxSpeed = 400;
 }
 
 Arm::~Arm()
@@ -101,7 +105,7 @@ void Arm::halt()
 void Arm::moveJointTo(size_t i, float pos)
 {
   if(pos > maxPos[i]) pos = maxPos[i];
-  else if(pos < minPos[i]) pos = minPos[i];
+  else if(pos <= minPos[i]) pos = minPos[i];
   canopen::Device& dev = devices[i];
   dev.setDesiredPos(DEGTORAD(pos));
   uint8_t CANid = ids[i];
@@ -110,6 +114,8 @@ void Arm::moveJointTo(size_t i, float pos)
 
 void Arm::moveGripperTo(float pos)
 {
+  if(pos > gripMaxPos) pos = gripMaxPos;
+  else if(pos <= gripMinPos) pos = gripMinPos;
   gripDevice.setDesiredPos(DEGTORAD(pos));
   canopen::sendData(gripCANid, gripDevice.getDesiredPos());
 }
@@ -117,7 +123,7 @@ void Arm::moveGripperTo(float pos)
 
 void Arm::moveJointBy(size_t i, float amt)
 {
-  if(amt > 0 && amt > maxSpeed) amt = maxSpeed;
+  if(amt >= 0 && amt > maxSpeed) amt = maxSpeed;
   else if(amt < 0 && amt < -maxSpeed) amt = -maxSpeed;
   canopen::Device& dev = devices[i];
   // reset device current position to current actual position but set desired
@@ -130,8 +136,8 @@ void Arm::moveJointBy(size_t i, float amt)
 
 void Arm::moveGripperBy(float amt)
 {
-  if(amt > 0 && amt > maxSpeed) amt = maxSpeed;
-  else if(amt < 0 && amt < -maxSpeed) amt = -maxSpeed;
+  if(amt >= 0 && amt > gripMaxSpeed) amt = gripMaxSpeed;
+  else if(amt < 0 && amt < -gripMaxSpeed) amt = -gripMaxSpeed;
   // reset device current position to current actual position but set desired
   // amount of position change to start sending
   gripDevice.setDesiredPos(gripDevice.getActualPos());

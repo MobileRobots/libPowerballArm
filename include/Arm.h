@@ -96,6 +96,9 @@ public:
   float maxSpeed;
   std::vector<float> minPos;
   std::vector<float> maxPos;
+  float gripMinPos;
+  float gripMaxPos;
+  float gripMaxSpeed;
 };
 
 
