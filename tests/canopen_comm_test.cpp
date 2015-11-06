@@ -121,16 +121,17 @@ int main(int argc, char *argv[])
     *************************/
 
     puts("get dev info...");
-    std::vector<uint16_t> vendor_id = canopen::obtainVendorID(CANid); //, m);
-    uint16_t rev_number = canopen::obtainRevNr(CANid, m);
-    std::vector<uint16_t> product_code = canopen::obtainProdCode(CANid, m);
+ //   std::vector<uint16_t> vendor_id = canopen::obtainVendorID(CANid); //, m);
+  //  uint16_t rev_number = canopen::obtainRevNr(CANid, m);
+ //   std::vector<uint16_t> product_code = canopen::obtainProdCode(CANid, m);
     std::vector<char> manufacturer_device_name = canopen::obtainManDevName(CANid, 0); //m);
-    std::vector<char> manufacturer_hw_version =  canopen::obtainManHWVersion(CANid, m);
-    std::vector<char> manufacturer_sw_version =  canopen::obtainManSWVersion(CANid, m);
+  //  std::vector<char> manufacturer_hw_version =  canopen::obtainManHWVersion(CANid, m);
+  //  std::vector<char> manufacturer_sw_version =  canopen::obtainManSWVersion(CANid, m);
 
     /****
      *Printing the data
      */
+/*
 
     std::cout << "vendor_id=0x";
 
@@ -142,6 +143,7 @@ int main(int argc, char *argv[])
     std::cout << std::endl;
 
     std::cout << "revision_number: "<< std::hex << int(rev_number) << std::dec << std::endl;
+*/
     std::cout << "device_name:";
 
     for (auto it : manufacturer_device_name)
@@ -151,6 +153,7 @@ int main(int argc, char *argv[])
 
     std::cout << std::endl;
 
+/*
     std::cout << "hardware_version:";
 
     for (auto it : manufacturer_hw_version)
@@ -168,6 +171,7 @@ int main(int argc, char *argv[])
     }
 
     std::cout << std::endl;
+*/
   
     return 0;
 }

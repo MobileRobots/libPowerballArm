@@ -57,6 +57,10 @@ The gripper is device id 12.
 It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
 and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  
 
+Boost thread and system development libraries are requited to build. Boost-system is
+required at runtime. To install these on Ubuntu or Debian to build,
+    sudo apt-get install libboost-thread-dev libboost-system-dev
+
 This code is distributed under the terms of the GNU Lesser General Public
 License (LGPL).  See the LICENSE file for full license details.
 

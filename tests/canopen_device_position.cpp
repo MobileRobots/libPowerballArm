@@ -1,4 +1,33 @@
 /*!
+ *****************************************************************
+ * \file
+ *
+ * \note
+ *   Copyright (c) 2013 \n
+ *   Fraunhofer Institute for Manufacturing Engineering
+ *   and Automation (IPA) \n\n
+ *
+ *****************************************************************
+ *
+ * \note
+ *   Project name: ipa_canopen
+ * \note
+ *   ROS stack name: ipa_canopen
+ * \note
+ *   ROS package name: ipa_canopen_core
+ *
+ * \author
+ *   Author: Eduard Herkel, Thiago de Freitas, Tobias Sing
+ * \author
+ *   Supervised by: Eduard Herkel, Thiago de Freitas, Tobias Sing, email:tdf@ipa.fhg.de
+ *
+ * \date Date of creation: December 2012
+ *
+ * \brief
+ *   Moves the Schunk devices according to an specific acceleration and velocity
+ *
+ *****************************************************************
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -26,36 +55,36 @@
  * License LGPL along with this program.
  * If not, see <http://www.gnu.org/licenses/>.
  *
- */
+ ****************************************************************/
 
 #include <utility>
 #include "ipa_canopen_core/canopen.h"
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 6) {
+    if (argc != 5) {
         std::cout << "Arguments:" << std::endl
-                  << "(1) CAN interface name" << std::endl
-                  << "(2) CAN device ID" << std::endl
+                  << "(1) CAN interface " << std::endl
+                  << "(2) CAN deviceID" << std::endl
                   << "(3) sync rate [msec]" << std::endl
-                  << "(4) target position [rad]" << std::endl
-                  << "(5) velocity [rad/sec]" << std::endl
-                  << "Example: ./move_device can0 8 10 0.7 0.2" << std::endl;
+                  << "(4) target pos [rad]" << std::endl
+                  << "(enter acceleration '0' to omit acceleration phase)" << std::endl
+                  << "Example 1: ./move_device can0 12 10 0.2 0.05" << std::endl;
         return -1;
     }
     std::cout << "Interrupt motion with Ctrl-C" << std::endl;
-    std::string canif = std::string(argv[1]);
+    std::string deviceFile = std::string(argv[1]);
     uint16_t CANid = std::stoi(std::string(argv[2]));
     canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[3])));
     double targetPos = std::stod(std::string(argv[4]));
-    double vel = std::stod(std::string(argv[5]));
 
-    canopen::devices[ CANid ] = canopen::Device(CANid);
+    canopen::Device dev(CANid);
+    canopen::devices[ CANid ] = dev; 
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     canopen::incomingPDOHandlers[ 0x180 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_status( CANid, m ); };
     canopen::incomingPDOHandlers[ 0x480 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_pos( CANid, m ); };
-    canopen::sendPos = canopen::defaultPDOOutgoing_interpolated;
+   // canopen::sendPos = canopen::defaultPDOOutgoing_interpolated;
 
     std::string chainName = "test_chain";
     std::vector <uint8_t> ids;
@@ -64,33 +93,27 @@ int main(int argc, char *argv[]) {
     j_names.push_back("joint_1");
     canopen::deviceGroups[ chainName ] = canopen::DeviceGroup(ids, j_names);
 
-    canopen::init(canif, chainName, canopen::syncInterval);
+    canopen::init(deviceFile, chainName, canopen::syncInterval);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     canopen::sendSync();
 
     canopen::setMotorState((uint16_t)CANid, canopen::MS_OPERATION_ENABLED);
 
-    canopen::Device& dev = canopen::devices[CANid];
-
-    //Necessary otherwise sometimes Schunk devices complain for Position Track Error
-    dev.setDesiredPos((double)dev.getActualPos());
-    dev.setDesiredVel(0);
-    canopen::sendPos((uint16_t)CANid, (double)dev.getDesiredPos());
-
-    std::cout << "Current actual position is " << dev.getActualPos() << std::endl;
+    dev.setDesiredPos(targetPos);
+    dev.setDesiredVel(0); // don't move desired position over time.
 
     canopen::controlPDO((uint16_t)CANid, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
     dev.setInitialized(true);
 
-    std::cout << "Sending target position " << targetPos << std::endl;
-    dev.setDesiredVel(vel);
-    dev.setDesiredPos((double)targetPos);
-    canopen::sendPos((uint16_t)CANid, (double)targetPos);
-    
-    std::cout << "Run loop with Sync messages... press ctrl-c to interrupt" << std::endl;
+    std::cout << "Set desired position to " << targetPos;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //std::cout << "sending Statusword request" << std::endl;
+    //canopen::sendSDO(CANid, canopen::STATUSWORD);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         canopen::sendSync();

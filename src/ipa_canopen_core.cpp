@@ -180,6 +180,8 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
         std::cout << "Resetting communication with the devices " << std::endl;
         canopen::sendNMT(0x00, canopen::NMT_RESET_COMMUNICATION);
 
+	sendData = defaultPDOOutgoing_interpolated;
+
     }
 
 
@@ -331,9 +333,8 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
 
         //Necessary otherwise sometimes Schunk devices complain for Position Track Error
         canopen::devices[id].setDesiredPos((double)devices[id].getActualPos());
-        canopen::devices[id].setDesiredVel(0);
 
-        sendPos((uint16_t)id, (double)devices[id].getDesiredPos());
+        sendData((uint16_t)id, (double)devices[id].getDesiredPos());
 
         canopen::controlPDO(id, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -352,7 +353,7 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
         }
         else
         {
-            std::cout << "Problems occured during driver side init for Node" << (uint16_t)id  << std::endl;
+            std::cout << "Problems occured during driver side init for Node " << (uint16_t)id  << std::endl;
             canopen::devices[id].setInitialized(false);
             return false;
         }
@@ -381,6 +382,8 @@ bool init(std::string deviceFile, std::string chainName, std::chrono::millisecon
 
 bool recover(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval)
 {
+
+    std::cout << "Attempting recover of chain " << chainName << "...\n";
 
     recover_active = true;
 
@@ -443,7 +446,6 @@ bool recover(std::string deviceFile, std::string chainName, std::chrono::millise
 
 
         devices[id].setDesiredPos((double)devices[id].getActualPos());
-        devices[id].setDesiredVel(0);
 
     }
     recover_active = false;
@@ -861,7 +863,7 @@ void deviceManager(std::string chainName)
                 if (devices[id].getInitialized())
                 {
                     devices[id].updateDesiredPos();
-                    sendPos((uint16_t)id, (double)devices[id].getDesiredPos());
+                    sendData((uint16_t)id, (double)devices[id].getDesiredPos());
                 }
             }
             canopen::sendSync();
@@ -872,13 +874,13 @@ void deviceManager(std::string chainName)
 }
 
 
-std::function< void (uint16_t CANid, double velocityValue) > sendVel;
-std::function< void (uint16_t CANid, double positionValue) > sendPos;
-std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
+std::function< void (uint16_t CANid, double value) > sendData;
+//std::function< void (uint16_t CANid, double positionValue) > sendPos;
+//std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
 
 void defaultPDOOutgoing_interpolated(uint16_t CANid, double positionValue)
 {
-    static const uint16_t myControlword = (CONTROLWORD_ENABLE_OPERATION | CONTROLWORD_ENABLE_IP_MODE);
+    //static const uint16_t myControlword = (CONTROLWORD_ENABLE_OPERATION | CONTROLWORD_ENABLE_IP_MODE);
     TPCANMsg msg;
     std::memset(&msg, 0, sizeof(msg));
     msg.ID = 0x300 + CANid;
@@ -1311,7 +1313,7 @@ void errorword_incoming(uint8_t CANid, char data[8])
 
     if(data[1]+(data[2]<<8) == 0x1001)
     {
-        uint16_t error_register;
+        unsigned char error_register;
         error_register = data[4];
 
         str_stream << "error_register=0x" << std::hex << (int)error_register << ", categories:";
@@ -1332,17 +1334,23 @@ void errorword_incoming(uint8_t CANid, char data[8])
             str_stream << " reserved,";
         if ( error_register & canopen::EMC_k_1001_MANUFACTURER)
             str_stream << " manufacturer specific";
-        str_stream << "\n";
 
         devices[CANid].setErrorRegister(str_stream.str());
     }
     else if(data[1]+(data[2]<<8) == 0x1002)
     {
-        uint16_t code = data[4];
-        uint16_t classification = data[5];
+        unsigned char code = data[4];
+        unsigned char classification = data[5];
+        
+        if(code == 0) // no error
+        {
+          devices[CANid].setManufacturerErrorRegister("NONE");
+          //return;
+        }
+    
 
         str_stream << "manufacturer_status_register=0x" << std::hex << int(classification) << int(code) <<
-                      ": code=0x" << std::hex << int( code ) << " (" << errorsCode[int(code)] << "),"
+                      ": code=0x" << std::hex << int( code ) << " (" << errorsCode[code] << ")"
                    << ", classification=0x" << std::hex << int( classification ) << std::dec;
         if ( classification == 0x88 )
             str_stream << " (CMD_ERROR)";
@@ -1350,10 +1358,16 @@ void errorword_incoming(uint8_t CANid, char data[8])
             str_stream << " (CMD_WARNING)";
         if ( classification == 0x8a )
             str_stream << " (CMD_INFO)";
-        str_stream << "\n";
 
         devices[CANid].setManufacturerErrorRegister(str_stream.str());
     }
+    else {
+      str_stream << "unknown";
+    }
+    
+    std::cerr << "canopen: received error from device " << (int)CANid << ": ";
+    std::cerr << str_stream.str() << std::endl;
+  
 }
 
 void readManErrReg(uint16_t CANid)

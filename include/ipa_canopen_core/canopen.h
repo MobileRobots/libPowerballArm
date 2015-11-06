@@ -783,10 +783,14 @@ namespace canopen{
     void pre_init(std::string chainName);
     bool recover(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
     void halt(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
-
-    extern std::function< void (uint16_t CANid, double positionValue) > sendPos;
-    extern std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
-    extern std::function< void (uint16_t CANid, double velocityValue) > sendVel;
+	
+    /// this function is set to defaultPDOOutgoing_interpolated() in
+    //canopen::init, which will convert the 'value' parameter to millidegrees
+    //and send it in a PDO message with the control word to the device.  The device's "Mode of
+    /// Operation" should have previously been set.
+    extern std::function< void (uint16_t CANid, double value) > sendData;
+//    extern std::function< void (uint16_t CANid, double positionValue, double velocityValue) > sendPosPPMode;
+//    extern std::function< void (uint16_t CANid, double velocityValue) > sendVel;
     extern std::function< void (uint16_t CANid) > geterrors;
 
 

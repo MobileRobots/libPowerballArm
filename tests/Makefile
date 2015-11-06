@@ -1,5 +1,6 @@
 
-CFLAGS:=-std=c++11 -fPIC -g -I../include
+#CFLAGS:=-std=c++11 -fPIC -g -I../include
+CFLAGS:=-std=c++0x -fPIC -g -I../include
 
 ifndef CXX
 CXX:=c++

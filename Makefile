@@ -38,13 +38,14 @@ INCLUDE:=\
   include/ipa_canopen_core/pcan_compat.h
 
 SRC:=\
-  src/ipa_canopen_core.cpp \
+ src/ipa_canopen_core.cpp \
   src/pcan_compat.cpp \
   src/FTSLWA.cpp 
 
 OBJ:=$(patsubst src/%.cpp,obj/%.o,$(SRC))
 
-CFLAGS:=-std=c++11 -fPIC -g -Iinclude
+#CFLAGS:=-std=c++11 -fPIC -g -Iinclude
+CFLAGS:=-std=c++0x -fPIC -g -Iinclude
 
 ifndef CXX
 CXX:=c++
@@ -57,10 +58,12 @@ clean:
 	-rm $(OBJ)
 
 lib/libPowerballArm.so: $(OBJ)
+	@mkdir -p lib
 	$(CXX) -shared -o $@ $^ -lboost_thread -lboost_system -lpthread
 
 
 obj/%.o: src/%.cpp
+	@mkdir -p obj
 	$(CXX) -c $(CFLAGS) -o $@ $^
 
 
