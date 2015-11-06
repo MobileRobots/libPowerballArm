@@ -69,12 +69,24 @@ public:
     }
   }
 
+  void moveGripperTo(float pos);
+
+  void moveGripperBy(float speed);
+
+
 protected:
   std::vector<canopen::Device> devices;
   std::vector <uint8_t> ids;
   std::string canifName;
   std::string chainName;
   unsigned int syncInterval;
+  uint8_t gripCANid;
+  canopen::Device gripDevice;
+
+public:
+  float maxSpeed;
+  std::vector<float> minPos;
+  std::vector<float> maxPos;
 };
 
 
