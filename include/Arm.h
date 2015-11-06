@@ -12,7 +12,6 @@ public:
 	Arm(const char* canif = "can0", size_t numjoints = 5, int firstCANID = 3, unsigned int syncInterval = 20);
   virtual ~Arm();
   bool open();
-  bool isOpen();
   void halt();
 
   /* Call regularly to cause all joints to update for any new movement data received */

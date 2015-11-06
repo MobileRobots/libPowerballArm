@@ -27,7 +27,7 @@ canifName(_canif), chainName("arm"), syncInterval(_syncInterval)
     ++CANid;
   }
   canopen::deviceGroups[chainName] = canopen::DeviceGroup(ids, names);
- // canopen::sendPos = canopen::defaultPDOOutgoing_interpolated;
+  canopen::sendPos = canopen::defaultPDOOutgoing_interpolated;
 }
 
 Arm::~Arm()
