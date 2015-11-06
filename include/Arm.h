@@ -9,7 +9,7 @@
 class Arm
 {
 public:
-	Arm(const char* canif = "can0", size_t numjoints = 5, int firstCANID = 3, unsigned int syncInterval = 20);
+	Arm(const char* canif = "can0", size_t numjoints = 6, int firstCANID = 3, unsigned int syncInterval = 20);
   virtual ~Arm();
   bool open();
   void halt();
@@ -19,7 +19,8 @@ public:
     canopen::sendSync();
   }
 
-  // Send new joint position data. Devices will update on next sync().
+  // Send new joint position data. Devices will update on next sync(). Positions
+  // are in degrees.
   void moveJointsTo(float pos1, float pos2, float pos3, float pos4, float pos5) 
   {
     std::vector<float> p;
@@ -31,7 +32,8 @@ public:
     moveJointsTo(p);
   }
 
-  // Send new joint position data. Devices will update on next sync().
+  // Send new joint position data. Devices will update on next sync(). Give positions
+  // in degrees.
   void moveJointsTo(std::vector<float> pos)
   {
     for(size_t i = 0; i < devices.size() && i < pos.size(); ++i)
@@ -40,9 +42,11 @@ public:
     }
   }
 
-  // Send new joint position data. Devices will update on next sync().
+  // Send new joint position data. Devices will update on next sync(). Give
+  // position in degrees.
   void moveJointTo(size_t joint, float pos);
 
+  // Get current joint positions in degrees.
   void getJointPositions(float *pos1, float *pos2, float *pos3, float *pos4, float *pos5)
   {
     std::vector<float> pos = getJointPositions();
@@ -53,14 +57,19 @@ public:
     if(pos5) *pos5 = pos[4];
   }
 
+  // Get current joint positions in degrees.
   void getJointPositions(std::vector<float>& pos)
   {
     pos = getJointPositions();
   }
   std::vector<float> getJointPositions();
 
+  // Begin sending incremented positions to joint over time according to speed
+  // (degrees/sec)
   void moveJointBy(size_t joint, float speed);
 
+  // Begin sending incremented positions to joints over time according to speed
+  // (degrees/sec)
   void moveJointsBy(std::vector<float> speeds)
   {
     for(size_t i = 0; i < devices.size(); ++i)

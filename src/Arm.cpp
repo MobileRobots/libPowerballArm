@@ -7,7 +7,7 @@
 #define RADTODEG(r) (r*57.2958)
 
 Arm::Arm(const char *_canif, size_t numjoints, int firstCANID, unsigned int _syncInterval) :
-canifName(_canif), chainName("arm"), syncInterval(_syncInterval)
+  canifName(_canif), chainName("arm"), syncInterval(_syncInterval), maxSpeed(72)
 {
   canopen::syncInterval = std::chrono::milliseconds(syncInterval);
   devices.resize(numjoints);
@@ -15,7 +15,7 @@ canifName(_canif), chainName("arm"), syncInterval(_syncInterval)
   std::vector <std::string> names;
   names.reserve(numjoints+1); // plus gripper
   int CANid = firstCANID;
-  int num = 1;
+  int n = 0;
   for(std::vector<canopen::Device>::iterator i = devices.begin(); i != devices.end(); ++i)
   {
     i->setCANid(CANid);
@@ -23,9 +23,10 @@ canifName(_canif), chainName("arm"), syncInterval(_syncInterval)
     canopen::incomingPDOHandlers[ 0x180 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_status( CANid, m ); };
     canopen::incomingPDOHandlers[ 0x480 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_pos( CANid, m ); };
     ids.push_back(CANid);
-    std::string name("joint_");
-    name += num++;
+    char name[16];
+    snprintf(name, 16, "joint_%d", n+1);
     names.push_back(name);
+    ++n;
     ++CANid;
   }
   canopen::devices[gripCANid] = gripDevice;
@@ -37,6 +38,13 @@ canifName(_canif), chainName("arm"), syncInterval(_syncInterval)
   canopen::deviceGroups[chainName] = canopen::DeviceGroup(ids, names);
 
   canopen::sendData = canopen::defaultPDOOutgoing_interpolated;
+
+  minPos[0] = -170.0; maxPos[0] = 170.0;
+  minPos[1] = -110.0; maxPos[1] = 110.0;
+  minPos[2] = -155.0; maxPos[2] = 155.0;
+  minPos[3] = -170.0; maxPos[3] = 170.0;
+  minPos[4] = -140.0; maxPos[4] = 140.0;
+  minPos[5] = -170.0; maxPos[5] = 170.0;
 }
 
 Arm::~Arm()
@@ -92,6 +100,8 @@ void Arm::halt()
 
 void Arm::moveJointTo(size_t i, float pos)
 {
+  if(pos > maxPos[i]) pos = maxPos[i];
+  else if(pos < minPos[i]) pos = minPos[i];
   canopen::Device& dev = devices[i];
   dev.setDesiredPos(DEGTORAD(pos));
   uint8_t CANid = ids[i];
