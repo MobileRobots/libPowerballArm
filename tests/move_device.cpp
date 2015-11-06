@@ -62,29 +62,34 @@
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 5) {
+    if (argc != 7) {
         std::cout << "Arguments:" << std::endl
-                  << "(1) CAN interface " << std::endl
+                  << "(1) device file" << std::endl
                   << "(2) CAN deviceID" << std::endl
-                  << "(3) sync rate [msec]" << std::endl
-                  << "(4) target pos [rad]" << std::endl
+                  << "(3) Baud Rate" << std::endl
+                  << "(4) sync rate [msec]" << std::endl
+                  << "(5) target velocity [rad/sec]" << std::endl
+                  << "(6) acceleration [rad/sec^2]" << std::endl
                   << "(enter acceleration '0' to omit acceleration phase)" << std::endl
-                  << "Example 1: ./move_device can0 12 10 0.2 0.05" << std::endl;
+                  << "Example 1: ./move_device /dev/pcan32 12 10 0.2 0.05" << std::endl
+                  << "Example 2 (reverse direction): "
+                  << "./move_device /dev/pcan32 12 500K 10 -0.2 -0.05" << std::endl;
         return -1;
     }
     std::cout << "Interrupt motion with Ctrl-C" << std::endl;
     std::string deviceFile = std::string(argv[1]);
     uint16_t CANid = std::stoi(std::string(argv[2]));
-    canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[3])));
-    double targetPos = std::stod(std::string(argv[4]));
+    canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[4])));
+    canopen::baudRate = std::string(argv[3]);
+    double targetVel = std::stod(std::string(argv[5]));
+    double accel = std::stod(std::string(argv[6]));
 
-    canopen::Device dev(CANid);
-    canopen::devices[ CANid ] = dev; 
+    canopen::devices[ CANid ] = canopen::Device(CANid);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     canopen::incomingPDOHandlers[ 0x180 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_status( CANid, m ); };
     canopen::incomingPDOHandlers[ 0x480 + CANid ] = [CANid](const TPCANRdMsg m) { canopen::defaultPDO_incoming_pos( CANid, m ); };
-   // canopen::sendPos = canopen::defaultPDOOutgoing_interpolated;
+    canopen::sendData = canopen::defaultPDOOutgoing_interpolated;
 
     std::string chainName = "test_chain";
     std::vector <uint8_t> ids;
@@ -100,19 +105,37 @@ int main(int argc, char *argv[]) {
 
     canopen::setMotorState((uint16_t)CANid, canopen::MS_OPERATION_ENABLED);
 
+    //Necessary otherwise sometimes Schunk devices complain for Position Track Error
+    std::cout << "Device initial actual position is " << canopen::devices[CANid].getActualPos() << std::endl;
+    canopen::devices[CANid].setDesiredPos((double)canopen::devices[CANid].getActualPos());
+    canopen::devices[CANid].setDesiredVel(0);
+    canopen::sendData((uint16_t)CANid, (double)canopen::devices[CANid].getDesiredPos());
+
     canopen::controlPDO((uint16_t)CANid, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    dev.setInitialized(true);
 
-    std::cout << "Set desired position to... " << targetPos;
-    dev.setDesiredPos(targetPos);
-    dev.setDesiredVel(0); // don't move desired position over time.
-    canopen::sendData((uint16_t)CANid, (double)dev.getDesiredPos());
+    canopen::devices[CANid].setInitialized(true);
 
+    if (accel != 0) {  // accel of 0 means "move at target vel immediately"
+        std::chrono::milliseconds accelerationTime( static_cast<int>(round( 1000.0 * targetVel / accel)) );
+        double vel = 0;
+        auto startTime = std::chrono::high_resolution_clock::now();
+        auto tic = std::chrono::high_resolution_clock::now();
 
+        // increasing velocity ramp up to target velocity:
+        std::cout << "Accelerating to target velocity" << std::endl;
+        while (tic < startTime + accelerationTime) {
+            tic = std::chrono::high_resolution_clock::now();
+            vel = accel * 0.000001 * std::chrono::duration_cast<std::chrono::microseconds>(tic-startTime).count();
+            canopen::devices[ CANid ].setDesiredVel(vel);
+            std::this_thread::sleep_for(canopen::syncInterval - (std::chrono::high_resolution_clock::now() - tic));
+            canopen::sendSync();
+        }
+    }
+
+    // constant velocity when target vel has been reached:
+    std::cout << "Target velocity reached!" << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    //std::cout << "sending Statusword request" << std::endl;
-    //canopen::sendSDO(CANid, canopen::STATUSWORD);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     while (true) {

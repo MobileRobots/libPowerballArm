@@ -332,6 +332,7 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
         canopen::setMotorState((uint16_t)id, canopen::MS_OPERATION_ENABLED);
 
         //Necessary otherwise sometimes Schunk devices complain for Position Track Error
+        std::cerr << "Device " << (int)id << " Initial position is " << devices[id].getActualPos() << std::endl;
         canopen::devices[id].setDesiredPos((double)devices[id].getActualPos());
 
         sendData((uint16_t)id, (double)devices[id].getDesiredPos());
@@ -445,6 +446,7 @@ bool recover(std::string deviceFile, std::string chainName, std::chrono::millise
         }
 
 
+        std::cerr << "Device " << (int)id << " initial actual position is " << canopen::devices[id].getActualPos() << std::endl;
         devices[id].setDesiredPos((double)devices[id].getActualPos());
 
     }
@@ -880,6 +882,7 @@ std::function< void (uint16_t CANid, double value) > sendData;
 
 void defaultPDOOutgoing_interpolated(uint16_t CANid, double positionValue)
 {
+std::cerr << "PDO outdoing position=" << positionValue << " rad (" << rad2mdeg(positionValue) << " mdeg)" << std::endl;
     //static const uint16_t myControlword = (CONTROLWORD_ENABLE_OPERATION | CONTROLWORD_ENABLE_IP_MODE);
     TPCANMsg msg;
     std::memset(&msg, 0, sizeof(msg));
@@ -1037,7 +1040,17 @@ void defaultPDO_incoming_status(uint16_t CANid, const TPCANRdMsg m)
 
 
 
-    // std::cout << "Motor State of Device with CANid " << (uint16_t)CANid << " is: " << devices[CANid].getMotorState() << std::endl;
+    std::cout << "Status of " << (int)CANid 
+      << ": MotorState " << devices[CANid].getMotorState() 
+      << ": OperationMode " << ((mode_display >= 0 && mode_display <= 8) ?  (modesDisplay[mode_display]) : "????")
+      << ", Fault " << fault
+      << ", ipmode " << ip_mode
+      << ", opspc0 " << op_specific
+      << ", target_reached " << target_reached
+      << ", power_on " << volt_enable
+      << ", ready_on " << ready_switch_on
+      << ", switch_on " << switched_on
+      << std::endl;
 }
 
 void defaultPDO_incoming_pos(uint16_t CANid, const TPCANRdMsg m)
@@ -1055,10 +1068,13 @@ void defaultPDO_incoming_pos(uint16_t CANid, const TPCANRdMsg m)
         double deltaTime_double = static_cast<double>(deltaTime_msec.count()*1000 + deltaTime_usec.count()) * 0.000001;
         double result = (newPos - devices[CANid].getActualPos()) / deltaTime_double;
         devices[CANid].setActualVel(result);
+/* XXX RH
         if (! devices[CANid].getInitialized())
         {
+            std::cerr << "setting initial desired position from pdo with position value " << newPos << std::endl;
             devices[CANid].setDesiredPos(newPos);
         }
+*/
         //std::cout << "actualPos: " << devices[CANid].getActualPos() << "  desiredPos: " << devices[CANid].getDesiredPos() << std::endl;
     }
 

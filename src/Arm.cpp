@@ -7,7 +7,9 @@
 #define RADTODEG(r) (r*57.2958)
 
 Arm::Arm(const char *_canif, size_t numjoints, int firstCANID, unsigned int _syncInterval) :
-  canifName(_canif), chainName("arm"), syncInterval(_syncInterval), maxSpeed(72)
+  canifName(_canif), chainName("arm"), syncInterval(_syncInterval),
+  gripCANid(12), gripDevice(gripCANid), 
+  maxSpeed(72)
 {
   canopen::syncInterval = std::chrono::milliseconds(syncInterval);
   devices.resize(numjoints);
@@ -39,21 +41,23 @@ Arm::Arm(const char *_canif, size_t numjoints, int firstCANID, unsigned int _syn
 
   canopen::sendData = canopen::defaultPDOOutgoing_interpolated;
 
+  minPos.resize(6);
+  maxPos.resize(6);
   minPos[0] = -170.0; maxPos[0] = 170.0;
-  minPos[1] = -110.0; maxPos[1] = 110.0;
-  minPos[2] = -155.0; maxPos[2] = 155.0;
+  minPos[1] = -50.0; maxPos[1] = 50.0; // about horizontal. could go forward more in some configurations
+  minPos[2] = -150.0; maxPos[2] = 150.0;
   minPos[3] = -170.0; maxPos[3] = 170.0;
   minPos[4] = -140.0; maxPos[4] = 140.0;
   minPos[5] = -170.0; maxPos[5] = 170.0;
 
-  gripMinPos = 0;
-  gripMaxPos = 100;
+  gripMinPos = 1;
+  gripMaxPos = 65;
   gripMaxSpeed = 400;
 }
 
 Arm::~Arm()
 {
-  halt();
+  haltAll();
 }
 
 bool Arm::open()
@@ -97,7 +101,7 @@ bool Arm::open()
   return true;
 }
 
-void Arm::halt()
+void Arm::haltAll()
 {
   canopen::halt(canifName, chainName, std::chrono::milliseconds(syncInterval));
 }

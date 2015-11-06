@@ -71,6 +71,7 @@
 #include <cstdlib>
 #include <thread>
 #include <math.h>
+#include <assert.h>
 //#include <libpcan.h>
 #include "pcan_compat.h"
 #include <utility>
@@ -78,6 +79,8 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include "schunkErrors.h"
+
+#define JOINT_POS_SANITY_CHECK(p) assert(p > -3 && p < 3)
 
 namespace canopen{
 
@@ -434,7 +437,9 @@ namespace canopen{
             }
 
             void setDesiredPos(double pos){
+std::cerr << "setDesiredPos " << pos << std::endl;
                 desiredPos_ = pos;
+                JOINT_POS_SANITY_CHECK(desiredPos_);
             }
 
 
@@ -592,7 +597,10 @@ namespace canopen{
             }
 
             void updateDesiredPos(){
+std::cerr << "updating position of device " << (int)CANid_ << " using desired vel " << desiredVel_ << " from " << desiredPos_ << " to: ";
                 desiredPos_ += desiredVel_ * (syncInterval.count() / 1000.0);
+std::cerr << desiredPos_ << std::endl;
+                JOINT_POS_SANITY_CHECK(desiredPos_);
             }
 
             void setTimeStamp_msec(std::chrono::milliseconds timeStamp){

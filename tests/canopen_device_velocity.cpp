@@ -121,10 +121,10 @@ int main(int argc, char *argv[]) {
         auto tic = std::chrono::high_resolution_clock::now();
 
         // increasing velocity ramp up to target velocity:
-        std::cout << "Accelerating to target velocity" << std::endl;
         while (tic < startTime + accelerationTime) {
             tic = std::chrono::high_resolution_clock::now();
             vel = accel * 0.000001 * std::chrono::duration_cast<std::chrono::microseconds>(tic-startTime).count();
+            std::cout << ".... vel " << vel << std::endl;
             dev.setDesiredVel(vel);
             std::this_thread::sleep_for(canopen::syncInterval - (std::chrono::high_resolution_clock::now() - tic));
             canopen::sendSync();
@@ -145,7 +145,8 @@ int main(int argc, char *argv[]) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(500));
+        std::cout << "Desired Pos " << dev.getDesiredPos() << ", actual pos " << dev.getActualPos() << std::endl;
         canopen::sendSync();
     }
 }
