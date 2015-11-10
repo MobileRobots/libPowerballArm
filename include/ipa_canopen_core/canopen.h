@@ -451,7 +451,7 @@ namespace canopen{
             }
 
             void setDesiredPos(double pos){
-std::cerr << "setDesiredPos #" << (int)CANid_ << ": " << pos << "rad" << std::endl;
+//std::cerr << "setDesiredPos #" << (int)CANid_ << ": " << pos << "rad" << std::endl;
                 desiredPos_ = pos;
                 JOINT_POS_SANITY_CHECK(desiredPos_);
             }
@@ -462,7 +462,7 @@ std::cerr << "setDesiredPos #" << (int)CANid_ << ": " << pos << "rad" << std::en
             }
 
             void setDesiredVel(double vel){
-std::cerr << "setDesiredVel #" << (int)CANid_ << ": " << vel << "rad/s" << std::endl;
+//std::cerr << "setDesiredVel #" << (int)CANid_ << ": " << vel << "rad/s" << std::endl;
                 desiredVel_ = vel;
             }
 
@@ -616,13 +616,13 @@ std::cerr << "setDesiredVel #" << (int)CANid_ << ": " << vel << "rad/s" << std::
                 if(firstUpdate_)
                 {
                   if(!gotActualPos_) return;
-                  std::cerr << "first updateDesiredPos() call after getting first actual pos, starting with device actual " << getActualPos() << std::endl;
+//                  std::cerr << "first updateDesiredPos() call after getting first actual pos, starting with device actual " << getActualPos() << std::endl;
                   desiredPos_ = getActualPos();
                   firstUpdate_ = false;
                 }
-std::cerr << "updating position of device " << (int)CANid_ << " using desired vel " << desiredVel_ << " from " << desiredPos_ << " to: ";
-                desiredPos_ += desiredVel_ * (syncInterval.count() / 1000.0);
-std::cerr << desiredPos_ << std::endl;
+//std::cerr << "updating position of device " << (int)CANid_ << " using desired vel " << desiredVel_ << " from " << desiredPos_ << " to: ";
+//                desiredPos_ += desiredVel_ * (syncInterval.count() / 1000.0);
+//std::cerr << desiredPos_ << std::endl;
                 JOINT_POS_SANITY_CHECK(desiredPos_);
             }
 
