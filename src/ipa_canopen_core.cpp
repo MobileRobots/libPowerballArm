@@ -65,6 +65,8 @@
 
 #include "ipa_canopen_core/pcan_compat.h"
 
+#define DEBUG false
+
 namespace canopen
 {
 
