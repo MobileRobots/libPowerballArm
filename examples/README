@@ -1,6 +1,9 @@
 
-To build all tests, run "make".
+To build all programs, run "make".
 
-To build a specific test, run "make test"
+To build a specific program, run "make <program>", e.g.:
+   make move_ddevice
 
-To run a test, add ../lib to LD_LIBRARY_PATH then run the test.
+To run a program, add ../lib to LD_LIBRARY_PATH then run the program.
+
+Use the "move_device" program to test sending commands to a joint.

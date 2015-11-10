@@ -1,5 +1,6 @@
 
-This is a simple library for communicating with the Schunk Powerball LWA4P arm.
+This is some standalone code to communicate with the Schunk PowerBall LWA4P arm
+and CommonplaceRobotics force-torque sensor (FTS).
 
 It is based on code from the `ipa_canopen` ROS node
 <https://github.com/ipa320/ipa_canopen>, with some modifications to use 
@@ -34,28 +35,49 @@ To bring up a second CAN interface (e.g. force-torque sensor or hand):
 
 You can put these commands in `/etc/rc.local` to run when the system boots up. 
 
+`can0` will be the device plugged into a prior USB port (e.g. USB port
+labelled "J2" on a Mamba onboard computer), and `can1` will be the later
+USB port (e.g. USB port labelled "J3" on a Mamba onboard computer).  You
+can list USB devices on Linux with the command `lsusb -t`, e.g.:
+
+   lsusb -t
+
+It will show USB CAN interfaces in the order they are attached to USB.
+For example, two ESD CAN-USB interfaces attached to J2 and J3 on a Mamba
+onboard computer will be listed in the output of `lsusb -t` like this:
+
+    /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci_hcd/8p, 480M
+        |__ Port 1: Dev 2, If 0, Class=vend., Driver=esd_usb2, 480M
+        |__ Port 3: Dev 3, If 0, Class=vend., Driver=esd_usb2, 480M
+
 The library defaults to expecting the arm to be on can0, and the FTS to be
 on a second CAN bus, can1.  Alternate interfaces can be specified in the API.
 
 It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
 and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  
 
-See `include/Arm.h` for easy to use API for the arm.  Only some
-features of the arm are currently available in this API.  You may implement
-additiontal arm features by adding to this class.  If you do make any 
-improvements or fixes, please submit a pull request from your fork, or
-post the patches on github, or send them to support@mobilerobots.com.
-
 Some simple example programs are available in the `examples` directory.
 
-The Arm class uses the basic canopen implementation contained in the `canopen`
-class defined in `ipa_canopen_core.h`.  Some test programs for this CANopen
-layer can be found in `tests`.  Each joint in the Powerball arm has a CAN
-device ID, starting at 3. The final joint (wrist rotation) is 8. 
-The gripper is device id 12. 
+Each motor in the Powerball arm has a CAN device ID, starting at 3. 
+The final joint (wrist rotation) is 8.  The gripper is device id 12. 
 
-It has been teasted with the ESD USB-CAN adapter (`esdcan` Linux driver module)
-and Peak USB-CAN adapter (`pcan_usb` Linux driver module).  
+    ERB module (ball)        Motor axis    CAN node ID
+    --------------------------------------------------
+    base                     rotation      0x3
+    base                     pivot         0x4
+    middle (elbow)           pivot         0x5
+    middle (elbow)           rotation      0x6
+    end (wrist)              pivot         0x7
+    end (wrist)              rotation      0x8
+
+The `ipa_canpen_core` library is capable of moving arm motor axis modules using the
+"interpolated position" mode.  Starting at the arm modules's current position,
+new positions are sent to the device according to a desired velocity. 
+`ipa_canopen_core` automatically increments the position and sends
+the new position to the arm in the background.  Your program must initiate
+a "sync" message which, when received by the module, causes it to start
+or continue moving towards the next position. If no sync messages are
+sent the module times out and stops.
 
 Boost thread and system development libraries are requited to build. Boost-system is
 required at runtime. To install these on Ubuntu or Debian to build,
