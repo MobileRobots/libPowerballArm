@@ -62,27 +62,26 @@
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 7) {
+    if (argc != 6) {
         std::cout << "Arguments:" << std::endl
-                  << "(1) device file" << std::endl
-                  << "(2) CAN deviceID" << std::endl
-                  << "(3) Baud Rate" << std::endl
-                  << "(4) sync rate [msec]" << std::endl
-                  << "(5) target velocity [rad/sec]" << std::endl
-                  << "(6) acceleration [rad/sec^2]" << std::endl
+                  << "(1) CAN interface name" << std::endl
+                  << "(2) CAN device ID" << std::endl
+                  << "(3) sync rate [msec]" << std::endl
+                  << "(4) target velocity [rad/sec]" << std::endl
+                  << "(5) acceleration [rad/sec^2]" << std::endl
                   << "(enter acceleration '0' to omit acceleration phase)" << std::endl
-                  << "Example 1: ./move_device /dev/pcan32 12 10 0.2 0.05" << std::endl
+                  << "Example 1: ./move_device can0 12 10 0.2 0.05" << std::endl
                   << "Example 2 (reverse direction): "
-                  << "./move_device /dev/pcan32 12 500K 10 -0.2 -0.05" << std::endl;
+                  << "./move_device can0 12 10 -0.2 -0.05" << std::endl;
         return -1;
     }
     std::cout << "Interrupt motion with Ctrl-C" << std::endl;
-    std::string deviceFile = std::string(argv[1]);
+    std::string canif = std::string(argv[1]);
     uint16_t CANid = std::stoi(std::string(argv[2]));
-    canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[4])));
-    canopen::baudRate = std::string(argv[3]);
-    double targetVel = std::stod(std::string(argv[5]));
-    double accel = std::stod(std::string(argv[6]));
+    canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[3])));
+    double targetVel = std::stod(std::string(argv[4]));
+    double accel = std::stod(std::string(argv[5]));
+    if((targetVel < 0 && accel > 0) || (targetVel > 0 && accel < 0))  accel *= -1;
 
     canopen::devices[ CANid ] = canopen::Device(CANid);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -98,25 +97,30 @@ int main(int argc, char *argv[]) {
     j_names.push_back("joint_1");
     canopen::deviceGroups[ chainName ] = canopen::DeviceGroup(ids, j_names);
 
-    canopen::init(deviceFile, chainName, canopen::syncInterval);
+    canopen::init(canif, chainName, canopen::syncInterval);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     canopen::sendSync();
 
     canopen::setMotorState((uint16_t)CANid, canopen::MS_OPERATION_ENABLED);
 
+/*
     //Necessary otherwise sometimes Schunk devices complain for Position Track Error
     std::cout << "Device initial actual position is " << canopen::devices[CANid].getActualPos() << std::endl;
     canopen::devices[CANid].setDesiredPos((double)canopen::devices[CANid].getActualPos());
     canopen::devices[CANid].setDesiredVel(0);
     canopen::sendData((uint16_t)CANid, (double)canopen::devices[CANid].getDesiredPos());
+*/
 
     canopen::controlPDO((uint16_t)CANid, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     canopen::devices[CANid].setInitialized(true);
 
-    if (accel != 0) {  // accel of 0 means "move at target vel immediately"
+    if (accel == 0) {  // accel of 0 means "move at target vel immediately"
+        canopen::devices[ CANid ].setDesiredVel(targetVel);
+        canopen::sendSync();
+    } else {
         std::chrono::milliseconds accelerationTime( static_cast<int>(round( 1000.0 * targetVel / accel)) );
         double vel = 0;
         auto startTime = std::chrono::high_resolution_clock::now();

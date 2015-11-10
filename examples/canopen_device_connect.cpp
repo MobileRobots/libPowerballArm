@@ -62,21 +62,18 @@
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 5) {
+    if (argc != 4) {
         std::cout << "Arguments:" << std::endl
                   << "(1) CAN interface " << std::endl
                   << "(2) CAN deviceID" << std::endl
                   << "(3) sync rate [msec]" << std::endl
-                  << "(4) target pos [rad]" << std::endl
-                  << "(enter acceleration '0' to omit acceleration phase)" << std::endl
-                  << "Example 1: ./move_device can0 12 10 0.2 0.05" << std::endl;
+                  << "Example 1: ./move_device can0 12 10" << std::endl;
         return -1;
     }
     std::cout << "Interrupt motion with Ctrl-C" << std::endl;
     std::string deviceFile = std::string(argv[1]);
     uint16_t CANid = std::stoi(std::string(argv[2]));
     canopen::syncInterval = std::chrono::milliseconds(std::stoi(std::string(argv[3])));
-    double targetPos = std::stod(std::string(argv[4]));
 
     canopen::Device dev(CANid);
     canopen::devices[ CANid ] = dev; 
@@ -100,23 +97,25 @@ int main(int argc, char *argv[]) {
 
     canopen::setMotorState((uint16_t)CANid, canopen::MS_OPERATION_ENABLED);
 
+    // start at current position
+    dev.setDesiredPos((double)canopen::devices[CANid].getActualPos());
+    dev.setDesiredVel(0);
+    canopen::sendData((uint16_t)CANid, (double)dev.getDesiredPos());
+
     canopen::controlPDO((uint16_t)CANid, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     dev.setInitialized(true);
 
-    std::cout << "Set desired position to... " << targetPos;
-    dev.setDesiredPos(targetPos);
-    dev.setDesiredVel(0); // don't move desired position over time.
-    canopen::sendData((uint16_t)CANid, (double)dev.getDesiredPos());
 
-
+    std::cout << "Running..." << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     //std::cout << "sending Statusword request" << std::endl;
     //canopen::sendSDO(CANid, canopen::STATUSWORD);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(500));
+        std::cout << "Desired Pos " << dev.getDesiredPos() << ", actual pos " << dev.getActualPos() << std::endl;
         canopen::sendSync();
     }
 }

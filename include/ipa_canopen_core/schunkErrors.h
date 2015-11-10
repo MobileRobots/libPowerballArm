@@ -3,8 +3,8 @@
 
 static const char * const errorsCode[] =
 {
-    "ERROR_NONE",
-    "INFO_TODO",
+    "ERROR_NONE", //0x00
+    "INFO_TODO", 
     "INFO_NO_FREE_SPACE",
     "INFO_NO_RIGHTS",
     "INFO_UNKNOWN_COMMAND",
@@ -13,14 +13,14 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_07",
     "UNKNOWN_ERROR_08",
     "INFO_COMMUNICATION_ERROR",
-    "INFO_PROGRAM_DEBUGDATA",
+    "INFO_PROGRAM_DEBUGDATA", //0xA0
     "INFO_PROGRAM_FINISHED",
     "INFO_PROGRAM_ABORTED",
     "INFO_PROGRAM_PAUSED",
     "INFO_PROGRAM_CONTINUED",
     "INFO_SEQUENCE_END",
 
-    "INFO_TIMEOUT",
+    "INFO_TIMEOUT", //0x10
     "INFO_UNKNOWN_AXIS_INDEX",
     "UNKNOWN_ERROR_12",
     "UNKNOWN_ERROR_13",
@@ -30,14 +30,14 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_17",
     "UNKNOWN_ERROR_18",
     "INFO_CHECKSUM",
-    "UNKNOWN_ERROR_1A",
+    "UNKNOWN_ERROR_1A", //0x1A
     "UNKNOWN_ERROR_1B",
     "UNKNOWN_ERROR_1C",
     "INFO_MESSAGE_LENGTH",
     "INFO_WRONG_PARAMETER",
     "INFO_PROGRAM_END",
 
-    "INFO_BATTERY_LOW",
+    "INFO_BATTERY_LOW", //0x20
     "ERROR_BATTERY_DOWN",
     "INFO_POSITION_NOT_REACHABLE",
     "UNKNOWN_ERROR_23",
@@ -54,7 +54,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_2E",
     "UNKNOWN_ERROR_2F",
 
-    "UNKNOWN_ERROR_30",
+    "UNKNOWN_ERROR_30", //0x30
     "UNKNOWN_ERROR_31",
     "UNKNOWN_ERROR_32",
     "UNKNOWN_ERROR_33",
@@ -71,7 +71,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_3E",
     "UNKNOWN_ERROR_3F",
 
-    "INFO_TRIGGER",
+    "INFO_TRIGGER", // 0x40
     "INFO_READY",
     "INFO_GUI_CONNECTED",
     "INFO_GUI_DISCONNECTED",
@@ -88,7 +88,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_4E",
     "UNKNOWN_ERROR_4F",
 
-    "UNKNOWN_ERROR_50",
+    "UNKNOWN_ERROR_50", //0x50
     "UNKNOWN_ERROR_51",
     "UNKNOWN_ERROR_52",
     "UNKNOWN_ERROR_53",
@@ -105,7 +105,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_5E",
     "UNKNOWN_ERROR_5F",
 
-    "UNKNOWN_ERROR_60",
+    "UNKNOWN_ERROR_60", //0x60
     "UNKNOWN_ERROR_61",
     "UNKNOWN_ERROR_62",
     "UNKNOWN_ERROR_63",
@@ -122,7 +122,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_6E",
     "UNKNOWN_ERROR_6F",
 
-    "ERROR_TEMP_LOW",
+    "ERROR_TEMP_LOW", //0x70
     "ERROR_TEMP_HIGH",
     "ERROR_LOGIC_LOW",
     "ERROR_LOGIC_HIGH",
@@ -139,7 +139,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_7E",
     "UNKNOWN_ERROR_7F",
 
-    "ERROR_POWER_TEMP",
+    "ERROR_POWER_TEMP", //0x80
     "ERROR_BRAKE_RESISTOR_TEMP",
     "ERROR_OVERSHOOT",
     "ERROR_HARDWARE_VERSION",
@@ -156,7 +156,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_8E",
     "UNKNOWN_ERROR_8F",
 
-    "UNKNOWN_ERROR_90",
+    "UNKNOWN_ERROR_90", //0x90
     "UNKNOWN_ERROR_91",
     "UNKNOWN_ERROR_92",
     "UNKNOWN_ERROR_93",
@@ -173,7 +173,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_9E",
     "UNKNOWN_ERROR_9F",
 
-    "UNKNOWN_ERROR_A0",
+    "UNKNOWN_ERROR_A0", 
     "UNKNOWN_ERROR_A1",
     "UNKNOWN_ERROR_A2",
     "UNKNOWN_ERROR_A3",
@@ -190,7 +190,7 @@ static const char * const errorsCode[] =
     "UNKNOWN_ERROR_AE",
     "UNKNOWN_ERROR_AF",
 
-    "ERROR_PROGRAM_ABORTION",
+    "ERROR_PROGRAM_ABORTION", //0xB0
     "ERROR_PROGRAM_RUNTIME",
     "ERROR_PROGRAM_INVALID",
     "ERROR_PROGRAM_CONFLICT",
@@ -241,7 +241,7 @@ static const char * const errorsCode[] =
     "ERROR_CURRENT",
     "ERROR_I2T",
 
-    "ERROR_INITIALIZE",
+    "ERROR_INITIALIZE", //0xE0
     "ERROR_INTERNAL",
     "ERROR_HARD_LOW",
     "ERROR_HARD_HIGH",

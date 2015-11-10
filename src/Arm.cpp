@@ -9,6 +9,7 @@
 Arm::Arm(const char *_canif, size_t numjoints, int firstCANID, unsigned int _syncInterval) :
   canifName(_canif), chainName("arm"), syncInterval(_syncInterval),
   gripCANid(12), gripDevice(gripCANid), 
+  emulated(false),
   maxSpeed(72)
 {
   canopen::syncInterval = std::chrono::milliseconds(syncInterval);
@@ -74,9 +75,9 @@ bool Arm::open()
     canopen::Device& dev = devices[i];
 
     // start each device current position to current actual position
-    dev.setDesiredPos((double)canopen::devices[CANid].getActualPos());
-    dev.setDesiredVel(0);
-    canopen::sendData((uint16_t)CANid, (double)dev.getDesiredPos());
+    //dev.setDesiredPos((double)canopen::devices[CANid].getActualPos());
+    //dev.setDesiredVel(0);
+    //canopen::sendData((uint16_t)CANid, (double)dev.getDesiredPos());
 
     // enable movement
     canopen::controlPDO((uint16_t)CANid, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
@@ -89,9 +90,9 @@ bool Arm::open()
   canopen::setMotorState(gripCANid, canopen::MS_OPERATION_ENABLED);
 
   // start device current position to current actual position
-  gripDevice.setDesiredPos(canopen::devices[gripCANid].getActualPos());
-  gripDevice.setDesiredVel(0);
-  canopen::sendData(gripCANid, gripDevice.getDesiredPos());
+  //gripDevice.setDesiredPos(canopen::devices[gripCANid].getActualPos());
+  //gripDevice.setDesiredVel(0);
+  //canopen::sendData(gripCANid, gripDevice.getDesiredPos());
 
   // enable movement
   canopen::controlPDO(gripCANid, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
@@ -103,50 +104,48 @@ bool Arm::open()
 
 void Arm::haltAll()
 {
-  canopen::halt(canifName, chainName, std::chrono::milliseconds(syncInterval));
-}
-
-void Arm::moveJointTo(size_t i, float pos)
-{
-  if(pos > maxPos[i]) pos = maxPos[i];
-  else if(pos <= minPos[i]) pos = minPos[i];
-  canopen::Device& dev = devices[i];
-  dev.setDesiredPos(DEGTORAD(pos));
-  uint8_t CANid = ids[i];
-  canopen::sendData(CANid, dev.getDesiredPos());
-}
-
-void Arm::moveGripperTo(float pos)
-{
-  if(pos > gripMaxPos) pos = gripMaxPos;
-  else if(pos <= gripMinPos) pos = gripMinPos;
-  gripDevice.setDesiredPos(DEGTORAD(pos));
-  canopen::sendData(gripCANid, gripDevice.getDesiredPos());
+  std::vector<float> emptySpeeds;
+  emptySpeeds.resize(devices.size());
+  setJointVels(emptySpeeds);
+  if(!emulated)
+    canopen::halt(chainName);
 }
 
 
-void Arm::moveJointBy(size_t i, float amt)
+
+void Arm::setJointVels(const std::vector<float>& speeds)
 {
-  if(amt >= 0 && amt > maxSpeed) amt = maxSpeed;
-  else if(amt < 0 && amt < -maxSpeed) amt = -maxSpeed;
-  canopen::Device& dev = devices[i];
-  // reset device current position to current actual position but set desired
-  // amount of position change to start sending
-  uint8_t CANid = ids[i];
-  dev.setDesiredPos(dev.getActualPos());
-  dev.setDesiredVel(DEGTORAD(amt));
-  canopen::sendData(CANid, dev.getDesiredPos());
+  // Todo switch to velocity mode (ipa_canopen uses "interpoladed position"
+  // mode) if in a different mode
+//printf("Arm::setJointVels: ");
+  for(size_t i = 0; i < devices.size(); ++i)
+  {
+    float amt = speeds[i];
+    if(amt >= 0 && amt > maxSpeed) amt = maxSpeed;
+    else if(amt < 0 && amt < -maxSpeed) amt = -maxSpeed;
+    canopen::Device& dev = devices[i];
+    uint8_t CANid = ids[i];
+    // reset device current position to current actual position but set desired
+    // amount of position change to start sending
+    dev.setDesiredPos(dev.getActualPos());
+    dev.setDesiredVel(DEGTORAD(amt));
+//printf("%d=%fdeg(%frad) ", i, amt, DEGTORAD(amt));
+    //canopen::sendData(CANid, dev.getDesiredPos()); // will be sent by canopen library
+  }
+//puts("");
 }
 
-void Arm::moveGripperBy(float amt)
+void Arm::setGripperVel(float amt)
 {
+  // Todo switch to velocity mode (ipa_canopen uses "interpoladed position"
+  // mode) if in a different mode
   if(amt >= 0 && amt > gripMaxSpeed) amt = gripMaxSpeed;
   else if(amt < 0 && amt < -gripMaxSpeed) amt = -gripMaxSpeed;
   // reset device current position to current actual position but set desired
   // amount of position change to start sending
   gripDevice.setDesiredPos(gripDevice.getActualPos());
   gripDevice.setDesiredVel(DEGTORAD(amt));
-  canopen::sendData(gripCANid, gripDevice.getDesiredPos());
+  //canopen::sendData(gripCANid, gripDevice.getDesiredPos()); will be sent by canopen library
 }
   
 
@@ -158,5 +157,6 @@ std::vector<float> Arm::getJointPositions()
   {
     pos[i] = RADTODEG(devices[i].getActualPos());
   }
+  return pos;
 }
 

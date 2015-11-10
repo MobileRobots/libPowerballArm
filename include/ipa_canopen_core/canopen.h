@@ -80,7 +80,8 @@
 #include <inttypes.h>
 #include "schunkErrors.h"
 
-#define JOINT_POS_SANITY_CHECK(p) assert(p > -3 && p < 3)
+//#define JOINT_POS_SANITY_CHECK(p) assert(p > -3 && p < 3)
+#define JOINT_POS_SANITY_CHECK(p) {}
 
 namespace canopen{
 
@@ -142,6 +143,8 @@ namespace canopen{
             double desiredPos_;		// unit = rad
             double actualVel_;		// unit = rad/sec
             double desiredVel_;		// unit = rad/sec
+            bool firstUpdate_;
+            bool gotActualPos_;
             std::chrono::milliseconds timeStamp_msec_;
             std::chrono::microseconds timeStamp_usec_;
 
@@ -182,6 +185,8 @@ namespace canopen{
                 initialized_(false),
                 NMTState_("START_UP"),
                 motorState_("START_UP"),
+                firstUpdate_(true),
+                gotActualPos_(false),
                 nmt_init_(false) 
             {};
 
@@ -194,6 +199,8 @@ namespace canopen{
                 initialized_(false),
                 NMTState_("START_UP"),
                 motorState_("START_UP"),
+                firstUpdate_(true),
+                gotActualPos_(false),
                 nmt_init_(false) {};
 
             Device(uint16_t CANid, std::string name, std::string group, std::string bus):
@@ -208,6 +215,8 @@ namespace canopen{
                 initialized_(false),
                 NMTState_("START_UP"),
                 motorState_("START_UP"),
+                firstUpdate_(true),
+                gotActualPos_(false),
                 nmt_init_(false) {};
 
             Device(uint16_t CANid, std::string name, std::string group):
@@ -221,6 +230,8 @@ namespace canopen{
                 NMTState_("START_UP"),
                 motorState_("START_UP"),
                 initialized_(false),
+                firstUpdate_(true),
+                gotActualPos_(false),
                 nmt_init_(false) {};
 
 
@@ -238,6 +249,8 @@ namespace canopen{
                 NMTState_("START_UP"),
                 motorState_("START_UP"),
                 initialized_(false),
+                firstUpdate_(true),
+                gotActualPos_(false),
                 nmt_init_(false) {};
 
             void setCANid(uint8_t id) {
@@ -430,6 +443,7 @@ namespace canopen{
 
             void setActualPos(double pos){
                 actualPos_ = pos;
+                gotActualPos_ = true;
             }
 
             void setConversionFactor(double conversion_factor){
@@ -437,7 +451,7 @@ namespace canopen{
             }
 
             void setDesiredPos(double pos){
-std::cerr << "setDesiredPos " << pos << std::endl;
+std::cerr << "setDesiredPos #" << (int)CANid_ << ": " << pos << "rad" << std::endl;
                 desiredPos_ = pos;
                 JOINT_POS_SANITY_CHECK(desiredPos_);
             }
@@ -448,6 +462,7 @@ std::cerr << "setDesiredPos " << pos << std::endl;
             }
 
             void setDesiredVel(double vel){
+std::cerr << "setDesiredVel #" << (int)CANid_ << ": " << vel << "rad/s" << std::endl;
                 desiredVel_ = vel;
             }
 
@@ -597,6 +612,14 @@ std::cerr << "setDesiredPos " << pos << std::endl;
             }
 
             void updateDesiredPos(){
+                if(!getInitialized()) return;
+                if(firstUpdate_)
+                {
+                  if(!gotActualPos_) return;
+                  std::cerr << "first updateDesiredPos() call after getting first actual pos, starting with device actual " << getActualPos() << std::endl;
+                  desiredPos_ = getActualPos();
+                  firstUpdate_ = false;
+                }
 std::cerr << "updating position of device " << (int)CANid_ << " using desired vel " << desiredVel_ << " from " << desiredPos_ << " to: ";
                 desiredPos_ += desiredVel_ * (syncInterval.count() / 1000.0);
 std::cerr << desiredPos_ << std::endl;
@@ -804,7 +827,8 @@ std::cerr << desiredPos_ << std::endl;
 
     void pre_init(std::string chainName);
     bool recover(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
-    void halt(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
+    void halt_via_new_connect(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval);
+    void halt(const std::string& chainName);
 	
     /// this function is set to defaultPDOOutgoing_interpolated() in
     //canopen::init, which will convert the 'value' parameter to millidegrees

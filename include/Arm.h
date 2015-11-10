@@ -6,52 +6,38 @@
 #include "ipa_canopen_core/canopen.h"
 
 
+/** Simplified interface to the Schunk Powerball arm. Small layer over the
+ * ipa_canopen library, but this could be replaced in the future by a different
+ * canopen/301 implementation.  
+ * 
+ * TODO: direct position control
+ */
 class Arm
 {
 public:
 	Arm(const char* canif = "can0", size_t numjoints = 6, int firstCANID = 3, unsigned int syncInterval = 20);
   virtual ~Arm();
+
+  /// Open connection to the arm hardware components. Return false on error.
   bool open();
+
+  /// Instead of connecting to hardware, emulate active connection. Call instead
+  ///of open() to 
+  void emulate() {
+    emulated = true;
+  }
 
   /// stop all joints in this arm. 
   void haltAll();
 
-  /* Call regularly to cause all joints to update for any new movement data
+  /** Call regularly to cause all joints to update for any new movement data
  * received. Joints will stop if they stop receiving sync messages. */
   void sync() {
-    canopen::sendSync();
+    if(!emulated)
+      canopen::sendSync();
   }
 
-  // Send new joint position data. Devices will update on next sync(). Positions
-  // are in degrees.
-  void moveJointsTo(float pos1, float pos2, float pos3, float pos4, float pos5, float pos6) 
-  {
-    std::vector<float> p;
-    p.reserve(6);
-    p.push_back(pos1);
-    p.push_back(pos2);
-    p.push_back(pos3);
-    p.push_back(pos4);
-    p.push_back(pos5);
-    p.push_back(pos6);
-    moveJointsTo(p);
-  }
-
-  // Send new joint position data. Devices will update on next sync(). Give positions
-  // in degrees.
-  void moveJointsTo(std::vector<float> pos)
-  {
-    for(size_t i = 0; i < devices.size() && i < pos.size(); ++i)
-    {
-      moveJointTo(i, pos[i]);
-    }
-  }
-
-  // Send new joint position data. Devices will update on next sync(). Give
-  // position in degrees.
-  void moveJointTo(size_t joint, float pos);
-
-  // Get current joint positions in degrees.
+  /// Get current joint positions in degrees.
   void getJointPositions(float *pos1, float *pos2, float *pos3, float *pos4, float *pos5, float *pos6)
   {
     std::vector<float> pos = getJointPositions();
@@ -63,30 +49,24 @@ public:
     if(pos6) *pos6 = pos[5];
   }
 
-  // Get current joint positions in degrees.
+  /// Get current joint positions in degrees.
   void getJointPositions(std::vector<float>& pos)
   {
     pos = getJointPositions();
   }
+
+  /// Get current joint positions in degrees.
   std::vector<float> getJointPositions();
 
   // Begin sending incremented positions to joint over time according to speed
   // (degrees/sec)
   void moveJointBy(size_t joint, float speed);
 
-  // Begin sending incremented positions to joints over time according to speed
+  // Set or replace desired joint velocity values. 
   // (degrees/sec)
-  void moveJointsBy(std::vector<float> speeds)
-  {
-    for(size_t i = 0; i < devices.size(); ++i)
-    {
-      moveJointBy(i, speeds[i]);
-    }
-  }
+  void setJointVels(const std::vector<float>& speeds);
 
-  void moveGripperTo(float pos);
-
-  void moveGripperBy(float speed);
+  void setGripperVel(float speed);
 
   float getGripperPosition()
   {
@@ -102,6 +82,7 @@ protected:
   unsigned int syncInterval;
   uint8_t gripCANid;
   canopen::Device gripDevice;
+  bool emulated;
 
 public:
   float maxSpeed;

@@ -333,9 +333,8 @@ bool init(std::string deviceFile, std::string chainName, const int8_t mode_of_op
 
         //Necessary otherwise sometimes Schunk devices complain for Position Track Error
         std::cerr << "Device " << (int)id << " Initial position is " << devices[id].getActualPos() << std::endl;
-        canopen::devices[id].setDesiredPos((double)devices[id].getActualPos());
-
-        sendData((uint16_t)id, (double)devices[id].getDesiredPos());
+        //canopen::devices[id].setDesiredPos((double)devices[id].getActualPos());
+        //sendData((uint16_t)id, (double)devices[id].getDesiredPos());
 
         canopen::controlPDO(id, canopen::CONTROLWORD_ENABLE_MOVEMENT, 0x00);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -473,7 +472,7 @@ bool recover(std::string deviceFile, std::string chainName, std::chrono::millise
 ///
 
 
-void halt(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval)
+void halt_via_new_connect(std::string deviceFile, std::string chainName, std::chrono::milliseconds syncInterval)
 {
     CAN_Close(h);
 
@@ -502,9 +501,13 @@ void halt(std::string deviceFile, std::string chainName, std::chrono::millisecon
         //std::cout << "Module with CAN-id " << (uint16_t)id << " connected (recover)" << std::endl;
     }
 
+    halt(chainName);
+}
+  
+void halt(const std::string& chainName)
+{
     for (auto id : canopen::deviceGroups[chainName].getCANids())
     {
-
 
         canopen::sendSDO(id, canopen::CONTROLWORD, canopen:: CONTROLWORD_HALT);
 
@@ -927,7 +930,7 @@ void defaultEMCY_incoming(uint16_t CANid, const TPCANRdMsg m)
     uint16_t mydata_low = m.Msg.DATA[0];
     uint16_t mydata_high = m.Msg.DATA[1];
 
-    //std::cout << "EMCY" << (uint16_t)CANid << " is: " << (uint16_t)m.Msg.DATA[0] << " "<< (uint16_t)m.Msg.DATA[1]<< " " << (uint16_t)m.Msg.DATA[2]<< " "<< (uint16_t)m.Msg.DATA[3]<< " "<< (uint16_t)m.Msg.DATA[4]<< " "<< (uint16_t)m.Msg.DATA[5]<< " "<< (uint16_t)m.Msg.DATA[6]<< " "<< (uint16_t)m.Msg.DATA[7]<< " "<< (uint16_t)m.Msg.DATA[8]<< std::endl;
+    std::cout << "EMCY" << (uint16_t)CANid << " is: " << (uint16_t)m.Msg.DATA[0] << " "<< (uint16_t)m.Msg.DATA[1]<< " " << (uint16_t)m.Msg.DATA[2]<< " "<< (uint16_t)m.Msg.DATA[3]<< " "<< (uint16_t)m.Msg.DATA[4]<< " "<< (uint16_t)m.Msg.DATA[5]<< " "<< (uint16_t)m.Msg.DATA[6]<< " "<< (uint16_t)m.Msg.DATA[7]<< " "<< (uint16_t)m.Msg.DATA[8]<< std::endl;
 
 
 }
@@ -971,6 +974,11 @@ void defaultPDO_incoming_status(uint16_t CANid, const TPCANRdMsg m)
     bool op_specific1 = mydata_high & 0x20;
     bool man_specific1 = mydata_high & 0x40;
     bool man_specific2 = mydata_high & 0x80;
+    bool schunk_pos_referenced = man_specific2;
+
+    std::cerr << "Schunk commutation reference for 0x" << std::hex << CANid;
+    if(schunk_pos_referenced) std::cerr << " COMPLETE" << std::endl;
+    else std::cerr << " not complete..." << std::endl;
 
     bool ip_mode = ready_switch_on & switched_on & op_enable & volt_enable;
 
@@ -1055,8 +1063,24 @@ void defaultPDO_incoming_status(uint16_t CANid, const TPCANRdMsg m)
 
 void defaultPDO_incoming_pos(uint16_t CANid, const TPCANRdMsg m)
 {
-    double newPos = mdeg2rad(m.Msg.DATA[0] + (m.Msg.DATA[1] << 8) + (m.Msg.DATA[2] << 16) + (m.Msg.DATA[3] << 24));
-    double newVel = mdeg2rad(m.Msg.DATA[4] + (m.Msg.DATA[5] << 8) + (m.Msg.DATA[6] << 16) + (m.Msg.DATA[7] << 24));
+   if( ! canopen::devices[CANid].getInitialized()) return;
+
+    int newPosMDeg =  (
+        ((unsigned char)(m.Msg.DATA[0]) & 0xff) 
+      + ((unsigned char)(m.Msg.DATA[1]) << 8) 
+      + ((unsigned char)(m.Msg.DATA[2]) << 16) 
+      + ((unsigned char)(m.Msg.DATA[3]) << 24)
+    );
+    int newVelMDeg =  (
+        ((unsigned char)(m.Msg.DATA[4]) & 0xff) 
+      + ((unsigned char)(m.Msg.DATA[5]) << 8) 
+      + ((unsigned char)(m.Msg.DATA[6]) << 16) 
+      + ((unsigned char)(m.Msg.DATA[7]) << 24)
+    );
+    double newPos = mdeg2rad(newPosMDeg);
+    double newVel = mdeg2rad(newVelMDeg);
+
+    std::cout << "PDO incoming from 0x" << std::hex << (int)CANid << std::dec << ": pos=" << newPosMDeg << "mdeg/" << newPos << "rad, vel=" << newVelMDeg << "mdeg/" << newVel << "rad"  << std::endl;
 
     //newPos = devices[CANid].getConversionFactor()*newPos; //TODO: conversion from yaml file
     //newVel = devices[CANid].getConversionFactor()*newVel;
@@ -1332,6 +1356,12 @@ void errorword_incoming(uint8_t CANid, char data[8])
         unsigned char error_register;
         error_register = data[4];
 
+        if(error_register == 0) // no error?
+        {
+          devices[CANid].setErrorRegister("NO_ERROR");
+          return;
+        }
+
         str_stream << "error_register=0x" << std::hex << (int)error_register << ", categories:";
 
         if ( error_register & canopen::EMC_k_1001_GENERIC )
@@ -1351,6 +1381,38 @@ void errorword_incoming(uint8_t CANid, char data[8])
         if ( error_register & canopen::EMC_k_1001_MANUFACTURER)
             str_stream << " manufacturer specific";
 
+        // check some of the CANopen DS301 and DS402 -defined error codes:
+        uint16_t err = data[3] + (data[4]<<8);
+        str_stream << " (" << (int)err << ") ";
+        switch(err)
+        {
+          case 0x8110: str_stream << " -- CAN data overrun"; break;
+          case 0x8210: str_stream << " -- PDO length error"; break;
+          case 0x8250: str_stream << " -- RPDO timeout"; break;
+          case 0x2100: str_stream << " -- short circuit/earth leakage"; break;
+          case 0x2310: str_stream << " -- continuous overcurrent"; break;
+          case 0x2350: str_stream << " -- load level fault (thremal)"; break;
+          case 0x3211: str_stream << " -- overvoltage 1"; break;
+          case 0x3212: str_stream << " -- overvoltage 2"; break;
+          case 0x3221: str_stream << " -- undervoltage 1"; break;
+          case 0x3222: str_stream << " -- undervoltage 2"; break;
+          case 0x4210: str_stream << " -- device temp high"; break;
+          case 0x4220: str_stream << " -- device temp low"; break;
+          case 0x4310: str_stream << " -- supply temp high"; break;
+          case 0x5520: str_stream << " -- rom/eprom error"; break;
+          case 0x5530: str_stream << " -- eeprom error"; break;
+          case 0x6320: str_stream << " -- parameter error"; break;
+          case 0x7122: str_stream << " -- motor/commutation malfunction"; break;
+          case 0x7303: str_stream << " -- resolver 1 fault"; break;
+          case 0x7305: str_stream << " -- incremental sensor 1 fault"; break;
+          case 0x7320: str_stream << " -- position error"; break;
+          case 0x8400: str_stream << " -- measured velocity too high"; break;
+          case 0x8611: str_stream << " -- following error"; break;
+          case 0x8612: str_stream << " -- reference limit - position out of bounds"; break;
+          case 0x8900: str_stream << " -- process data monitoring"; break;
+    
+      }
+
         devices[CANid].setErrorRegister(str_stream.str());
     }
     else if(data[1]+(data[2]<<8) == 0x1002)
@@ -1361,7 +1423,7 @@ void errorword_incoming(uint8_t CANid, char data[8])
         if(code == 0) // no error
         {
           devices[CANid].setManufacturerErrorRegister("NONE");
-          //return;
+          return;
         }
     
 

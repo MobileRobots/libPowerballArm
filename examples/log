@@ -1,0 +1,904 @@
+Interrupt motion with Ctrl-C
+canopen::init: no available connection, (re)opening can0...
+can: open, socket 3
+Resetting communication with the devices 
+NMT Bootup/init message received. Node-ID =  7
+...Node 7 could not be found in devices list (canopen::devices). Ignoring
+NMT Bootup/init message received. Node-ID =  4
+...Node 4 could not be found in devices list (canopen::devices). Ignoring
+NMT Bootup/init message received. Node-ID =  6
+...Node 6 could not be found in devices list (canopen::devices). Ignoring
+NMT Bootup/init message received. Node-ID =  5
+...Node 5 could not be found in devices list (canopen::devices). Ignoring
+NMT Bootup/init message received. Node-ID =  8
+...Node 8 could not be found in devices list (canopen::devices). Ignoring
+NMT Bootup/init message received. Node-ID =  12
+...Node 12 could not be found in devices list (canopen::devices). Ignoring
+NMT Bootup/init message received. Node-ID =  3
+Found 3
+Initializing test_chain
+Waiting for Node: 3 to become available
+Node: 3 is now available
+canopen: received error from device 3: error_register=0x20, categories: device profile specific,
+ ### Schunk commutation complete --
+Status of 3: MotorState SWITCHED_ON_DISABLED: OperationMode ????, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 0, switch_on 0
+ ### Schunk commutation complete --
+Status of 3: MotorState SWITCHED_ON_DISABLED: OperationMode ????, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 0, switch_on 0
+ ### Schunk commutation complete --
+Status of 3: MotorState SWITCHED_ON_DISABLED: OperationMode NO_MODE, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 0, switch_on 0
+ ### Schunk commutation complete --
+Status of 3: MotorState SWITCHED_ON_DISABLED: OperationMode ????, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 0, switch_on 0
+ ### Schunk commutation complete --
+Status of 3: MotorState SWITCHED_ON_DISABLED: OperationMode ????, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 0, switch_on 0
+Initialized the PDO mapping for Node:3
+ ### Schunk commutation complete --
+Status of 3: MotorState READY_TO_SWITCH_ON: OperationMode INTERPOLATED_POSITION_MODE, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 1, switch_on 0
+ ### Schunk commutation complete --
+Status of 3: MotorState SWITCHED_ON: OperationMode INTERPOLATED_POSITION_MODE, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 1, switch_on 1
+ ### Schunk commutation complete --
+Status of 3: MotorState OPERATION_ENABLED: OperationMode INTERPOLATED_POSITION_MODE, Fault 0, ipmode 0, opspc0 0, target_reached 0, power_on 0, ready_on 1, switch_on 1
+Device 3 Initial position is 0
+ ### Schunk commutation complete --
+Status of 3: MotorState OPERATION_ENABLED: OperationMode INTERPOLATED_POSITION_MODE, Fault 0, ipmode 0, opspc0 1, target_reached 0, power_on 0, ready_on 1, switch_on 1
+ ### Schunk commutation complete --
+Status of 3: MotorState OPERATION_ENABLED: OperationMode INTERPOLATED_POSITION_MODE, Fault 0, ipmode 1, opspc0 1, target_reached 0, power_on 1, ready_on 1, switch_on 1
+canopen: received error from device 3: error_register=0x20, categories: device profile specific,
+Concluded driver side init succesfully for Node3
+PDO outdoing position=0 rad (0 mdeg)
+PDO incoming from 0x3: pos=114mdeg/0.00198968rad, vel=0mdeg/0rad
+first updateDesiredPos() call after getting first actual pos, starting with device actual 0.00198968
+updating position of device 3 using desired vel 0 from 0.00198968 to: 0.00198968
+PDO outdoing position=0.00198968 rad (114 mdeg)
+PDO incoming from 0x3: pos=32mdeg/0.000558505rad, vel=-5555mdeg/-0.096953rad
+ ### Schunk commutation complete --
+Status of 3: MotorState OPERATION_ENABLED: OperationMode INTERPOLATED_POSITION_MODE, Fault 0, ipmode 1, opspc0 1, target_reached 0, power_on 1, ready_on 1, switch_on 1
+updating position of device 3 using desired vel 0 from 0.00198968 to: 0.00198968
+PDO outdoing position=0.00198968 rad (114 mdeg)
+PDO incoming from 0x3: pos=102mdeg/0.00178024rad, vel=6201mdeg/0.108228rad
+updating position of device 3 using desired vel 0 from 0.00198968 to: 0.00198968
+PDO outdoing position=0.00198968 rad (114 mdeg)
+PDO incoming from 0x3: pos=107mdeg/0.0018675rad, vel=-987mdeg/-0.0172264rad
+updating position of device 3 using desired vel 0 from 0.00198968 to: 0.00198968
+PDO outdoing position=0.00198968 rad (114 mdeg)
+PDO incoming from 0x3: pos=120mdeg/0.0020944rad, vel=350mdeg/0.00610865rad
+updating position of device 3 using desired vel 0 from 0.00198968 to: 0.00198968
+PDO outdoing position=0.00198968 rad (114 mdeg)
+PDO incoming from 0x3: pos=111mdeg/0.00193732rad, vel=-471mdeg/-0.0082205rad
+updating position of device 3 using desired vel 0 from 0.00198968 to: 0.00198968
+PDO outdoing position=0.00198968 rad (114 mdeg)
+PDO incoming from 0x3: pos=110mdeg/0.00191986rad, vel=0mdeg/0rad
+PDO incoming from 0x3: pos=111mdeg/0.00193732rad, vel=126mdeg/0.00219911rad
+Accelerating to target velocity
+setDesiredVel #3: -2.05e-06rad/s
+updating position of device 3 using desired vel -2.05e-06 from 0.00198968 to: 0.00198963
+PDO outdoing position=0.00198963 rad (114 mdeg)
+PDO incoming from 0x3: pos=115mdeg/0.00200713rad, vel=195mdeg/0.00340339rad
+setDesiredVel #3: -0.0010116rad/s
+PDO incoming from 0x3: pos=115mdeg/0.00200713rad, vel=0mdeg/0rad
+updating position of device 3 using desired vel -0.0010116 from 0.00198963 to: 0.0019694
+PDO outdoing position=0.0019694 rad (113 mdeg)
+PDO incoming from 0x3: pos=113mdeg/0.00197222rad, vel=-177mdeg/-0.00308923rad
+setDesiredVel #3: -0.00202135rad/s
+PDO incoming from 0x3: pos=110mdeg/0.00191986rad, vel=-175mdeg/-0.00305433rad
+updating position of device 3 using desired vel -0.00202135 from 0.0019694 to: 0.00192898
+PDO outdoing position=0.00192898 rad (111 mdeg)
+PDO incoming from 0x3: pos=110mdeg/0.00191986rad, vel=0mdeg/0rad
+setDesiredVel #3: -0.00303125rad/s
+PDO incoming from 0x3: pos=112mdeg/0.00195477rad, vel=109mdeg/0.00190241rad
+updating position of device 3 using desired vel -0.00303125 from 0.00192898 to: 0.00186835
+PDO outdoing position=0.00186835 rad (107 mdeg)
+PDO incoming from 0x3: pos=113mdeg/0.00197222rad, vel=174mdeg/0.00303687rad
+setDesiredVel #3: -0.00403945rad/s
+PDO incoming from 0x3: pos=112mdeg/0.00195477rad, vel=0mdeg/0rad
+updating position of device 3 using desired vel -0.00403945 from 0.00186835 to: 0.00178756
+PDO outdoing position=0.00178756 rad (102 mdeg)
+PDO incoming from 0x3: pos=112mdeg/0.00195477rad, vel=-114mdeg/-0.00198968rad
+setDesiredVel #3: -0.0050491rad/s
+PDO incoming from 0x3: pos=107mdeg/0.0018675rad, vel=-323mdeg/-0.00563741rad
+updating position of device 3 using desired vel -0.0050491 from 0.00178756 to: 0.00168658
+PDO outdoing position=0.00168658 rad (97 mdeg)
+PDO incoming from 0x3: pos=107mdeg/0.0018675rad, vel=0mdeg/0rad
+setDesiredVel #3: -0.00605875rad/s
+PDO incoming from 0x3: pos=107mdeg/0.0018675rad, vel=0mdeg/0rad
+updating position of device 3 using desired vel -0.00605875 from 0.00168658 to: 0.0015654
+PDO outdoing position=0.0015654 rad (90 mdeg)
+PDO incoming from 0x3: pos=107mdeg/0.0018675rad, vel=0mdeg/0rad
+setDesiredVel #3: -0.0070684rad/s
+PDO incoming from 0x3: pos=107mdeg/0.0018675rad, vel=0mdeg/0rad
+updating position of device 3 using desired vel -0.0070684 from 0.0015654 to: 0.00142404
+PDO outdoing position=0.00142404 rad (82 mdeg)
+PDO incoming from 0x3: pos=105mdeg/0.0018326rad, vel=-119mdeg/-0.00207694rad
+setDesiredVel #3: -0.0080779rad/s
+PDO incoming from 0x3: pos=98mdeg/0.00171042rad, vel=-595mdeg/-0.0103847rad
+updating position of device 3 using desired vel -0.0080779 from 0.00142404 to: 0.00126248
+PDO outdoing position=0.00126248 rad (72 mdeg)
+PDO incoming from 0x3: pos=96mdeg/0.00167552rad, vel=-414mdeg/-0.00722566rad
+setDesiredVel #3: -0.0090874rad/s
+PDO incoming from 0x3: pos=94mdeg/0.00164061rad, vel=-173mdeg/-0.00301942rad
+updating position of device 3 using desired vel -0.0090874 from 0.00126248 to: 0.00108073
+PDO outdoing position=0.00108073 rad (62 mdeg)
+PDO incoming from 0x3: pos=94mdeg/0.00164061rad, vel=-130mdeg/-0.00226893rad
+setDesiredVel #3: -0.0100932rad/s
+PDO incoming from 0x3: pos=89mdeg/0.00155334rad, vel=-419mdeg/-0.00731293rad
+updating position of device 3 using desired vel -0.0100932 from 0.00108073 to: 0.000878867
+PDO outdoing position=0.000878867 rad (50 mdeg)
+PDO incoming from 0x3: pos=86mdeg/0.00150098rad, vel=-488mdeg/-0.00851721rad
+setDesiredVel #3: -0.0111037rad/s
+PDO incoming from 0x3: pos=75mdeg/0.001309rad, vel=-857mdeg/-0.0149575rad
+updating position of device 3 using desired vel -0.0111037 from 0.000878867 to: 0.000656793
+PDO outdoing position=0.000656793 rad (38 mdeg)
+PDO incoming from 0x3: pos=69mdeg/0.00120428rad, vel=-935mdeg/-0.0163188rad
+setDesiredVel #3: -0.0121131rad/s
+PDO incoming from 0x3: pos=61mdeg/0.00106465rad, vel=-660mdeg/-0.0115192rad
+updating position of device 3 using desired vel -0.0121131 from 0.000656793 to: 0.000414531
+PDO outdoing position=0.000414531 rad (24 mdeg)
+PDO incoming from 0x3: pos=57mdeg/0.000994838rad, vel=-591mdeg/-0.0103149rad
+setDesiredVel #3: -0.0131232rad/s
+PDO incoming from 0x3: pos=48mdeg/0.000837758rad, vel=-817mdeg/-0.0142593rad
+updating position of device 3 using desired vel -0.0131232 from 0.000414531 to: 0.000152067
+PDO outdoing position=0.000152067 rad (9 mdeg)
+PDO incoming from 0x3: pos=42mdeg/0.000733038rad, vel=-924mdeg/-0.0161268rad
+setDesiredVel #3: -0.0141328rad/s
+PDO incoming from 0x3: pos=28mdeg/0.000488692rad, vel=-1052mdeg/-0.0183609rad
+updating position of device 3 using desired vel -0.0141328 from 0.000152067 to: -0.000130589
+PDO outdoing position=-0.000130589 rad (-7 mdeg)
+PDO incoming from 0x3: pos=22mdeg/0.000383972rad, vel=-1001mdeg/-0.0174707rad
+setDesiredVel #3: -0.0151427rad/s
+PDO incoming from 0x3: pos=13mdeg/0.000226893rad, vel=-702mdeg/-0.0122522rad
+updating position of device 3 using desired vel -0.0151427 from -0.000130589 to: -0.000433444
+PDO outdoing position=-0.000433444 rad (-25 mdeg)
+PDO incoming from 0x3: pos=10mdeg/0.000174533rad, vel=-603mdeg/-0.0105243rad
+setDesiredVel #3: -0.0161525rad/s
+PDO incoming from 0x3: pos=0mdeg/0rad, vel=-852mdeg/-0.0148702rad
+updating position of device 3 using desired vel -0.0161525 from -0.000433444 to: -0.000756495
+PDO outdoing position=-0.000756495 rad (-43 mdeg)
+PDO incoming from 0x3: pos=-4mdeg/-6.98132e-05rad, vel=-807mdeg/-0.0140848rad
+setDesiredVel #3: -0.0171625rad/s
+PDO incoming from 0x3: pos=-15mdeg/-0.000261799rad, vel=-887mdeg/-0.0154811rad
+updating position of device 3 using desired vel -0.0171625 from -0.000756495 to: -0.00109974
+PDO outdoing position=-0.00109974 rad (-63 mdeg)
+PDO incoming from 0x3: pos=-20mdeg/-0.000349066rad, vel=-842mdeg/-0.0146957rad
+setDesiredVel #3: -0.0181723rad/s
+PDO incoming from 0x3: pos=-31mdeg/-0.000541052rad, vel=-998mdeg/-0.0174184rad
+updating position of device 3 using desired vel -0.0181723 from -0.00109974 to: -0.00146319
+PDO outdoing position=-0.00146319 rad (-84 mdeg)
+PDO incoming from 0x3: pos=-38mdeg/-0.000663225rad, vel=-1078mdeg/-0.0188146rad
+setDesiredVel #3: -0.0191821rad/s
+PDO incoming from 0x3: pos=-54mdeg/-0.000942478rad, vel=-1357mdeg/-0.0236841rad
+updating position of device 3 using desired vel -0.0191821 from -0.00146319 to: -0.00184683
+PDO outdoing position=-0.00184683 rad (-106 mdeg)
+PDO incoming from 0x3: pos=-63mdeg/-0.00109956rad, vel=-1427mdeg/-0.0249058rad
+setDesiredVel #3: -0.020192rad/s
+PDO incoming from 0x3: pos=-84mdeg/-0.00146608rad, vel=-1576mdeg/-0.0275064rad
+updating position of device 3 using desired vel -0.020192 from -0.00184683 to: -0.00225067
+PDO outdoing position=-0.00225067 rad (-129 mdeg)
+PDO incoming from 0x3: pos=-92mdeg/-0.0016057rad, vel=-1434mdeg/-0.025028rad
+Target velocity reached!
+PDO incoming from 0x3: pos=-106mdeg/-0.00185005rad, vel=-1076mdeg/-0.0187797rad
+updating position of device 3 using desired vel -0.020192 from -0.00225067 to: -0.00265451
+PDO outdoing position=-0.00265451 rad (-152 mdeg)
+PDO incoming from 0x3: pos=-112mdeg/-0.00195477rad, vel=-1007mdeg/-0.0175755rad
+updating position of device 3 using desired vel -0.020192 from -0.00265451 to: -0.00305835
+PDO outdoing position=-0.00305835 rad (-175 mdeg)
+PDO incoming from 0x3: pos=-130mdeg/-0.00226893rad, vel=-1078mdeg/-0.0188146rad
+updating position of device 3 using desired vel -0.020192 from -0.00305835 to: -0.00346219
+PDO outdoing position=-0.00346219 rad (-198 mdeg)
+PDO incoming from 0x3: pos=-153mdeg/-0.00267035rad, vel=-1177mdeg/-0.0205425rad
+updating position of device 3 using desired vel -0.020192 from -0.00346219 to: -0.00386603
+PDO outdoing position=-0.00386603 rad (-222 mdeg)
+PDO incoming from 0x3: pos=-182mdeg/-0.0031765rad, vel=-1476mdeg/-0.0257611rad
+updating position of device 3 using desired vel -0.020192 from -0.00386603 to: -0.00426987
+PDO outdoing position=-0.00426987 rad (-245 mdeg)
+PDO incoming from 0x3: pos=-213mdeg/-0.00371755rad, vel=-1429mdeg/-0.0249408rad
+updating position of device 3 using desired vel -0.020192 from -0.00426987 to: -0.00467371
+PDO outdoing position=-0.00467371 rad (-268 mdeg)
+PDO incoming from 0x3: pos=-234mdeg/-0.00408407rad, vel=-1034mdeg/-0.0180467rad
+updating position of device 3 using desired vel -0.020192 from -0.00467371 to: -0.00507755
+PDO outdoing position=-0.00507755 rad (-291 mdeg)
+PDO incoming from 0x3: pos=-259mdeg/-0.0045204rad, vel=-1225mdeg/-0.0213803rad
+updating position of device 3 using desired vel -0.020192 from -0.00507755 to: -0.00548139
+PDO outdoing position=-0.00548139 rad (-314 mdeg)
+PDO incoming from 0x3: pos=-287mdeg/-0.00500909rad, vel=-1506mdeg/-0.0262847rad
+updating position of device 3 using desired vel -0.020192 from -0.00548139 to: -0.00588523
+PDO outdoing position=-0.00588523 rad (-337 mdeg)
+PDO incoming from 0x3: pos=-319mdeg/-0.0055676rad, vel=-1558mdeg/-0.0271922rad
+updating position of device 3 using desired vel -0.020192 from -0.00588523 to: -0.00628907
+PDO outdoing position=-0.00628907 rad (-360 mdeg)
+canopen: received error from device 3: error_register=0x20, categories: device profile specific,
+PDO incoming from 0x3: pos=-341mdeg/-0.00595157rad, vel=-832mdeg/-0.0145211rad
+updating position of device 3 using desired vel -0.020192 from -0.00628907 to: -0.00669291
+PDO outdoing position=-0.00669291 rad (-383 mdeg)
+PDO incoming from 0x3: pos=-354mdeg/-0.00617847rad, vel=-711mdeg/-0.0124093rad
+updating position of device 3 using desired vel -0.020192 from -0.00669291 to: -0.00709675
+PDO outdoing position=-0.00709675 rad (-407 mdeg)
+PDO incoming from 0x3: pos=-375mdeg/-0.00654498rad, vel=-1126mdeg/-0.0196524rad
+updating position of device 3 using desired vel -0.020192 from -0.00709675 to: -0.00750059
+PDO outdoing position=-0.00750059 rad (-430 mdeg)
+PDO incoming from 0x3: pos=-402mdeg/-0.00701622rad, vel=-1402mdeg/-0.0244695rad
+updating position of device 3 using desired vel -0.020192 from -0.00750059 to: -0.00790443
+PDO outdoing position=-0.00790443 rad (-453 mdeg)
+PDO incoming from 0x3: pos=-431mdeg/-0.00752237rad, vel=-1413mdeg/-0.0246615rad
+updating position of device 3 using desired vel -0.020192 from -0.00790443 to: -0.00830827
+PDO outdoing position=-0.00830827 rad (-476 mdeg)
+PDO incoming from 0x3: pos=-453mdeg/-0.00790634rad, vel=-991mdeg/-0.0172962rad
+updating position of device 3 using desired vel -0.020192 from -0.00830827 to: -0.00871211
+PDO outdoing position=-0.00871211 rad (-499 mdeg)
+PDO incoming from 0x3: pos=-471mdeg/-0.0082205rad, vel=-934mdeg/-0.0163014rad
+updating position of device 3 using desired vel -0.020192 from -0.00871211 to: -0.00911595
+PDO outdoing position=-0.00911595 rad (-522 mdeg)
+PDO incoming from 0x3: pos=-495mdeg/-0.00863938rad, vel=-1252mdeg/-0.0218515rad
+updating position of device 3 using desired vel -0.020192 from -0.00911595 to: -0.00951979
+PDO outdoing position=-0.00951979 rad (-545 mdeg)
+PDO incoming from 0x3: pos=-526mdeg/-0.00918043rad, vel=-1621mdeg/-0.0282918rad
+updating position of device 3 using desired vel -0.020192 from -0.00951979 to: -0.00992363
+PDO outdoing position=-0.00992363 rad (-569 mdeg)
+PDO incoming from 0x3: pos=-556mdeg/-0.00970403rad, vel=-1301mdeg/-0.0227067rad
+updating position of device 3 using desired vel -0.020192 from -0.00992363 to: -0.0103275
+PDO outdoing position=-0.0103275 rad (-592 mdeg)
+PDO incoming from 0x3: pos=-573mdeg/-0.0100007rad, vel=-785mdeg/-0.0137008rad
+updating position of device 3 using desired vel -0.020192 from -0.0103275 to: -0.0107313
+PDO outdoing position=-0.0107313 rad (-615 mdeg)
+PDO incoming from 0x3: pos=-589mdeg/-0.01028rad, vel=-760mdeg/-0.0132645rad
+updating position of device 3 using desired vel -0.020192 from -0.0107313 to: -0.0111352
+PDO outdoing position=-0.0111352 rad (-638 mdeg)
+PDO incoming from 0x3: pos=-609mdeg/-0.0106291rad, vel=-1128mdeg/-0.0196873rad
+updating position of device 3 using desired vel -0.020192 from -0.0111352 to: -0.011539
+PDO outdoing position=-0.011539 rad (-661 mdeg)
+PDO incoming from 0x3: pos=-638mdeg/-0.0111352rad, vel=-1449mdeg/-0.0252898rad
+updating position of device 3 using desired vel -0.020192 from -0.011539 to: -0.0119428
+PDO outdoing position=-0.0119428 rad (-684 mdeg)
+PDO incoming from 0x3: pos=-665mdeg/-0.0116064rad, vel=-1294mdeg/-0.0225846rad
+updating position of device 3 using desired vel -0.020192 from -0.0119428 to: -0.0123467
+PDO outdoing position=-0.0123467 rad (-707 mdeg)
+PDO incoming from 0x3: pos=-685mdeg/-0.0119555rad, vel=-918mdeg/-0.0160221rad
+updating position of device 3 using desired vel -0.020192 from -0.0123467 to: -0.0127505
+PDO outdoing position=-0.0127505 rad (-731 mdeg)
+PDO incoming from 0x3: pos=-704mdeg/-0.0122871rad, vel=-1003mdeg/-0.0175057rad
+updating position of device 3 using desired vel -0.020192 from -0.0127505 to: -0.0131544
+PDO outdoing position=-0.0131544 rad (-754 mdeg)
+PDO incoming from 0x3: pos=-728mdeg/-0.012706rad, vel=-1300mdeg/-0.0226893rad
+updating position of device 3 using desired vel -0.020192 from -0.0131544 to: -0.0135582
+PDO outdoing position=-0.0135582 rad (-777 mdeg)
+PDO incoming from 0x3: pos=-761mdeg/-0.013282rad, vel=-1641mdeg/-0.0286409rad
+updating position of device 3 using desired vel -0.020192 from -0.0135582 to: -0.013962
+PDO outdoing position=-0.013962 rad (-800 mdeg)
+PDO incoming from 0x3: pos=-785mdeg/-0.0137008rad, vel=-1063mdeg/-0.0185528rad
+updating position of device 3 using desired vel -0.020192 from -0.013962 to: -0.0143659
+PDO outdoing position=-0.0143659 rad (-823 mdeg)
+PDO incoming from 0x3: pos=-802mdeg/-0.0139975rad, vel=-800mdeg/-0.0139626rad
+updating position of device 3 using desired vel -0.020192 from -0.0143659 to: -0.0147697
+PDO outdoing position=-0.0147697 rad (-846 mdeg)
+PDO incoming from 0x3: pos=-820mdeg/-0.0143117rad, vel=-910mdeg/-0.0158825rad
+updating position of device 3 using desired vel -0.020192 from -0.0147697 to: -0.0151736
+PDO outdoing position=-0.0151736 rad (-869 mdeg)
+PDO incoming from 0x3: pos=-840mdeg/-0.0146608rad, vel=-1007mdeg/-0.0175755rad
+updating position of device 3 using desired vel -0.020192 from -0.0151736 to: -0.0155774
+PDO outdoing position=-0.0155774 rad (-893 mdeg)
+PDO incoming from 0x3: pos=-866mdeg/-0.0151146rad, vel=-1409mdeg/-0.0245917rad
+updating position of device 3 using desired vel -0.020192 from -0.0155774 to: -0.0159812
+PDO outdoing position=-0.0159812 rad (-916 mdeg)
+PDO incoming from 0x3: pos=-894mdeg/-0.0156032rad, vel=-1356mdeg/-0.0236667rad
+updating position of device 3 using desired vel -0.020192 from -0.0159812 to: -0.0163851
+PDO outdoing position=-0.0163851 rad (-939 mdeg)
+PDO incoming from 0x3: pos=-915mdeg/-0.0159698rad, vel=-1000mdeg/-0.0174533rad
+updating position of device 3 using desired vel -0.020192 from -0.0163851 to: -0.0167889
+PDO outdoing position=-0.0167889 rad (-962 mdeg)
+PDO incoming from 0x3: pos=-936mdeg/-0.0163363rad, vel=-1100mdeg/-0.0191986rad
+updating position of device 3 using desired vel -0.020192 from -0.0167889 to: -0.0171928
+PDO outdoing position=-0.0171928 rad (-985 mdeg)
+PDO incoming from 0x3: pos=-963mdeg/-0.0168075rad, vel=-1390mdeg/-0.0242601rad
+updating position of device 3 using desired vel -0.020192 from -0.0171928 to: -0.0175966
+PDO outdoing position=-0.0175966 rad (-1008 mdeg)
+PDO incoming from 0x3: pos=-992mdeg/-0.0173137rad, vel=-1487mdeg/-0.025953rad
+updating position of device 3 using desired vel -0.020192 from -0.0175966 to: -0.0180004
+PDO outdoing position=-0.0180004 rad (-1031 mdeg)
+PDO incoming from 0x3: pos=-1015mdeg/-0.0177151rad, vel=-984mdeg/-0.017174rad
+updating position of device 3 using desired vel -0.020192 from -0.0180004 to: -0.0184043
+PDO outdoing position=-0.0184043 rad (-1054 mdeg)
+PDO incoming from 0x3: pos=-1031mdeg/-0.0179943rad, vel=-816mdeg/-0.0142419rad
+updating position of device 3 using desired vel -0.020192 from -0.0184043 to: -0.0188081
+PDO outdoing position=-0.0188081 rad (-1078 mdeg)
+PDO incoming from 0x3: pos=-1050mdeg/-0.018326rad, vel=-963mdeg/-0.0168075rad
+updating position of device 3 using desired vel -0.020192 from -0.0188081 to: -0.019212
+PDO outdoing position=-0.019212 rad (-1101 mdeg)
+PDO incoming from 0x3: pos=-1073mdeg/-0.0187274rad, vel=-1278mdeg/-0.0223053rad
+updating position of device 3 using desired vel -0.020192 from -0.019212 to: -0.0196158
+PDO outdoing position=-0.0196158 rad (-1124 mdeg)
+PDO incoming from 0x3: pos=-1100mdeg/-0.0191986rad, vel=-1354mdeg/-0.0236318rad
+updating position of device 3 using desired vel -0.020192 from -0.0196158 to: -0.0200196
+PDO outdoing position=-0.0200196 rad (-1147 mdeg)
+PDO incoming from 0x3: pos=-1125mdeg/-0.019635rad, vel=-1229mdeg/-0.0214501rad
+updating position of device 3 using desired vel -0.020192 from -0.0200196 to: -0.0204235
+PDO outdoing position=-0.0204235 rad (-1170 mdeg)
+PDO incoming from 0x3: pos=-1145mdeg/-0.019984rad, vel=-1030mdeg/-0.0179769rad
+updating position of device 3 using desired vel -0.020192 from -0.0204235 to: -0.0208273
+PDO outdoing position=-0.0208273 rad (-1193 mdeg)
+PDO incoming from 0x3: pos=-1167mdeg/-0.020368rad, vel=-1126mdeg/-0.0196524rad
+updating position of device 3 using desired vel -0.020192 from -0.0208273 to: -0.0212312
+PDO outdoing position=-0.0212312 rad (-1216 mdeg)
+PDO incoming from 0x3: pos=-1194mdeg/-0.0208392rad, vel=-1418mdeg/-0.0247488rad
+updating position of device 3 using desired vel -0.020192 from -0.0212312 to: -0.021635
+PDO outdoing position=-0.021635 rad (-1240 mdeg)
+PDO incoming from 0x3: pos=-1223mdeg/-0.0213454rad, vel=-1330mdeg/-0.0232129rad
+updating position of device 3 using desired vel -0.020192 from -0.021635 to: -0.0220388
+PDO outdoing position=-0.0220388 rad (-1263 mdeg)
+PDO incoming from 0x3: pos=-1244mdeg/-0.0217119rad, vel=-954mdeg/-0.0166504rad
+updating position of device 3 using desired vel -0.020192 from -0.0220388 to: -0.0224427
+PDO outdoing position=-0.0224427 rad (-1286 mdeg)
+PDO incoming from 0x3: pos=-1262mdeg/-0.0220261rad, vel=-885mdeg/-0.0154462rad
+updating position of device 3 using desired vel -0.020192 from -0.0224427 to: -0.0228465
+PDO outdoing position=-0.0228465 rad (-1309 mdeg)
+PDO incoming from 0x3: pos=-1282mdeg/-0.0223751rad, vel=-1064mdeg/-0.0185703rad
+updating position of device 3 using desired vel -0.020192 from -0.0228465 to: -0.0232504
+PDO outdoing position=-0.0232504 rad (-1332 mdeg)
+PDO incoming from 0x3: pos=-1308mdeg/-0.0228289rad, vel=-1287mdeg/-0.0224624rad
+updating position of device 3 using desired vel -0.020192 from -0.0232504 to: -0.0236542
+PDO outdoing position=-0.0236542 rad (-1355 mdeg)
+PDO incoming from 0x3: pos=-1333mdeg/-0.0232652rad, vel=-1277mdeg/-0.0222879rad
+updating position of device 3 using desired vel -0.020192 from -0.0236542 to: -0.024058
+PDO outdoing position=-0.024058 rad (-1378 mdeg)
+PDO incoming from 0x3: pos=-1354mdeg/-0.0236318rad, vel=-982mdeg/-0.0171391rad
+updating position of device 3 using desired vel -0.020192 from -0.024058 to: -0.0244619
+PDO outdoing position=-0.0244619 rad (-1402 mdeg)
+PDO incoming from 0x3: pos=-1375mdeg/-0.0239983rad, vel=-1117mdeg/-0.0194953rad
+updating position of device 3 using desired vel -0.020192 from -0.0244619 to: -0.0248657
+PDO outdoing position=-0.0248657 rad (-1425 mdeg)
+PDO incoming from 0x3: pos=-1399mdeg/-0.0244172rad, vel=-1288mdeg/-0.0224798rad
+updating position of device 3 using desired vel -0.020192 from -0.0248657 to: -0.0252696
+PDO outdoing position=-0.0252696 rad (-1448 mdeg)
+PDO incoming from 0x3: pos=-1429mdeg/-0.0249408rad, vel=-1516mdeg/-0.0264592rad
+updating position of device 3 using desired vel -0.020192 from -0.0252696 to: -0.0256734
+PDO outdoing position=-0.0256734 rad (-1471 mdeg)
+PDO incoming from 0x3: pos=-1455mdeg/-0.0253945rad, vel=-1157mdeg/-0.0201935rad
+updating position of device 3 using desired vel -0.020192 from -0.0256734 to: -0.0260772
+PDO outdoing position=-0.0260772 rad (-1494 mdeg)
+PDO incoming from 0x3: pos=-1471mdeg/-0.0256738rad, vel=-758mdeg/-0.0132296rad
+updating position of device 3 using desired vel -0.020192 from -0.0260772 to: -0.0264811
+PDO outdoing position=-0.0264811 rad (-1517 mdeg)
+PDO incoming from 0x3: pos=-1490mdeg/-0.0260054rad, vel=-1003mdeg/-0.0175057rad
+PDO incoming from 0x3: pos=-1497mdeg/-0.0261276rad, vel=-1081mdeg/-0.018867rad
+updating position of device 3 using desired vel -0.020192 from -0.0264811 to: -0.0268849
+PDO outdoing position=-0.0268849 rad (-1540 mdeg)
+PDO incoming from 0x3: pos=-1505mdeg/-0.0262672rad, vel=-490mdeg/-0.00855211rad
+updating position of device 3 using desired vel -0.020192 from -0.0268849 to: -0.0272888
+PDO outdoing position=-0.0272888 rad (-1564 mdeg)
+PDO incoming from 0x3: pos=-1527mdeg/-0.0266512rad, vel=-1383mdeg/-0.0241379rad
+updating position of device 3 using desired vel -0.020192 from -0.0272888 to: -0.0276926
+PDO outdoing position=-0.0276926 rad (-1587 mdeg)
+PDO incoming from 0x3: pos=-1556mdeg/-0.0271573rad, vel=-1430mdeg/-0.0249582rad
+updating position of device 3 using desired vel -0.020192 from -0.0276926 to: -0.0280964
+PDO outdoing position=-0.0280964 rad (-1610 mdeg)
+PDO incoming from 0x3: pos=-1581mdeg/-0.0275937rad, vel=-1138mdeg/-0.0198618rad
+updating position of device 3 using desired vel -0.020192 from -0.0280964 to: -0.0285003
+PDO outdoing position=-0.0285003 rad (-1633 mdeg)
+PDO incoming from 0x3: pos=-1601mdeg/-0.0279427rad, vel=-965mdeg/-0.0168424rad
+updating position of device 3 using desired vel -0.020192 from -0.0285003 to: -0.0289041
+PDO outdoing position=-0.0289041 rad (-1656 mdeg)
+PDO incoming from 0x3: pos=-1624mdeg/-0.0283441rad, vel=-1284mdeg/-0.02241rad
+updating position of device 3 using desired vel -0.020192 from -0.0289041 to: -0.029308
+PDO outdoing position=-0.029308 rad (-1679 mdeg)
+PDO incoming from 0x3: pos=-1657mdeg/-0.0289201rad, vel=-1723mdeg/-0.030072rad
+updating position of device 3 using desired vel -0.020192 from -0.029308 to: -0.0297118
+PDO outdoing position=-0.0297118 rad (-1702 mdeg)
+PDO incoming from 0x3: pos=-1685mdeg/-0.0294088rad, vel=-1167mdeg/-0.020368rad
+updating position of device 3 using desired vel -0.020192 from -0.0297118 to: -0.0301156
+PDO outdoing position=-0.0301156 rad (-1725 mdeg)
+PDO incoming from 0x3: pos=-1701mdeg/-0.0296881rad, vel=-766mdeg/-0.0133692rad
+updating position of device 3 using desired vel -0.020192 from -0.0301156 to: -0.0305195
+PDO outdoing position=-0.0305195 rad (-1749 mdeg)
+PDO incoming from 0x3: pos=-1718mdeg/-0.0299848rad, vel=-863mdeg/-0.0150622rad
+updating position of device 3 using desired vel -0.020192 from -0.0305195 to: -0.0309233
+PDO outdoing position=-0.0309233 rad (-1772 mdeg)
+PDO incoming from 0x3: pos=-1741mdeg/-0.0303862rad, vel=-1253mdeg/-0.021869rad
+updating position of device 3 using desired vel -0.020192 from -0.0309233 to: -0.0313272
+PDO outdoing position=-0.0313272 rad (-1795 mdeg)
+PDO incoming from 0x3: pos=-1770mdeg/-0.0308923rad, vel=-1399mdeg/-0.0244172rad
+updating position of device 3 using desired vel -0.020192 from -0.0313272 to: -0.031731
+PDO outdoing position=-0.031731 rad (-1818 mdeg)
+PDO incoming from 0x3: pos=-1796mdeg/-0.0313461rad, vel=-1206mdeg/-0.0210487rad
+updating position of device 3 using desired vel -0.020192 from -0.031731 to: -0.0321348
+PDO outdoing position=-0.0321348 rad (-1841 mdeg)
+PDO incoming from 0x3: pos=-1815mdeg/-0.0316777rad, vel=-862mdeg/-0.0150447rad
+updating position of device 3 using desired vel -0.020192 from -0.0321348 to: -0.0325387
+PDO outdoing position=-0.0325387 rad (-1864 mdeg)
+PDO incoming from 0x3: pos=-1835mdeg/-0.0320268rad, vel=-1045mdeg/-0.0182387rad
+updating position of device 3 using desired vel -0.020192 from -0.0325387 to: -0.0329425
+PDO outdoing position=-0.0329425 rad (-1887 mdeg)
+PDO incoming from 0x3: pos=-1861mdeg/-0.0324806rad, vel=-1400mdeg/-0.0244346rad
+updating position of device 3 using desired vel -0.020192 from -0.0329425 to: -0.0333464
+PDO outdoing position=-0.0333464 rad (-1911 mdeg)
+PDO incoming from 0x3: pos=-1894mdeg/-0.0330565rad, vel=-1589mdeg/-0.0277333rad
+updating position of device 3 using desired vel -0.020192 from -0.0333464 to: -0.0337502
+PDO outdoing position=-0.0337502 rad (-1934 mdeg)
+PDO incoming from 0x3: pos=-1916mdeg/-0.0334405rad, vel=-926mdeg/-0.0161617rad
+updating position of device 3 using desired vel -0.020192 from -0.0337502 to: -0.034154
+PDO outdoing position=-0.034154 rad (-1957 mdeg)
+PDO incoming from 0x3: pos=-1933mdeg/-0.0337372rad, vel=-852mdeg/-0.0148702rad
+updating position of device 3 using desired vel -0.020192 from -0.034154 to: -0.0345579
+PDO outdoing position=-0.0345579 rad (-1980 mdeg)
+PDO incoming from 0x3: pos=-1952mdeg/-0.0340688rad, vel=-985mdeg/-0.0171915rad
+updating position of device 3 using desired vel -0.020192 from -0.0345579 to: -0.0349617
+PDO outdoing position=-0.0349617 rad (-2003 mdeg)
+PDO incoming from 0x3: pos=-1975mdeg/-0.0344703rad, vel=-1208mdeg/-0.0210836rad
+updating position of device 3 using desired vel -0.020192 from -0.0349617 to: -0.0353656
+PDO outdoing position=-0.0353656 rad (-2026 mdeg)
+PDO incoming from 0x3: pos=-2004mdeg/-0.0349764rad, vel=-1460mdeg/-0.0254818rad
+updating position of device 3 using desired vel -0.020192 from -0.0353656 to: -0.0357694
+PDO outdoing position=-0.0357694 rad (-2049 mdeg)
+PDO incoming from 0x3: pos=-2026mdeg/-0.0353604rad, vel=-970mdeg/-0.0169297rad
+updating position of device 3 using desired vel -0.020192 from -0.0357694 to: -0.0361732
+PDO outdoing position=-0.0361732 rad (-2073 mdeg)
+PDO incoming from 0x3: pos=-2046mdeg/-0.0357094rad, vel=-1010mdeg/-0.0176278rad
+updating position of device 3 using desired vel -0.020192 from -0.0361732 to: -0.0365771
+PDO outdoing position=-0.0365771 rad (-2096 mdeg)
+PDO incoming from 0x3: pos=-2068mdeg/-0.0360934rad, vel=-1203mdeg/-0.0209963rad
+updating position of device 3 using desired vel -0.020192 from -0.0365771 to: -0.0369809
+PDO outdoing position=-0.0369809 rad (-2119 mdeg)
+PDO incoming from 0x3: pos=-2096mdeg/-0.0365821rad, vel=-1426mdeg/-0.0248884rad
+updating position of device 3 using desired vel -0.020192 from -0.0369809 to: -0.0373848
+PDO outdoing position=-0.0373848 rad (-2142 mdeg)
+PDO incoming from 0x3: pos=-2126mdeg/-0.0371057rad, vel=-1448mdeg/-0.0252724rad
+updating position of device 3 using desired vel -0.020192 from -0.0373848 to: -0.0377886
+PDO outdoing position=-0.0377886 rad (-2165 mdeg)
+PDO incoming from 0x3: pos=-2145mdeg/-0.0374373rad, vel=-816mdeg/-0.0142419rad
+updating position of device 3 using desired vel -0.020192 from -0.0377886 to: -0.0381924
+PDO outdoing position=-0.0381924 rad (-2188 mdeg)
+PDO incoming from 0x3: pos=-2162mdeg/-0.037734rad, vel=-880mdeg/-0.0153589rad
+updating position of device 3 using desired vel -0.020192 from -0.0381924 to: -0.0385963
+PDO outdoing position=-0.0385963 rad (-2211 mdeg)
+PDO incoming from 0x3: pos=-2182mdeg/-0.0380831rad, vel=-1059mdeg/-0.018483rad
+updating position of device 3 using desired vel -0.020192 from -0.0385963 to: -0.0390001
+PDO outdoing position=-0.0390001 rad (-2235 mdeg)
+PDO incoming from 0x3: pos=-2209mdeg/-0.0385543rad, vel=-1385mdeg/-0.0241728rad
+updating position of device 3 using desired vel -0.020192 from -0.0390001 to: -0.039404
+PDO outdoing position=-0.039404 rad (-2258 mdeg)
+PDO incoming from 0x3: pos=-2236mdeg/-0.0390256rad, vel=-1312mdeg/-0.0228987rad
+updating position of device 3 using desired vel -0.020192 from -0.039404 to: -0.0398078
+PDO outdoing position=-0.0398078 rad (-2281 mdeg)
+PDO incoming from 0x3: pos=-2257mdeg/-0.0393921rad, vel=-974mdeg/-0.0169995rad
+updating position of device 3 using desired vel -0.020192 from -0.0398078 to: -0.0402116
+PDO outdoing position=-0.0402116 rad (-2304 mdeg)
+PDO incoming from 0x3: pos=-2277mdeg/-0.0397411rad, vel=-986mdeg/-0.0172089rad
+updating position of device 3 using desired vel -0.020192 from -0.0402116 to: -0.0406155
+PDO outdoing position=-0.0406155 rad (-2327 mdeg)
+PDO incoming from 0x3: pos=-2302mdeg/-0.0401775rad, vel=-1336mdeg/-0.0233176rad
+updating position of device 3 using desired vel -0.020192 from -0.0406155 to: -0.0410193
+PDO outdoing position=-0.0410193 rad (-2350 mdeg)
+PDO incoming from 0x3: pos=-2332mdeg/-0.0407011rad, vel=-1500mdeg/-0.0261799rad
+updating position of device 3 using desired vel -0.020192 from -0.0410193 to: -0.0414232
+PDO outdoing position=-0.0414232 rad (-2373 mdeg)
+PDO incoming from 0x3: pos=-2356mdeg/-0.04112rad, vel=-1043mdeg/-0.0182038rad
+updating position of device 3 using desired vel -0.020192 from -0.0414232 to: -0.041827
+PDO outdoing position=-0.041827 rad (-2397 mdeg)
+PDO incoming from 0x3: pos=-2374mdeg/-0.0414341rad, vel=-843mdeg/-0.0147131rad
+updating position of device 3 using desired vel -0.020192 from -0.041827 to: -0.0422308
+PDO outdoing position=-0.0422308 rad (-2420 mdeg)
+PDO incoming from 0x3: pos=-2392mdeg/-0.0417483rad, vel=-936mdeg/-0.0163363rad
+updating position of device 3 using desired vel -0.020192 from -0.0422308 to: -0.0426347
+PDO outdoing position=-0.0426347 rad (-2443 mdeg)
+PDO incoming from 0x3: pos=-2415mdeg/-0.0421497rad, vel=-1185mdeg/-0.0206822rad
+updating position of device 3 using desired vel -0.020192 from -0.0426347 to: -0.0430385
+PDO outdoing position=-0.0430385 rad (-2466 mdeg)
+PDO incoming from 0x3: pos=-2442mdeg/-0.0426209rad, vel=-1343mdeg/-0.0234398rad
+updating position of device 3 using desired vel -0.020192 from -0.0430385 to: -0.0434424
+PDO outdoing position=-0.0434424 rad (-2489 mdeg)
+PDO incoming from 0x3: pos=-2467mdeg/-0.0430573rad, vel=-1094mdeg/-0.0190939rad
+updating position of device 3 using desired vel -0.020192 from -0.0434424 to: -0.0438462
+PDO outdoing position=-0.0438462 rad (-2512 mdeg)
+PDO incoming from 0x3: pos=-2485mdeg/-0.0433714rad, vel=-957mdeg/-0.0167028rad
+updating position of device 3 using desired vel -0.020192 from -0.0438462 to: -0.04425
+PDO outdoing position=-0.04425 rad (-2535 mdeg)
+PDO incoming from 0x3: pos=-2508mdeg/-0.0437729rad, vel=-1110mdeg/-0.0193732rad
+updating position of device 3 using desired vel -0.020192 from -0.04425 to: -0.0446539
+PDO outdoing position=-0.0446539 rad (-2558 mdeg)
+PDO incoming from 0x3: pos=-2535mdeg/-0.0442441rad, vel=-1481mdeg/-0.0258483rad
+updating position of device 3 using desired vel -0.020192 from -0.0446539 to: -0.0450577
+PDO outdoing position=-0.0450577 rad (-2582 mdeg)
+PDO incoming from 0x3: pos=-2567mdeg/-0.0448026rad, vel=-1493mdeg/-0.0260578rad
+updating position of device 3 using desired vel -0.020192 from -0.0450577 to: -0.0454616
+PDO outdoing position=-0.0454616 rad (-2605 mdeg)
+PDO incoming from 0x3: pos=-2588mdeg/-0.0451691rad, vel=-875mdeg/-0.0152716rad
+updating position of device 3 using desired vel -0.020192 from -0.0454616 to: -0.0458654
+PDO outdoing position=-0.0458654 rad (-2628 mdeg)
+PDO incoming from 0x3: pos=-2604mdeg/-0.0454484rad, vel=-761mdeg/-0.013282rad
+updating position of device 3 using desired vel -0.020192 from -0.0458654 to: -0.0462692
+PDO outdoing position=-0.0462692 rad (-2651 mdeg)
+PDO incoming from 0x3: pos=-2623mdeg/-0.04578rad, vel=-1028mdeg/-0.017942rad
+updating position of device 3 using desired vel -0.020192 from -0.0462692 to: -0.0466731
+PDO outdoing position=-0.0466731 rad (-2674 mdeg)
+PDO incoming from 0x3: pos=-2648mdeg/-0.0462163rad, vel=-1328mdeg/-0.023178rad
+canopen: received error from device 3: error_register=0x20, categories: device profile specific,
+PDO incoming from 0x3: pos=-2651mdeg/-0.0462687rad, vel=-1330mdeg/-0.0232129rad
+updating position of device 3 using desired vel -0.020192 from -0.0466731 to: -0.0470769
+PDO outdoing position=-0.0470769 rad (-2697 mdeg)
+PDO incoming from 0x3: pos=-2675mdeg/-0.0466876rad, vel=-1387mdeg/-0.0242077rad
+updating position of device 3 using desired vel -0.020192 from -0.0470769 to: -0.0474808
+PDO outdoing position=-0.0474808 rad (-2720 mdeg)
+PDO incoming from 0x3: pos=-2698mdeg/-0.047089rad, vel=-1006mdeg/-0.017558rad
+updating position of device 3 using desired vel -0.020192 from -0.0474808 to: -0.0478846
+PDO outdoing position=-0.0478846 rad (-2744 mdeg)
+PDO incoming from 0x3: pos=-2716mdeg/-0.0474031rad, vel=-900mdeg/-0.015708rad
+updating position of device 3 using desired vel -0.020192 from -0.0478846 to: -0.0482884
+PDO outdoing position=-0.0482884 rad (-2767 mdeg)
+PDO incoming from 0x3: pos=-2737mdeg/-0.0477697rad, vel=-1117mdeg/-0.0194953rad
+updating position of device 3 using desired vel -0.020192 from -0.0482884 to: -0.0486923
+PDO outdoing position=-0.0486923 rad (-2790 mdeg)
+PDO incoming from 0x3: pos=-2766mdeg/-0.0482758rad, vel=-1506mdeg/-0.0262847rad
+updating position of device 3 using desired vel -0.020192 from -0.0486923 to: -0.0490961
+PDO outdoing position=-0.0490961 rad (-2813 mdeg)
+PDO incoming from 0x3: pos=-2797mdeg/-0.0488169rad, vel=-1524mdeg/-0.0265988rad
+updating position of device 3 using desired vel -0.020192 from -0.0490961 to: -0.0495
+PDO outdoing position=-0.0495 rad (-2836 mdeg)
+PDO incoming from 0x3: pos=-2817mdeg/-0.0491659rad, vel=-863mdeg/-0.0150622rad
+updating position of device 3 using desired vel -0.020192 from -0.0495 to: -0.0499038
+PDO outdoing position=-0.0499038 rad (-2859 mdeg)
+PDO incoming from 0x3: pos=-2832mdeg/-0.0494277rad, vel=-780mdeg/-0.0136136rad
+updating position of device 3 using desired vel -0.020192 from -0.0499038 to: -0.0503076
+PDO outdoing position=-0.0503076 rad (-2882 mdeg)
+PDO incoming from 0x3: pos=-2850mdeg/-0.0497419rad, vel=-979mdeg/-0.0170868rad
+updating position of device 3 using desired vel -0.020192 from -0.0503076 to: -0.0507115
+PDO outdoing position=-0.0507115 rad (-2906 mdeg)
+PDO incoming from 0x3: pos=-2877mdeg/-0.0502131rad, vel=-1438mdeg/-0.0250978rad
+updating position of device 3 using desired vel -0.020192 from -0.0507115 to: -0.0511153
+PDO outdoing position=-0.0511153 rad (-2929 mdeg)
+PDO incoming from 0x3: pos=-2906mdeg/-0.0507193rad, vel=-1405mdeg/-0.0245219rad
+updating position of device 3 using desired vel -0.020192 from -0.0511153 to: -0.0515192
+PDO outdoing position=-0.0515192 rad (-2952 mdeg)
+PDO incoming from 0x3: pos=-2929mdeg/-0.0511207rad, vel=-1051mdeg/-0.0183434rad
+updating position of device 3 using desired vel -0.020192 from -0.0515192 to: -0.051923
+PDO outdoing position=-0.051923 rad (-2975 mdeg)
+PDO incoming from 0x3: pos=-2947mdeg/-0.0514349rad, vel=-905mdeg/-0.0157952rad
+updating position of device 3 using desired vel -0.020192 from -0.051923 to: -0.0523268
+PDO outdoing position=-0.0523268 rad (-2998 mdeg)
+PDO incoming from 0x3: pos=-2969mdeg/-0.0518188rad, vel=-1135mdeg/-0.0198095rad
+updating position of device 3 using desired vel -0.020192 from -0.0523268 to: -0.0527307
+PDO outdoing position=-0.0527307 rad (-3021 mdeg)
+PDO incoming from 0x3: pos=-2998mdeg/-0.052325rad, vel=-1539mdeg/-0.0268606rad
+updating position of device 3 using desired vel -0.020192 from -0.0527307 to: -0.0531345
+PDO outdoing position=-0.0531345 rad (-3044 mdeg)
+PDO incoming from 0x3: pos=-3028mdeg/-0.0528486rad, vel=-1330mdeg/-0.0232129rad
+updating position of device 3 using desired vel -0.020192 from -0.0531345 to: -0.0535384
+PDO outdoing position=-0.0535384 rad (-3068 mdeg)
+PDO incoming from 0x3: pos=-3047mdeg/-0.0531802rad, vel=-855mdeg/-0.0149226rad
+updating position of device 3 using desired vel -0.020192 from -0.0535384 to: -0.0539422
+PDO outdoing position=-0.0539422 rad (-3091 mdeg)
+PDO incoming from 0x3: pos=-3065mdeg/-0.0534943rad, vel=-921mdeg/-0.0160745rad
+updating position of device 3 using desired vel -0.020192 from -0.0539422 to: -0.054346
+PDO outdoing position=-0.054346 rad (-3114 mdeg)
+PDO incoming from 0x3: pos=-3085mdeg/-0.0538434rad, vel=-1017mdeg/-0.01775rad
+updating position of device 3 using desired vel -0.020192 from -0.054346 to: -0.0547499
+PDO outdoing position=-0.0547499 rad (-3137 mdeg)
+PDO incoming from 0x3: pos=-3109mdeg/-0.0542623rad, vel=-1295mdeg/-0.022602rad
+updating position of device 3 using desired vel -0.020192 from -0.0547499 to: -0.0551537
+PDO outdoing position=-0.0551537 rad (-3160 mdeg)
+PDO incoming from 0x3: pos=-3139mdeg/-0.0547859rad, vel=-1441mdeg/-0.0251502rad
+updating position of device 3 using desired vel -0.020192 from -0.0551537 to: -0.0555576
+PDO outdoing position=-0.0555576 rad (-3183 mdeg)
+PDO incoming from 0x3: pos=-3160mdeg/-0.0551524rad, vel=-994mdeg/-0.0173486rad
+updating position of device 3 using desired vel -0.020192 from -0.0555576 to: -0.0559614
+PDO outdoing position=-0.0559614 rad (-3206 mdeg)
+PDO incoming from 0x3: pos=-3181mdeg/-0.0555189rad, vel=-1084mdeg/-0.0189194rad
+updating position of device 3 using desired vel -0.020192 from -0.0559614 to: -0.0563652
+PDO outdoing position=-0.0563652 rad (-3229 mdeg)
+PDO incoming from 0x3: pos=-3206mdeg/-0.0559553rad, vel=-1288mdeg/-0.0224798rad
+updating position of device 3 using desired vel -0.020192 from -0.0563652 to: -0.0567691
+PDO outdoing position=-0.0567691 rad (-3253 mdeg)
+PDO incoming from 0x3: pos=-3235mdeg/-0.0564614rad, vel=-1459mdeg/-0.0254644rad
+updating position of device 3 using desired vel -0.020192 from -0.0567691 to: -0.0571729
+PDO outdoing position=-0.0571729 rad (-3276 mdeg)
+PDO incoming from 0x3: pos=-3261mdeg/-0.0569152rad, vel=-1137mdeg/-0.0198444rad
+updating position of device 3 using desired vel -0.020192 from -0.0571729 to: -0.0575768
+PDO outdoing position=-0.0575768 rad (-3299 mdeg)
+PDO incoming from 0x3: pos=-3277mdeg/-0.0571944rad, vel=-787mdeg/-0.0137357rad
+updating position of device 3 using desired vel -0.020192 from -0.0575768 to: -0.0579806
+PDO outdoing position=-0.0579806 rad (-3322 mdeg)
+PDO incoming from 0x3: pos=-3296mdeg/-0.0575261rad, vel=-919mdeg/-0.0160396rad
+updating position of device 3 using desired vel -0.020192 from -0.0579806 to: -0.0583844
+PDO outdoing position=-0.0583844 rad (-3345 mdeg)
+PDO incoming from 0x3: pos=-3317mdeg/-0.0578926rad, vel=-1121mdeg/-0.0195651rad
+updating position of device 3 using desired vel -0.020192 from -0.0583844 to: -0.0587883
+PDO outdoing position=-0.0587883 rad (-3368 mdeg)
+PDO incoming from 0x3: pos=-3343mdeg/-0.0583464rad, vel=-1346mdeg/-0.0234921rad
+updating position of device 3 using desired vel -0.020192 from -0.0587883 to: -0.0591921
+PDO outdoing position=-0.0591921 rad (-3391 mdeg)
+PDO incoming from 0x3: pos=-3369mdeg/-0.0588001rad, vel=-1273mdeg/-0.022218rad
+updating position of device 3 using desired vel -0.020192 from -0.0591921 to: -0.059596
+PDO outdoing position=-0.059596 rad (-3415 mdeg)
+PDO incoming from 0x3: pos=-3390mdeg/-0.0591667rad, vel=-977mdeg/-0.0170519rad
+updating position of device 3 using desired vel -0.020192 from -0.059596 to: -0.0599998
+PDO outdoing position=-0.0599998 rad (-3438 mdeg)
+PDO incoming from 0x3: pos=-3412mdeg/-0.0595506rad, vel=-1123mdeg/-0.0196rad
+updating position of device 3 using desired vel -0.020192 from -0.0599998 to: -0.0604036
+PDO outdoing position=-0.0604036 rad (-3461 mdeg)
+PDO incoming from 0x3: pos=-3439mdeg/-0.0600219rad, vel=-1324mdeg/-0.0231082rad
+updating position of device 3 using desired vel -0.020192 from -0.0604036 to: -0.0608075
+PDO outdoing position=-0.0608075 rad (-3484 mdeg)
+PDO incoming from 0x3: pos=-3468mdeg/-0.060528rad, vel=-1376mdeg/-0.0240157rad
+updating position of device 3 using desired vel -0.020192 from -0.0608075 to: -0.0612113
+PDO outdoing position=-0.0612113 rad (-3507 mdeg)
+PDO incoming from 0x3: pos=-3490mdeg/-0.060912rad, vel=-993mdeg/-0.0173311rad
+updating position of device 3 using desired vel -0.020192 from -0.0612113 to: -0.0616152
+PDO outdoing position=-0.0616152 rad (-3530 mdeg)
+PDO incoming from 0x3: pos=-3507mdeg/-0.0612087rad, vel=-909mdeg/-0.015865rad
+updating position of device 3 using desired vel -0.020192 from -0.0616152 to: -0.062019
+PDO outdoing position=-0.062019 rad (-3553 mdeg)
+PDO incoming from 0x3: pos=-3527mdeg/-0.0615578rad, vel=-967mdeg/-0.0168773rad
+updating position of device 3 using desired vel -0.020192 from -0.062019 to: -0.0624228
+PDO outdoing position=-0.0624228 rad (-3577 mdeg)
+PDO incoming from 0x3: pos=-3551mdeg/-0.0619766rad, vel=-1261mdeg/-0.0220086rad
+updating position of device 3 using desired vel -0.020192 from -0.0624228 to: -0.0628267
+PDO outdoing position=-0.0628267 rad (-3600 mdeg)
+PDO incoming from 0x3: pos=-3579mdeg/-0.0624653rad, vel=-1378mdeg/-0.0240506rad
+updating position of device 3 using desired vel -0.020192 from -0.0628267 to: -0.0632305
+PDO outdoing position=-0.0632305 rad (-3623 mdeg)
+PDO incoming from 0x3: pos=-3600mdeg/-0.0628319rad, vel=-971mdeg/-0.0169471rad
+updating position of device 3 using desired vel -0.020192 from -0.0632305 to: -0.0636344
+PDO outdoing position=-0.0636344 rad (-3646 mdeg)
+PDO incoming from 0x3: pos=-3621mdeg/-0.0631984rad, vel=-1055mdeg/-0.0184132rad
+updating position of device 3 using desired vel -0.020192 from -0.0636344 to: -0.0640382
+PDO outdoing position=-0.0640382 rad (-3669 mdeg)
+PDO incoming from 0x3: pos=-3643mdeg/-0.0635823rad, vel=-1136mdeg/-0.0198269rad
+updating position of device 3 using desired vel -0.020192 from -0.0640382 to: -0.064442
+PDO outdoing position=-0.064442 rad (-3692 mdeg)
+PDO incoming from 0x3: pos=-3671mdeg/-0.064071rad, vel=-1438mdeg/-0.0250978rad
+updating position of device 3 using desired vel -0.020192 from -0.064442 to: -0.0648459
+PDO outdoing position=-0.0648459 rad (-3715 mdeg)
+PDO incoming from 0x3: pos=-3699mdeg/-0.0645597rad, vel=-1329mdeg/-0.0231954rad
+updating position of device 3 using desired vel -0.020192 from -0.0648459 to: -0.0652497
+PDO outdoing position=-0.0652497 rad (-3739 mdeg)
+PDO incoming from 0x3: pos=-3718mdeg/-0.0648913rad, vel=-866mdeg/-0.0151146rad
+updating position of device 3 using desired vel -0.020192 from -0.0652497 to: -0.0656536
+PDO outdoing position=-0.0656536 rad (-3762 mdeg)
+PDO incoming from 0x3: pos=-3736mdeg/-0.0652055rad, vel=-977mdeg/-0.0170519rad
+updating position of device 3 using desired vel -0.020192 from -0.0656536 to: -0.0660574
+PDO outdoing position=-0.0660574 rad (-3785 mdeg)
+PDO incoming from 0x3: pos=-3757mdeg/-0.065572rad, vel=-1091mdeg/-0.0190415rad
+updating position of device 3 using desired vel -0.020192 from -0.0660574 to: -0.0664612
+PDO outdoing position=-0.0664612 rad (-3808 mdeg)
+PDO incoming from 0x3: pos=-3783mdeg/-0.0660258rad, vel=-1340mdeg/-0.0233874rad
+PDO incoming from 0x3: pos=-3800mdeg/-0.0663225rad, vel=-1344mdeg/-0.0234572rad
+updating position of device 3 using desired vel -0.020192 from -0.0664612 to: -0.0668651
+PDO outdoing position=-0.0668651 rad (-3831 mdeg)
+PDO incoming from 0x3: pos=-3807mdeg/-0.0664447rad, vel=-873mdeg/-0.0152367rad
+updating position of device 3 using desired vel -0.020192 from -0.0668651 to: -0.0672689
+PDO outdoing position=-0.0672689 rad (-3854 mdeg)
+PDO incoming from 0x3: pos=-3824mdeg/-0.0667414rad, vel=-1088mdeg/-0.0189892rad
+updating position of device 3 using desired vel -0.020192 from -0.0672689 to: -0.0676728
+PDO outdoing position=-0.0676728 rad (-3877 mdeg)
+PDO incoming from 0x3: pos=-3843mdeg/-0.067073rad, vel=-900mdeg/-0.015708rad
+updating position of device 3 using desired vel -0.020192 from -0.0676728 to: -0.0680766
+PDO outdoing position=-0.0680766 rad (-3901 mdeg)
+PDO incoming from 0x3: pos=-3867mdeg/-0.0674919rad, vel=-1356mdeg/-0.0236667rad
+updating position of device 3 using desired vel -0.020192 from -0.0680766 to: -0.0684804
+PDO outdoing position=-0.0684804 rad (-3924 mdeg)
+PDO incoming from 0x3: pos=-3901mdeg/-0.0680853rad, vel=-1663mdeg/-0.0290248rad
+updating position of device 3 using desired vel -0.020192 from -0.0684804 to: -0.0688843
+PDO outdoing position=-0.0688843 rad (-3947 mdeg)
+PDO incoming from 0x3: pos=-3930mdeg/-0.0685914rad, vel=-1285mdeg/-0.0224275rad
+updating position of device 3 using desired vel -0.020192 from -0.0688843 to: -0.0692881
+PDO outdoing position=-0.0692881 rad (-3970 mdeg)
+PDO incoming from 0x3: pos=-3948mdeg/-0.0689056rad, vel=-828mdeg/-0.0144513rad
+updating position of device 3 using desired vel -0.020192 from -0.0692881 to: -0.069692
+PDO outdoing position=-0.069692 rad (-3993 mdeg)
+PDO incoming from 0x3: pos=-3964mdeg/-0.0691849rad, vel=-784mdeg/-0.0136834rad
+updating position of device 3 using desired vel -0.020192 from -0.069692 to: -0.0700958
+PDO outdoing position=-0.0700958 rad (-4016 mdeg)
+PDO incoming from 0x3: pos=-3984mdeg/-0.0695339rad, vel=-1114mdeg/-0.019443rad
+updating position of device 3 using desired vel -0.020192 from -0.0700958 to: -0.0704996
+PDO outdoing position=-0.0704996 rad (-4039 mdeg)
+PDO incoming from 0x3: pos=-4014mdeg/-0.0700575rad, vel=-1519mdeg/-0.0265116rad
+updating position of device 3 using desired vel -0.020192 from -0.0704996 to: -0.0709035
+PDO outdoing position=-0.0709035 rad (-4062 mdeg)
+PDO incoming from 0x3: pos=-4040mdeg/-0.0705113rad, vel=-1199mdeg/-0.0209265rad
+updating position of device 3 using desired vel -0.020192 from -0.0709035 to: -0.0713073
+PDO outdoing position=-0.0713073 rad (-4086 mdeg)
+PDO incoming from 0x3: pos=-4060mdeg/-0.0708604rad, vel=-968mdeg/-0.0168948rad
+updating position of device 3 using desired vel -0.020192 from -0.0713073 to: -0.0717112
+PDO outdoing position=-0.0717112 rad (-4109 mdeg)
+PDO incoming from 0x3: pos=-4081mdeg/-0.0712269rad, vel=-1088mdeg/-0.0189892rad
+updating position of device 3 using desired vel -0.020192 from -0.0717112 to: -0.072115
+PDO outdoing position=-0.072115 rad (-4132 mdeg)
+PDO incoming from 0x3: pos=-4105mdeg/-0.0716458rad, vel=-1212mdeg/-0.0211534rad
+updating position of device 3 using desired vel -0.020192 from -0.072115 to: -0.0725188
+PDO outdoing position=-0.0725188 rad (-4155 mdeg)
+PDO incoming from 0x3: pos=-4137mdeg/-0.0722043rad, vel=-1682mdeg/-0.0293564rad
+updating position of device 3 using desired vel -0.020192 from -0.0725188 to: -0.0729227
+PDO outdoing position=-0.0729227 rad (-4178 mdeg)
+PDO incoming from 0x3: pos=-4161mdeg/-0.0726232rad, vel=-998mdeg/-0.0174184rad
+updating position of device 3 using desired vel -0.020192 from -0.0729227 to: -0.0733265
+PDO outdoing position=-0.0733265 rad (-4201 mdeg)
+PDO incoming from 0x3: pos=-4178mdeg/-0.0729199rad, vel=-832mdeg/-0.0145211rad
+updating position of device 3 using desired vel -0.020192 from -0.0733265 to: -0.0737304
+PDO outdoing position=-0.0737304 rad (-4224 mdeg)
+PDO incoming from 0x3: pos=-4196mdeg/-0.073234rad, vel=-940mdeg/-0.0164061rad
+updating position of device 3 using desired vel -0.020192 from -0.0737304 to: -0.0741342
+PDO outdoing position=-0.0741342 rad (-4248 mdeg)
+PDO incoming from 0x3: pos=-4218mdeg/-0.073618rad, vel=-1148mdeg/-0.0200364rad
+updating position of device 3 using desired vel -0.020192 from -0.0741342 to: -0.074538
+PDO outdoing position=-0.074538 rad (-4271 mdeg)
+PDO incoming from 0x3: pos=-4246mdeg/-0.0741067rad, vel=-1464mdeg/-0.0255516rad
+updating position of device 3 using desired vel -0.020192 from -0.074538 to: -0.0749419
+PDO outdoing position=-0.0749419 rad (-4294 mdeg)
+PDO incoming from 0x3: pos=-4272mdeg/-0.0745605rad, vel=-1150mdeg/-0.0200713rad
+updating position of device 3 using desired vel -0.020192 from -0.0749419 to: -0.0753457
+PDO outdoing position=-0.0753457 rad (-4317 mdeg)
+PDO incoming from 0x3: pos=-4292mdeg/-0.0749095rad, vel=-1010mdeg/-0.0176278rad
+updating position of device 3 using desired vel -0.020192 from -0.0753457 to: -0.0757496
+PDO outdoing position=-0.0757496 rad (-4340 mdeg)
+PDO incoming from 0x3: pos=-4314mdeg/-0.0752935rad, vel=-1080mdeg/-0.0188496rad
+updating position of device 3 using desired vel -0.020192 from -0.0757496 to: -0.0761534
+PDO outdoing position=-0.0761534 rad (-4363 mdeg)
+PDO incoming from 0x3: pos=-4339mdeg/-0.0757298rad, vel=-1304mdeg/-0.0227591rad
+updating position of device 3 using desired vel -0.020192 from -0.0761534 to: -0.0765572
+PDO outdoing position=-0.0765572 rad (-4386 mdeg)
+PDO incoming from 0x3: pos=-4369mdeg/-0.0762534rad, vel=-1500mdeg/-0.0261799rad
+updating position of device 3 using desired vel -0.020192 from -0.0765572 to: -0.0769611
+PDO outdoing position=-0.0769611 rad (-4410 mdeg)
+PDO incoming from 0x3: pos=-4390mdeg/-0.07662rad, vel=-967mdeg/-0.0168773rad
+updating position of device 3 using desired vel -0.020192 from -0.0769611 to: -0.0773649
+PDO outdoing position=-0.0773649 rad (-4433 mdeg)
+PDO incoming from 0x3: pos=-4407mdeg/-0.0769167rad, vel=-871mdeg/-0.0152018rad
+updating position of device 3 using desired vel -0.020192 from -0.0773649 to: -0.0777688
+PDO outdoing position=-0.0777688 rad (-4456 mdeg)
+PDO incoming from 0x3: pos=-4427mdeg/-0.0772657rad, vel=-1022mdeg/-0.0178373rad
+updating position of device 3 using desired vel -0.020192 from -0.0777688 to: -0.0781726
+PDO outdoing position=-0.0781726 rad (-4479 mdeg)
+PDO incoming from 0x3: pos=-4452mdeg/-0.0777021rad, vel=-1351mdeg/-0.0235794rad
+updating position of device 3 using desired vel -0.020192 from -0.0781726 to: -0.0785764
+PDO outdoing position=-0.0785764 rad (-4502 mdeg)
+PDO incoming from 0x3: pos=-4479mdeg/-0.0781733rad, vel=-1269mdeg/-0.0221482rad
+updating position of device 3 using desired vel -0.020192 from -0.0785764 to: -0.0789803
+PDO outdoing position=-0.0789803 rad (-4525 mdeg)
+PDO incoming from 0x3: pos=-4502mdeg/-0.0785747rad, vel=-1092mdeg/-0.019059rad
+updating position of device 3 using desired vel -0.020192 from -0.0789803 to: -0.0793841
+PDO outdoing position=-0.0793841 rad (-4548 mdeg)
+PDO incoming from 0x3: pos=-4521mdeg/-0.0789063rad, vel=-994mdeg/-0.0173486rad
+updating position of device 3 using desired vel -0.020192 from -0.0793841 to: -0.079788
+PDO outdoing position=-0.079788 rad (-4572 mdeg)
+PDO incoming from 0x3: pos=-4544mdeg/-0.0793078rad, vel=-1248mdeg/-0.0217817rad
+updating position of device 3 using desired vel -0.020192 from -0.079788 to: -0.0801918
+PDO outdoing position=-0.0801918 rad (-4595 mdeg)
+PDO incoming from 0x3: pos=-4574mdeg/-0.0798314rad, vel=-1603mdeg/-0.0279776rad
+updating position of device 3 using desired vel -0.020192 from -0.0801918 to: -0.0805956
+PDO outdoing position=-0.0805956 rad (-4618 mdeg)
+PDO incoming from 0x3: pos=-4602mdeg/-0.0803201rad, vel=-1249mdeg/-0.0217992rad
+updating position of device 3 using desired vel -0.020192 from -0.0805956 to: -0.0809995
+PDO outdoing position=-0.0809995 rad (-4641 mdeg)
+PDO incoming from 0x3: pos=-4621mdeg/-0.0806517rad, vel=-907mdeg/-0.0158301rad
+updating position of device 3 using desired vel -0.020192 from -0.0809995 to: -0.0814033
+PDO outdoing position=-0.0814033 rad (-4664 mdeg)
+PDO incoming from 0x3: pos=-4637mdeg/-0.0809309rad, vel=-876mdeg/-0.0152891rad
+updating position of device 3 using desired vel -0.020192 from -0.0814033 to: -0.0818072
+PDO outdoing position=-0.0818072 rad (-4687 mdeg)
+PDO incoming from 0x3: pos=-4658mdeg/-0.0812974rad, vel=-1080mdeg/-0.0188496rad
+updating position of device 3 using desired vel -0.020192 from -0.0818072 to: -0.082211
+PDO outdoing position=-0.082211 rad (-4710 mdeg)
+PDO incoming from 0x3: pos=-4686mdeg/-0.0817861rad, vel=-1418mdeg/-0.0247488rad
+updating position of device 3 using desired vel -0.020192 from -0.082211 to: -0.0826148
+PDO outdoing position=-0.0826148 rad (-4733 mdeg)
+PDO incoming from 0x3: pos=-4712mdeg/-0.0822399rad, vel=-1139mdeg/-0.0198793rad
+updating position of device 3 using desired vel -0.020192 from -0.0826148 to: -0.0830187
+PDO outdoing position=-0.0830187 rad (-4757 mdeg)
+PDO incoming from 0x3: pos=-4730mdeg/-0.0825541rad, vel=-873mdeg/-0.0152367rad
+updating position of device 3 using desired vel -0.020192 from -0.0830187 to: -0.0834225
+PDO outdoing position=-0.0834225 rad (-4780 mdeg)
+PDO incoming from 0x3: pos=-4752mdeg/-0.082938rad, vel=-1136mdeg/-0.0198269rad
+updating position of device 3 using desired vel -0.020192 from -0.0834225 to: -0.0838264
+PDO outdoing position=-0.0838264 rad (-4803 mdeg)
+PDO incoming from 0x3: pos=-4777mdeg/-0.0833744rad, vel=-1281mdeg/-0.0223577rad
+updating position of device 3 using desired vel -0.020192 from -0.0838264 to: -0.0842302
+PDO outdoing position=-0.0842302 rad (-4826 mdeg)
+PDO incoming from 0x3: pos=-4808mdeg/-0.0839154rad, vel=-1592mdeg/-0.0277856rad
+updating position of device 3 using desired vel -0.020192 from -0.0842302 to: -0.084634
+PDO outdoing position=-0.084634 rad (-4849 mdeg)
+PDO incoming from 0x3: pos=-4833mdeg/-0.0843518rad, vel=-1014mdeg/-0.0176976rad
+updating position of device 3 using desired vel -0.020192 from -0.084634 to: -0.0850379
+PDO outdoing position=-0.0850379 rad (-4872 mdeg)
+PDO incoming from 0x3: pos=-4848mdeg/-0.0846136rad, vel=-718mdeg/-0.0125315rad
+updating position of device 3 using desired vel -0.020192 from -0.0850379 to: -0.0854417
+PDO outdoing position=-0.0854417 rad (-4895 mdeg)
+PDO incoming from 0x3: pos=-4865mdeg/-0.0849103rad, vel=-928mdeg/-0.0161967rad
+updating position of device 3 using desired vel -0.020192 from -0.0854417 to: -0.0858456
+PDO outdoing position=-0.0858456 rad (-4919 mdeg)
+PDO incoming from 0x3: pos=-4889mdeg/-0.0853291rad, vel=-1215mdeg/-0.0212058rad
+updating position of device 3 using desired vel -0.020192 from -0.0858456 to: -0.0862494
+PDO outdoing position=-0.0862494 rad (-4942 mdeg)
+PDO incoming from 0x3: pos=-4919mdeg/-0.0858527rad, vel=-1549mdeg/-0.0270352rad
+updating position of device 3 using desired vel -0.020192 from -0.0862494 to: -0.0866532
+PDO outdoing position=-0.0866532 rad (-4965 mdeg)
+PDO incoming from 0x3: pos=-4944mdeg/-0.0862891rad, vel=-1099mdeg/-0.0191812rad
+PDO incoming from 0x3: pos=-4951mdeg/-0.0864113rad, vel=-1021mdeg/-0.0178198rad
+updating position of device 3 using desired vel -0.020192 from -0.0866532 to: -0.0870571
+PDO outdoing position=-0.0870571 rad (-4988 mdeg)
+canopen: received error from device 3: error_register=0x20, categories: device profile specific,
+PDO incoming from 0x3: pos=-4956mdeg/-0.0864985rad, vel=-193mdeg/-0.00336849rad
+updating position of device 3 using desired vel -0.020192 from -0.0870571 to: -0.0874609
+PDO outdoing position=-0.0874609 rad (-5011 mdeg)
+PDO incoming from 0x3: pos=-4970mdeg/-0.0867429rad, vel=-967mdeg/-0.0168773rad
+updating position of device 3 using desired vel -0.020192 from -0.0874609 to: -0.0878648
+PDO outdoing position=-0.0878648 rad (-5034 mdeg)
+PDO incoming from 0x3: pos=-4994mdeg/-0.0871617rad, vel=-1317mdeg/-0.022986rad
+updating position of device 3 using desired vel -0.020192 from -0.0878648 to: -0.0882686
+PDO outdoing position=-0.0882686 rad (-5057 mdeg)
+PDO incoming from 0x3: pos=-5030mdeg/-0.0877901rad, vel=-1790mdeg/-0.0312414rad
+updating position of device 3 using desired vel -0.020192 from -0.0882686 to: -0.0886724
+PDO outdoing position=-0.0886724 rad (-5081 mdeg)
+PDO incoming from 0x3: pos=-5059mdeg/-0.0882962rad, vel=-1244mdeg/-0.0217119rad
+updating position of device 3 using desired vel -0.020192 from -0.0886724 to: -0.0890763
+PDO outdoing position=-0.0890763 rad (-5104 mdeg)
+PDO incoming from 0x3: pos=-5078mdeg/-0.0886278rad, vel=-936mdeg/-0.0163363rad
+updating position of device 3 using desired vel -0.020192 from -0.0890763 to: -0.0894801
+PDO outdoing position=-0.0894801 rad (-5127 mdeg)
+PDO incoming from 0x3: pos=-5096mdeg/-0.088942rad, vel=-934mdeg/-0.0163014rad
+updating position of device 3 using desired vel -0.020192 from -0.0894801 to: -0.089884
+PDO outdoing position=-0.089884 rad (-5150 mdeg)
+PDO incoming from 0x3: pos=-5120mdeg/-0.0893609rad, vel=-1328mdeg/-0.023178rad
+updating position of device 3 using desired vel -0.020192 from -0.089884 to: -0.0902878
+PDO outdoing position=-0.0902878 rad (-5173 mdeg)
+PDO incoming from 0x3: pos=-5149mdeg/-0.089867rad, vel=-1454mdeg/-0.0253771rad
+updating position of device 3 using desired vel -0.020192 from -0.0902878 to: -0.0906916
+PDO outdoing position=-0.0906916 rad (-5196 mdeg)
+PDO incoming from 0x3: pos=-5175mdeg/-0.0903208rad, vel=-1168mdeg/-0.0203854rad
+updating position of device 3 using desired vel -0.020192 from -0.0906916 to: -0.0910955
+PDO outdoing position=-0.0910955 rad (-5219 mdeg)
+PDO incoming from 0x3: pos=-5193mdeg/-0.0906349rad, vel=-898mdeg/-0.0156731rad
+updating position of device 3 using desired vel -0.020192 from -0.0910955 to: -0.0914993
+PDO outdoing position=-0.0914993 rad (-5243 mdeg)
+PDO incoming from 0x3: pos=-5214mdeg/-0.0910015rad, vel=-1100mdeg/-0.0191986rad
+updating position of device 3 using desired vel -0.020192 from -0.0914993 to: -0.0919032
+PDO outdoing position=-0.0919032 rad (-5266 mdeg)
+PDO incoming from 0x3: pos=-5242mdeg/-0.0914902rad, vel=-1574mdeg/-0.0274715rad
+updating position of device 3 using desired vel -0.020192 from -0.0919032 to: -0.092307
+PDO outdoing position=-0.092307 rad (-5289 mdeg)
+PDO incoming from 0x3: pos=-5274mdeg/-0.0920487rad, vel=-1433mdeg/-0.0250106rad
+updating position of device 3 using desired vel -0.020192 from -0.092307 to: -0.0927108
+PDO outdoing position=-0.0927108 rad (-5312 mdeg)
+PDO incoming from 0x3: pos=-5295mdeg/-0.0924152rad, vel=-945mdeg/-0.0164934rad
+updating position of device 3 using desired vel -0.020192 from -0.0927108 to: -0.0931147
+PDO outdoing position=-0.0931147 rad (-5335 mdeg)
+PDO incoming from 0x3: pos=-5312mdeg/-0.0927119rad, vel=-898mdeg/-0.0156731rad
+updating position of device 3 using desired vel -0.020192 from -0.0931147 to: -0.0935185
+PDO outdoing position=-0.0935185 rad (-5358 mdeg)
+PDO incoming from 0x3: pos=-5331mdeg/-0.0930435rad, vel=-974mdeg/-0.0169995rad
+updating position of device 3 using desired vel -0.020192 from -0.0935185 to: -0.0939224
+PDO outdoing position=-0.0939224 rad (-5381 mdeg)
+PDO incoming from 0x3: pos=-5354mdeg/-0.0934449rad, vel=-1188mdeg/-0.0207345rad
+updating position of device 3 using desired vel -0.020192 from -0.0939224 to: -0.0943262
+PDO outdoing position=-0.0943262 rad (-5404 mdeg)
+PDO incoming from 0x3: pos=-5384mdeg/-0.0939685rad, vel=-1467mdeg/-0.025604rad
+updating position of device 3 using desired vel -0.020192 from -0.0943262 to: -0.09473
+PDO outdoing position=-0.09473 rad (-5428 mdeg)
+PDO incoming from 0x3: pos=-5405mdeg/-0.094335rad, vel=-996mdeg/-0.0173835rad
+updating position of device 3 using desired vel -0.020192 from -0.09473 to: -0.0951339
+PDO outdoing position=-0.0951339 rad (-5451 mdeg)
+PDO incoming from 0x3: pos=-5426mdeg/-0.0947016rad, vel=-1052mdeg/-0.0183609rad
+updating position of device 3 using desired vel -0.020192 from -0.0951339 to: -0.0955377
+PDO outdoing position=-0.0955377 rad (-5474 mdeg)
+PDO incoming from 0x3: pos=-5450mdeg/-0.0951204rad, vel=-1191mdeg/-0.0207869rad
+updating position of device 3 using desired vel -0.020192 from -0.0955377 to: -0.0959416
+PDO outdoing position=-0.0959416 rad (-5497 mdeg)
+PDO incoming from 0x3: pos=-5478mdeg/-0.0956091rad, vel=-1436mdeg/-0.0250629rad
+updating position of device 3 using desired vel -0.020192 from -0.0959416 to: -0.0963454
+PDO outdoing position=-0.0963454 rad (-5520 mdeg)
+PDO incoming from 0x3: pos=-5506mdeg/-0.0960978rad, vel=-1224mdeg/-0.0213628rad
+updating position of device 3 using desired vel -0.020192 from -0.0963454 to: -0.0967492
+PDO outdoing position=-0.0967492 rad (-5543 mdeg)
+PDO incoming from 0x3: pos=-5523mdeg/-0.0963945rad, vel=-792mdeg/-0.013823rad
+updating position of device 3 using desired vel -0.020192 from -0.0967492 to: -0.0971531
+PDO outdoing position=-0.0971531 rad (-5566 mdeg)
+PDO incoming from 0x3: pos=-5540mdeg/-0.0966912rad, vel=-950mdeg/-0.0165806rad
+updating position of device 3 using desired vel -0.020192 from -0.0971531 to: -0.0975569
+PDO outdoing position=-0.0975569 rad (-5590 mdeg)
+PDO incoming from 0x3: pos=-5561mdeg/-0.0970578rad, vel=-1088mdeg/-0.0189892rad
+updating position of device 3 using desired vel -0.020192 from -0.0975569 to: -0.0979608
+PDO outdoing position=-0.0979608 rad (-5613 mdeg)
+PDO incoming from 0x3: pos=-5587mdeg/-0.0975115rad, vel=-1382mdeg/-0.0241205rad
+updating position of device 3 using desired vel -0.020192 from -0.0979608 to: -0.0983646
+PDO outdoing position=-0.0983646 rad (-5636 mdeg)
+PDO incoming from 0x3: pos=-5613mdeg/-0.0979653rad, vel=-1285mdeg/-0.0224275rad
+updating position of device 3 using desired vel -0.020192 from -0.0983646 to: -0.0987684
+PDO outdoing position=-0.0987684 rad (-5659 mdeg)
+PDO incoming from 0x3: pos=-5635mdeg/-0.0983493rad, vel=-997mdeg/-0.0174009rad
+updating position of device 3 using desired vel -0.020192 from -0.0987684 to: -0.0991723
+PDO outdoing position=-0.0991723 rad (-5682 mdeg)
+PDO incoming from 0x3: pos=-5655mdeg/-0.0986984rad, vel=-1066mdeg/-0.0186052rad
