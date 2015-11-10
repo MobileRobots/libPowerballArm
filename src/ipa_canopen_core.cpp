@@ -885,7 +885,7 @@ std::function< void (uint16_t CANid, double value) > sendData;
 
 void defaultPDOOutgoing_interpolated(uint16_t CANid, double positionValue)
 {
-std::cerr << "PDO outdoing position=" << positionValue << " rad (" << rad2mdeg(positionValue) << " mdeg)" << std::endl;
+    if(DEBUG) std::cerr << "PDO outdoing position=" << positionValue << " rad (" << rad2mdeg(positionValue) << " mdeg)" << std::endl;
     //static const uint16_t myControlword = (CONTROLWORD_ENABLE_OPERATION | CONTROLWORD_ENABLE_IP_MODE);
     TPCANMsg msg;
     std::memset(&msg, 0, sizeof(msg));
@@ -976,9 +976,11 @@ void defaultPDO_incoming_status(uint16_t CANid, const TPCANRdMsg m)
     bool man_specific2 = mydata_high & 0x80;
     bool schunk_pos_referenced = man_specific2;
 
-    std::cerr << "Schunk commutation reference for 0x" << std::hex << CANid;
-    if(schunk_pos_referenced) std::cerr << " COMPLETE" << std::endl;
-    else std::cerr << " not complete..." << std::endl;
+    if(DEBUG) {
+        std::cerr << "Schunk commutation reference for 0x" << std::hex << CANid;
+        if(schunk_pos_referenced) std::cerr << " COMPLETE" << std::endl;
+        else std::cerr << " not complete..." << std::endl;
+    }
 
     bool ip_mode = ready_switch_on & switched_on & op_enable & volt_enable;
 
@@ -1048,7 +1050,7 @@ void defaultPDO_incoming_status(uint16_t CANid, const TPCANRdMsg m)
 
 
 
-    std::cout << "Status of " << (int)CANid 
+    if(DEBUG) std::cerr << "Status of " << (int)CANid 
       << ": MotorState " << devices[CANid].getMotorState() 
       << ": OperationMode " << ((mode_display >= 0 && mode_display <= 8) ?  (modesDisplay[mode_display]) : "????")
       << ", Fault " << fault
@@ -1080,7 +1082,7 @@ void defaultPDO_incoming_pos(uint16_t CANid, const TPCANRdMsg m)
     double newPos = mdeg2rad(newPosMDeg);
     double newVel = mdeg2rad(newVelMDeg);
 
-    std::cout << "PDO incoming from 0x" << std::hex << (int)CANid << std::dec << ": pos=" << newPosMDeg << "mdeg/" << newPos << "rad, vel=" << newVelMDeg << "mdeg/" << newVel << "rad"  << std::endl;
+    std::cerr << "PDO incoming from 0x" << std::hex << (int)CANid << std::dec << ": pos=" << newPosMDeg << "mdeg/" << newPos << "rad, vel=" << newVelMDeg << "mdeg/" << newVel << "rad"  << std::endl;
 
     //newPos = devices[CANid].getConversionFactor()*newPos; //TODO: conversion from yaml file
     //newVel = devices[CANid].getConversionFactor()*newVel;
@@ -1218,7 +1220,7 @@ void defaultPDO_incoming(uint16_t CANid, const TPCANRdMsg m)
     devices[CANid].setReadySwitchON(ready_switch_on);
     devices[CANid].setSwitchON(switched_on);
 
-    // std::cout << "Motor State of Device with CANid " << (uint16_t)CANid << " is: " << devices[CANid].getMotorState() << std::endl;
+    if(DEBUG) std::cerr << "Motor State of Device with CANid " << (uint16_t)CANid << " is: " << devices[CANid].getMotorState() << std::endl;
 
 
 }

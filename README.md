@@ -8,10 +8,13 @@ SocketCAN instead of the proprietary Peak `pcan` driver.  `ipa_canopen`
 was written by Thiago de Freitas, Tobias Sing, Eduard Herkel and others
 at Fraunhofer Institute for Manufacturing Engineering and Automation
 (IPA Fraunhofer). This was chosen because it is the simplest/smallest
-open source partial-CanOPEN implementation easily available as of
-October 2015.  This may be replaced by other CanOPEN implementations,
+open source partial-CanOPEN implementation specifically intended for
+use with the Schunk LWA4P arm that was easily available as of
+October 2015.  This may be replaced by another CanOPEN implementation,
 or the whole libPowerballArm library may be replaced by a more complete 
-Powerball/CanOPEN-based arm interface, in the future.
+Powerball/CanOPEN-based arm interface, in the future. To enable
+some debugging output in the canopen library edit `src/ipa_canopen_core.cpp`
+and change the definition of the `DEBUG` symbol to `true`, then rebuild.
 
 This library also includes an interface for the CPR Force-Torque Sensor
 for Schunk LWA arms (called FTS-LWA or FTL in some documentation).
