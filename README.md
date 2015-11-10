@@ -2,6 +2,13 @@
 This is some standalone code to communicate with the Schunk PowerBall LWA4P arm
 and CommonplaceRobotics force-torque sensor (FTS).
 
+Schunk and CommonplaceRobotics also provide example applications and utilities
+which can be used in Windows.  See included media (CDROM disks) and search
+<http://robots.mobilerobots.com> for more information. In particular the Schunk
+`LWA_Tool` program available in the `CANopen Tools` packages from Schunk
+can be used to test the arm and display lots of diagnostic information. (It
+requires installing the ESD USB-CAN driver for Windows first.)
+
 The code repository is published at
 <http://github.com/MobileRobots/libPowerballArm>.  To make and share changes,
 you can create a fork of that repository and submit pull requests or 
@@ -20,6 +27,15 @@ or the whole libPowerballArm library may be replaced by a more complete
 Powerball/CanOPEN-based arm interface, in the future. Notices of
 changes or updates will be made at <http://robots.mobilerobotts.com>,
 the aria-users mailing list, and/or at <http://github.com/MobileRobots/libPowerballArm>.
+
+The Boost thread and system development libraries are requited to build. Boost-system is
+required at runtime. To install these on Ubuntu or Debian to build,
+
+    sudo apt-get install libboost-thread-dev libboost-system-dev
+
+To build or rebuild the library and example programs, use make:
+
+    make
 
 To enable some debugging output in the canopen library edit `src/ipa_canopen_core.cpp`
 and change the definition of the `DEBUG` symbol to `true`, then rebuild.
@@ -90,9 +106,18 @@ a "sync" message which, when received by the module, causes it to start
 or continue moving towards the next position. If no sync messages are
 sent the module times out and stops.
 
-Boost thread and system development libraries are requited to build. Boost-system is
-required at runtime. To install these on Ubuntu or Debian to build,
-    sudo apt-get install libboost-thread-dev libboost-system-dev
+When installed on a Seekur Jr. robot, the arm is powered by switched
+24V power supplies of Seekur Jr. (Arm motor power on port #29 and arm logic power
+port #8). These need to be switched on to use the arm.  Arm modules may enter
+a fault state in which power supplied them from the arm base is switched off,
+or another fault state in which power needs to be reset.  To do that switch 
+off and on or reset these Seekur Jr. power supplies using the `seekurPower` 
+command, e.g.
+
+    seekurPower -29 reset -8 reset
+
+
+
 
 This code is distributed under the terms of the GNU Lesser General Public
 License (LGPL).  See the LICENSE file for full license details.
