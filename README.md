@@ -2,6 +2,11 @@
 This is some standalone code to communicate with the Schunk PowerBall LWA4P arm
 and CommonplaceRobotics force-torque sensor (FTS).
 
+The code repository is published at
+<http://github.com/MobileRobots/libPowerballArm>.  To make and share changes,
+you can create a fork of that repository and submit pull requests or 
+discuss changes on the aria-users mailing list.
+
 It is based on code from the `ipa_canopen` ROS node
 <https://github.com/ipa320/ipa_canopen>, with some modifications to use 
 SocketCAN instead of the proprietary Peak `pcan` driver.  `ipa_canopen`
@@ -12,8 +17,11 @@ open source partial-CanOPEN implementation specifically intended for
 use with the Schunk LWA4P arm that was easily available as of
 October 2015.  This may be replaced by another CanOPEN implementation,
 or the whole libPowerballArm library may be replaced by a more complete 
-Powerball/CanOPEN-based arm interface, in the future. To enable
-some debugging output in the canopen library edit `src/ipa_canopen_core.cpp`
+Powerball/CanOPEN-based arm interface, in the future. Notices of
+changes or updates will be made at <http://robots.mobilerobotts.com>,
+the aria-users mailing list, and/or at <http://github.com/MobileRobots/libPowerballArm>.
+
+To enable some debugging output in the canopen library edit `src/ipa_canopen_core.cpp`
 and change the definition of the `DEBUG` symbol to `true`, then rebuild.
 
 This library also includes an interface for the CPR Force-Torque Sensor

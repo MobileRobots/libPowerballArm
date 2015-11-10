@@ -1084,7 +1084,7 @@ void defaultPDO_incoming_pos(uint16_t CANid, const TPCANRdMsg m)
     double newPos = mdeg2rad(newPosMDeg);
     double newVel = mdeg2rad(newVelMDeg);
 
-    std::cerr << "PDO incoming from 0x" << std::hex << (int)CANid << std::dec << ": pos=" << newPosMDeg << "mdeg/" << newPos << "rad, vel=" << newVelMDeg << "mdeg/" << newVel << "rad"  << std::endl;
+    if(DEBUG) std::cerr << "PDO incoming from 0x" << std::hex << (int)CANid << std::dec << ": pos=" << newPosMDeg << "mdeg/" << newPos << "rad, vel=" << newVelMDeg << "mdeg/" << newVel << "rad"  << std::endl;
 
     //newPos = devices[CANid].getConversionFactor()*newPos; //TODO: conversion from yaml file
     //newVel = devices[CANid].getConversionFactor()*newVel;
