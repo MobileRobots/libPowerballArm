@@ -25,7 +25,7 @@ use with the Schunk LWA4P arm that was easily available as of
 October 2015.  This may be replaced by another CanOPEN implementation,
 or the whole libPowerballArm library may be replaced by a more complete 
 Powerball/CanOPEN-based arm interface, in the future. Notices of
-changes or updates will be made at <http://robots.mobilerobotts.com>,
+changes or updates will be made at <http://robots.mobilerobots.com>,
 the aria-users mailing list, and/or at <http://github.com/MobileRobots/libPowerballArm>.
 
 The Boost thread and system development libraries are requited to build. Boost-system is
