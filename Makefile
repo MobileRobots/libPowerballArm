@@ -52,7 +52,7 @@ ifndef CXX
 CXX:=c++
 endif
 
-all: lib/libPowerballArm.so 
+all: lib/libPowerballArm.so  examples
 
 clean: 
 	-rm lib/libPowerballArm.so
@@ -67,6 +67,8 @@ obj/%.o: src/%.cpp
 	@mkdir -p obj
 	$(CXX) -c $(CFLAGS) -o $@ $^
 
+examples: FORCE
+	$(MAKE) -C examples
 
 include Makefile.dep
 
@@ -79,4 +81,7 @@ info:
 	$(info SRC=$(SRC))
 	$(info OBJ=$(OBJ))
 
-.PHONY: info all clean
+FORCE: 
+
+
+.PHONY: info all clean examples
