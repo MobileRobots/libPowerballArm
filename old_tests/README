@@ -1,0 +1,3 @@
+
+Don't use these tools. They do CANOPEN mapping and homing operations that aren't
+neccesary and can cause problems with the arm.

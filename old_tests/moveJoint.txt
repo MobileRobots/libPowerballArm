@@ -1,0 +1,21 @@
+
+
+// position control
+joint->getNMTInit();
+joint->getMotorState();
+joint->getCANid();
+joint->getVoltageEnabled();
+joint->getSwitchOn();
+
+
+joint->setTarget(pos);
+
+
+joint->getDesiredPos();
+joint->getActualPos();
+joint->getActualVel();
+joint->getTargetReached();
+joint->getWarning();
+joint->getFault();
+
+
