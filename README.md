@@ -44,8 +44,21 @@ This library also includes an interface for the CPR Force-Torque Sensor
 for Schunk LWA arms (called FTS-LWA or FTL in some documentation).
 
 This library relies on Linux kernel CAN support (SocketCAN), i.e. the 
-`can0` socket interface must be available through Linux.  See
-<http://robots.mobilerobots.com/wiki/Linux_SocketCAN> for information on 
+`can0` socket interface must be available through Linux.  
+
+A Linux kernel module driver must be loaded for your specific CAN adapter.
+For example, to load the driver for a Peak Systems USB-CAN adapter:
+
+    sudo modprobe peak_usb
+    
+Or for an ESD CAN-USB adapter:
+
+    sudo modprobe esd_usb2
+    
+Run `dmesg` for Linux log messages.  You can list the name of the module in
+`/etc/modules` to automatically load at boot.
+
+See <http://robots.mobilerobots.com/wiki/Linux_SocketCAN> for information on 
 SocketCAN including how to configure the CAN interface(s) using the Linux
 `ip` command. To bring up the first CAN interface up, use these commands:
 
